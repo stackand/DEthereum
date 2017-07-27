@@ -116,18 +116,62 @@ type
 
 
     function personal_ecRecover(const message, signature: String; out CallResult: String): Boolean;
-    function personal_importRawKey(const keydata, passphrase: String; out CallResult: String): Boolean;    function personal_listAccounts(out CallResult: TArray<String>): Boolean;    function personal_lockAccount(const address: String; out CallResult: Boolean): Boolean;    function personal_newAccount(const password: String; out CallResult: String): Boolean;    function personal_unlockAccount(const address, passphrase: String; duration: Int64; out CallResult: Boolean): Boolean;    function personal_sendTransaction(const from, &to, passphrase: String; const value: Int64; out CallResult: String): Boolean;    function personal_sign(const message, account, password: String; out CallResult: String): Boolean;
+    function personal_importRawKey(const keydata, passphrase: String; out CallResult: String): Boolean;
+    function personal_listAccounts(out CallResult: TArray<String>): Boolean;
+    function personal_lockAccount(const address: String; out CallResult: Boolean): Boolean;
+    function personal_newAccount(const password: String; out CallResult: String): Boolean;
+    function personal_unlockAccount(const address, passphrase: String; duration: Int64; out CallResult: Boolean): Boolean;
+    function personal_sendTransaction(const from, &to, passphrase: String; const value: Int64; out CallResult: String): Boolean;
+    function personal_sign(const message, account, password: String; out CallResult: String): Boolean;
     function personal_signAndSendTransaction(const from, &to: String; const gas, gasPrice, value: Int64; const data, password: String; out CallResult: String): Boolean;
 
     function txpool_content(out CallResult: String): Boolean;
-    function txpool_inspect(out CallResult: String): Boolean;    function txpool_status(out CallResult: TTxpool_statusClass): Boolean;
+    function txpool_inspect(out CallResult: String): Boolean;
+    function txpool_status(out CallResult: TTxpool_statusClass): Boolean;
+
     function miner_makeDAG(const BlockNumber: Int64; out CallResult: Boolean): Boolean;
-    function miner_setExtra(const Extra: String; out CallResult: Boolean): Boolean;    function miner_setGasPrice(const gasPrice: Int64; out CallResult: Boolean): Boolean;    function miner_start(const ThreadsCount: Int64; out CallResult: Boolean): Boolean;    function miner_startAutoDAG(out CallResult: Boolean): Boolean;    function miner_stop(out CallResult: Boolean): Boolean;    function miner_stopAutoDAG(out CallResult: Boolean): Boolean;
+    function miner_setExtra(const Extra: String; out CallResult: Boolean): Boolean;
+    function miner_setGasPrice(const gasPrice: Int64; out CallResult: Boolean): Boolean;
+    function miner_start(const ThreadsCount: Int64; out CallResult: Boolean): Boolean;
+    function miner_startAutoDAG(out CallResult: Boolean): Boolean;
+    function miner_stop(out CallResult: Boolean): Boolean;
+    function miner_stopAutoDAG(out CallResult: Boolean): Boolean;
+
     function admin_addPeer(const Url: String; out CallResult: Boolean): Boolean;
-    function admin_datadir(out CallResult: String): Boolean;    function admin_nodeInfo(out CallResult: TAdmin_nodeInfoClass): Boolean;    function admin_peers(out CallResult: TAdmin_nodePeersClass): Boolean;    function admin_setSolc(const Path: String; out CallResult: String): Boolean;    function admin_startRPC(const host: String; const port: Integer; const cors, apis: String; out CallResult: Boolean): Boolean;    function admin_startWS(const host: String; const port: Integer; const cors, apis: String; out CallResult: Boolean): Boolean;    function admin_stopRPC(out CallResult: Boolean): Boolean;    function admin_stopWS(out CallResult: Boolean): Boolean;
+    function admin_datadir(out CallResult: String): Boolean;
+    function admin_nodeInfo(out CallResult: TAdmin_nodeInfoClass): Boolean;
+    function admin_peers(out CallResult: TAdmin_nodePeersClass): Boolean;
+    function admin_setSolc(const Path: String; out CallResult: String): Boolean;
+    function admin_startRPC(const host: String; const port: Integer; const cors, apis: String; out CallResult: Boolean): Boolean;
+    function admin_startWS(const host: String; const port: Integer; const cors, apis: String; out CallResult: Boolean): Boolean;
+    function admin_stopRPC(out CallResult: Boolean): Boolean;
+    function admin_stopWS(out CallResult: Boolean): Boolean;
 
 {    function debug_backtraceAt(out CallResult: Boolean): Boolean;
-    function debug_blockProfile(out CallResult: Boolean): Boolean;    function debug_cpuProfile(out CallResult: Boolean): Boolean;    function debug_dumpBlock(out CallResult: Boolean): Boolean;    function debug_gcStats(out CallResult: Boolean): Boolean;    function debug_getBlockRlp(out CallResult: Boolean): Boolean;    function debug_goTrace(out CallResult: Boolean): Boolean;    function debug_memStats(out CallResult: Boolean): Boolean;    function debug_seedHashsign(out CallResult: Boolean): Boolean;    function debug_setBlockProfileRate(out CallResult: Boolean): Boolean;    function debug_setHead(out CallResult: Boolean): Boolean;    function debug_stacks(out CallResult: Boolean): Boolean;    function debug_startCPUProfile(out CallResult: Boolean): Boolean;    function debug_startGoTrace(out CallResult: Boolean): Boolean;    function debug_stopCPUProfile(out CallResult: Boolean): Boolean;    function debug_stopGoTrace(out CallResult: Boolean): Boolean;    function debug_traceBlock(out CallResult: Boolean): Boolean;    function debug_traceBlockByNumber(out CallResult: Boolean): Boolean;    function debug_traceBlockByHash(out CallResult: Boolean): Boolean;    function debug_traceBlockFromFile(out CallResult: Boolean): Boolean;    function debug_traceTransaction(out CallResult: Boolean): Boolean;    function debug_verbosity(out CallResult: Boolean): Boolean;    function debug_vmodule(out CallResult: Boolean): Boolean;    function debug_writeBlockProfile(out CallResult: Boolean): Boolean;    function debug_writeMemProfile(out CallResult: Boolean): Boolean;}
+    function debug_blockProfile(out CallResult: Boolean): Boolean;
+    function debug_cpuProfile(out CallResult: Boolean): Boolean;
+    function debug_dumpBlock(out CallResult: Boolean): Boolean;
+    function debug_gcStats(out CallResult: Boolean): Boolean;
+    function debug_getBlockRlp(out CallResult: Boolean): Boolean;
+    function debug_goTrace(out CallResult: Boolean): Boolean;
+    function debug_memStats(out CallResult: Boolean): Boolean;
+    function debug_seedHashsign(out CallResult: Boolean): Boolean;
+    function debug_setBlockProfileRate(out CallResult: Boolean): Boolean;
+    function debug_setHead(out CallResult: Boolean): Boolean;
+    function debug_stacks(out CallResult: Boolean): Boolean;
+    function debug_startCPUProfile(out CallResult: Boolean): Boolean;
+    function debug_startGoTrace(out CallResult: Boolean): Boolean;
+    function debug_stopCPUProfile(out CallResult: Boolean): Boolean;
+    function debug_stopGoTrace(out CallResult: Boolean): Boolean;
+    function debug_traceBlock(out CallResult: Boolean): Boolean;
+    function debug_traceBlockByNumber(out CallResult: Boolean): Boolean;
+    function debug_traceBlockByHash(out CallResult: Boolean): Boolean;
+    function debug_traceBlockFromFile(out CallResult: Boolean): Boolean;
+    function debug_traceTransaction(out CallResult: Boolean): Boolean;
+    function debug_verbosity(out CallResult: Boolean): Boolean;
+    function debug_vmodule(out CallResult: Boolean): Boolean;
+    function debug_writeBlockProfile(out CallResult: Boolean): Boolean;
+    function debug_writeMemProfile(out CallResult: Boolean): Boolean;}
 
     property RpcAddress: String read FRpcAddress write FRpcAddress;
     property RpcPort: Integer read FRpcPort write FRpcPort;
@@ -203,6 +247,7 @@ type
     FEventType: String;
     FEventHash: String;
     FEventAnonymous: Boolean;
+    FEvents: TObjectList<TEth_FilterChangeClass>;
     FParameters: TObjectList<TEthereumContractParameter>;
   public
     constructor Create;
@@ -212,6 +257,7 @@ type
     property EventName: String read FEventName write FEventName;
     property EventType: String read FEventType write FEventType;
     property EventHash: String read FEventHash write FEventHash;
+    property Events: TArray<TEth_FilterChangeClass> read FEvents;
     property EventAnonymous: Boolean read FEventAnonymous write FEventAnonymous;
     property Parameters: TObjectList<TEthereumContractParameter> read FParameters;
   end;
@@ -2145,12 +2191,97 @@ end;
 constructor TEthereumContractEvent.Create;
 begin
   inherited;
+  FEvents := TObjectList<TEth_FilterChangeClass>.Create;  
   FParameters := TObjectList<TEthereumContractParameter>.Create;
 end;
 
 function TEthereumContractEvent.DelphiEventDefinition(
   ContractClassName: String): String;
+var
+  i: Integer;
+  Inputs, Outputs, n, t: String;
+  Param: TEthereumContractParameter;
 begin
+  Inputs := TEthereumContract.NamesTypes(FInputs, 'const ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
+  Outputs := TEthereumContract.NamesTypes(FOutputs, 'out ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
+
+  Result := 'const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64';
+{var
+  //Code: String;
+  Topics: TArray<String>;
+  Event: TEthereumContractEvent;
+  Filter: TEth_FilterChangeClass;
+  CallResult: TObjectList<TEth_FilterChangeClass>;
+}
+  
+
+  if Inputs <> '' then
+    Result := Result + '; ';
+  Result := Result + Inputs;
+
+  if Outputs <> '' then
+    Result := Result + '; ';
+  Result := Result + Outputs;
+
+  if ContractClassName <> '' then
+    begin
+      Inputs := '';
+      Outputs := '';
+      ContractClassName := ContractClassName + '.';
+
+      for i := 0 to FOutputs.Count - 1 do
+        begin
+          Param := FOutputs[i];
+          n := Param.FName;
+          t := Param.FType;
+          TEthereumContract.DelphiSimpleConvertor(n, t);
+          if t = 'Boolean' then Outputs :=    Outputs + Format('          %s := Method.Outputs[%d].AsBoolean;%s', [n, i, sLineBreak]) else
+          if t = 'String' then Outputs :=     Outputs + Format('          %s := Method.Outputs[%d].AsString;%s', [n, i, sLineBreak]) else
+          if t = 'Integer' then Outputs :=    Outputs + Format('          %s := Method.Outputs[%d].AsInteger;%s', [n, i, sLineBreak]) else
+          if t = 'Int64' then Outputs :=      Outputs + Format('          %s := Method.Outputs[%d].AsInt64;%s', [n, i, sLineBreak]) else
+          if t = 'TByteDynArray' then Outputs := Outputs + Format('          %s := Method.Outputs[%d].AsBytes;%s', [n, i, sLineBreak]) else
+            Outputs := Outputs + Format('          %s := Method.Outputs[%d].AsUNKNOWN;%s', [n, i, sLineBreak]);
+        end;
+
+
+      Result := Format(
+        'function %s%s(%s): Boolean;' + sLineBreak +
+        'var' + sLineBreak +
+        '  Code, CallResult: String;' + sLineBreak +
+        '  Method: TEthereumContractMethod;' + sLineBreak +
+        'begin' + sLineBreak +
+        '  Method := GetMethod(%s);' + sLineBreak +
+        '  if Assigned(Method) then' + sLineBreak +
+        '    if Method.MethodConstant' + sLineBreak +
+        '      then Result := BuildCallCode(Method, [%s], Code) and eth_call(CoinAddress, ContractAddress, gas, gasPrice, 0, Code, ethbnLatest, 0, CallResult)' + sLineBreak +
+        '      else Result := BuildCallCode(Method, [%s], Code) and personal_signAndSendTransaction(CoinAddress, ContractAddress, gas, gasPrice, 0, Code, CoinPassword, CallResult)' + sLineBreak +
+        '  else' + sLineBreak +
+        '  begin' + sLineBreak +
+        '    Result := ErrorMethodNotFound(%s);' + sLineBreak +
+        '    Exit;' + sLineBreak +
+        '  end;' + sLineBreak +
+        '  if Result and (Method.Outputs.Count > 0) then' + sLineBreak +
+        '    begin' + sLineBreak +
+        '      Result := ParseCallCode(Method, CallResult);' + sLineBreak +
+        '      if Result then' + sLineBreak +
+        '        try' + sLineBreak +
+        '%s' +
+        '        except' + sLineBreak +
+        '        on E: Exception do' + sLineBreak +
+        '          Result := ErrorParamConvert(E, Method.MethodName);' + sLineBreak +
+        '        end' + sLineBreak +
+        '    end;' + sLineBreak +
+        'end;',
+        [
+          ContractClassName, FMethodName, Result,
+          FMethodName.QuotedString,
+          TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
+          TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
+          FMethodName.QuotedString,
+          Outputs
+        ]);
+    end else
+  Result := Format('    function %s(%s): Boolean;', [FMethodName, Result]);
 {
   Event := GetEvent('event_set_int32');
 
@@ -2161,20 +2292,16 @@ begin
         begin
           SetLength(Topics, 1);
           Topics[1] := Event.EventName;
-          Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, CallResult);
+          Event.FEvents.Clear;
+          Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.FEvents);
         end;
-
-      if Result then
-        for Filter in CallResult do
-          begin
-
-          end;
     end;
 }
 end;
 
 destructor TEthereumContractEvent.Destroy;
-begin
+begin  
+  FEvents.Free;
   FParameters.Free;
   inherited;
 end;
