@@ -94,7 +94,7 @@ type
     function eth_uninstallFilter(const FilterId: Integer; out CallResult: Boolean): Boolean;
     function eth_getFilterChanges(const FilterId: Int64; CallResult: TObjectList<TEth_FilterChangeClass>): Boolean;
     function eth_getFilterLogs(const FilterId: Int64; CallResult: TObjectList<TEth_FilterChangeClass>): Boolean;
-    function eth_getLogs(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64; const ContractAddress: String; const Topics: TArray<String>; out CallResult: TObjectList<TEth_FilterChangeClass>): Boolean;
+    function eth_getLogs(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64; const ContractAddress: String; const Topics: TArray<String>; CallResult: TObjectList<TEth_FilterChangeClass>): Boolean;
     function eth_getWork(out CurrentBlock, SeedHash, Target: String): Boolean;
     function eth_submitWork(out NonceFound, PowHash, MixDigest: String): Boolean;
     function eth_submitHashrate(const HashRate, ClientId: String; out CallResult: Boolean): Boolean;
@@ -257,8 +257,8 @@ type
     property EventName: String read FEventName write FEventName;
     property EventType: String read FEventType write FEventType;
     property EventHash: String read FEventHash write FEventHash;
-    property Events: TArray<TEth_FilterChangeClass> read FEvents;
     property EventAnonymous: Boolean read FEventAnonymous write FEventAnonymous;
+    property Events: TObjectList<TEth_FilterChangeClass> read FEvents;
     property Parameters: TObjectList<TEthereumContractParameter> read FParameters;
   end;
 
@@ -272,11 +272,11 @@ type
   protected
     function GetEvent(EventName: String): TEthereumContractEvent;
     function GetMethod(MethodName: String): TEthereumContractMethod;
-    function ErrorMethodNotFound(MethodName: String): Boolean;
-    function ErrorBadCallCode(MethodName: String): Boolean;
-    function ErrorTypeCast(Method: TEthereumContractMethod; MethodParam: TEthereumContractParameter; PassedType: String): Boolean;
-    function ErrorLengthMismatch(Method: TEthereumContractMethod; MethodParam: TEthereumContractParameter): Boolean;
-    function ErrorParamConvert(E: Exception; MethodName: String): Boolean;
+    function ErrorNotFound(Source: String): Boolean;
+    function ErrorBadCallCode(Source: String): Boolean;
+    function ErrorTypeCast(Source: String; Param: TEthereumContractParameter; PassedType: String): Boolean;
+    function ErrorLengthMismatch(Source: String; Param: TEthereumContractParameter): Boolean;
+    function ErrorParamConvert(Source: String; E: Exception): Boolean;
     function ErrorNotEnoughParameters(Method: TEthereumContractMethod): Boolean;
   public
     constructor Create;
@@ -287,12 +287,13 @@ type
       Prefix, ParameterDelimiter, TypeSeparator: String;
       IncludeName, IncludeType: Boolean;
       Convertor: TNameTypeConvertor): String;
+    class function DelphiParametersAssigner(Parameters: TObjectList<TEthereumContractParameter>; ParamNamePrefix: String): String;
     function ParseABI(const JSONString: String): Boolean;
     function BuildABI(out JSONString: String; const Pretty: Boolean = False; const IncludeValue: Boolean = False): Boolean;
     function BuildDelphiSource(ContractName: String; Output: TStrings): Boolean;
     function BuildCallCode(Method: TEthereumContractMethod; Params: array of const; out Code: String): Boolean; overload;
     function BuildCallCode(Method: TEthereumContractMethod; out Code: String): Boolean; overload;
-    function ParseCallCode(Method: TEthereumContractMethod; Code: String): Boolean;
+    function ParseCallCode(Source, Code: String; Destination: TObjectList<TEthereumContractParameter>): Boolean;
     function GetEventHash(Event: TEthereumContractEvent): Boolean;
     function GetMethodHash(Method: TEthereumContractMethod): Boolean;
     property ContractAddress: String read FContractAddress write FContractAddress;
@@ -556,7 +557,7 @@ function TEthereum.eth_getLogs(const FromBlockNumber: TEth_BlockNumber;
   const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber;
   const ToBlockNumberCustom: Int64; const ContractAddress: String;
   const Topics: TArray<String>;
-  out CallResult: TObjectList<TEth_FilterChangeClass>): Boolean;
+  CallResult: TObjectList<TEth_FilterChangeClass>): Boolean;
 var
   s: String;
   jsa: TJSONArray;
@@ -1303,13 +1304,13 @@ begin
   inherited;
 end;
 
-function TEthereumContract.ErrorLengthMismatch(Method: TEthereumContractMethod;
-  MethodParam: TEthereumContractParameter): Boolean;
+function TEthereumContract.ErrorLengthMismatch(Source: String;
+  Param: TEthereumContractParameter): Boolean;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
   FMethodError.code := -1;
-  FMethodError.message := Format('value length mismath on input parameter %s.%s:%s, value %s', [Method.FMethodName, MethodParam.FName, MethodParam.FType, MethodParam.FValue]);
+  FMethodError.message := Format('value length mismath on input parameter %s.%s:%s, value %s', [Source, Param.FName, Param.FType, Param.FValue]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
 end;
@@ -1352,12 +1353,12 @@ begin
       end;
 end;
 
-function TEthereumContract.ErrorBadCallCode(MethodName: String): Boolean;
+function TEthereumContract.ErrorBadCallCode(Source: String): Boolean;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
   FMethodError.code := -1;
-  FMethodError.message := Format('Bad %s call code ', [MethodName.QuotedString]);
+  FMethodError.message := Format('Bad %s call code ', [Source.QuotedString]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
 end;
@@ -1463,7 +1464,7 @@ begin
         vtAnsiString:
           if Param.FType <> 'string' then
             begin
-              ErrorTypeCast(Method, Param, 'vtAnsiString');
+              ErrorTypeCast(Method.FMethodName, Param, 'vtAnsiString');
               Exit;
             end else
           Param.SetAsString(String(AnsiString(TVarRec(Params[i]).VAnsiString)));
@@ -1471,7 +1472,7 @@ begin
         vtUnicodeString:
           if Param.FType <> 'string' then
             begin
-              ErrorTypeCast(Method, Param, 'vtUnicodeString');
+              ErrorTypeCast(Method.FMethodName, Param, 'vtUnicodeString');
               Exit;
             end else
           Param.SetAsString(String(UnicodeString(TVarRec(Params[i]).VUnicodeString)));
@@ -1479,7 +1480,7 @@ begin
         vtInteger:
         if Param.FType <> 'int32' then
           begin
-            ErrorTypeCast(Method, Param, 'vtInteger');
+            ErrorTypeCast(Method.FMethodName, Param, 'vtInteger');
             Exit;
           end else
         Param.SetAsInteger(TVarRec(Params[i]).VInteger);
@@ -1487,7 +1488,7 @@ begin
         vtInt64:
           if Param.FType <> 'int64' then
             begin
-              ErrorTypeCast(Method, Param, 'vtInt64');
+              ErrorTypeCast(Method.FMethodName, Param, 'vtInt64');
               Exit;
             end else
           Param.SetAsInt64(TVarRec(Params[i]).VInt64^);
@@ -1495,14 +1496,14 @@ begin
         vtBoolean:
           if Param.FType <> 'boolean' then
             begin
-              ErrorTypeCast(Method, Param, 'vtBoolean');
+              ErrorTypeCast(Method.FMethodName, Param, 'vtBoolean');
               Exit;
             end else
           Param.SetAsBoolean(TVarRec(Params[i]).VBoolean);
 
         vtObject: //BigInt
           begin
-            ErrorTypeCast(Method, Param, 'vtObject');
+            ErrorTypeCast(Method.FMethodName, Param, 'vtObject');
             Exit;
           end;
       end;
@@ -1529,7 +1530,7 @@ begin
       for Param in Method.FInputs do
         if Param.FValue.Length <> eth_len * 2 then
           begin
-            Result := ErrorLengthMismatch(Method, Param);
+            Result := ErrorLengthMismatch(Method.FMethodName, Param);
             Exit;
           end else
         begin
@@ -1633,7 +1634,7 @@ var
   int, imp: TStringList;
   ContractEvent: TEthereumContractEvent;
   ContractMethod: TEthereumContractMethod;
-  MethodParameter: TEthereumContractParameter;
+  Parameter: TEthereumContractParameter;
 begin
   int := TStringList.Create;
   imp := TStringList.Create;
@@ -1656,7 +1657,7 @@ begin
 
     int.Add(Format('  %s = class(TEthereumContract)', [ContractName]));
     int.Add('  private');
-    int.Add('    procedure InitMethods;');
+    int.Add('    procedure InitContract;');
     int.Add('  public');
     int.Add('    constructor Create;');
 
@@ -1664,7 +1665,7 @@ begin
     imp.add(Format('constructor %s.Create;', [ContractName]));
     imp.add('begin');
     imp.add('  inherited;');
-    imp.add('  InitMethods;');
+    imp.add('  InitContract;');
     if ContractAddress = '' then
       ContractAddress := 'UNKOWN_ADDRESS';
     imp.add(Format('  ContractAddress := %s;', [ContractAddress.QuotedString]));
@@ -1673,11 +1674,11 @@ begin
     ImpPart.AddStrings(imp);
 
     imp.Clear;
-    imp.Add(Format('procedure %s.InitMethods;', [ContractName]));
+    imp.Add(Format('procedure %s.InitContract;', [ContractName]));
     imp.Add('var');
     imp.Add('  Event: TEthereumContractEvent;');
     imp.Add('  Method: TEthereumContractMethod;');
-    imp.Add('  MethodParam: TEthereumContractParameter;');
+    imp.Add('  Parameter: TEthereumContractParameter;');
     imp.Add('begin');
 
     for ContractMethod in FMethods do
@@ -1693,22 +1694,22 @@ begin
             imp.Add(Format('  Method.MethodConstant := %s;', [BoolToStr(ContractMethod.MethodConstant, True)]));//boolean helper ContractMethod.MethodConstant.ToString(True) have bug: always return numeric value!!!
             imp.Add(Format('  Method.MethodHash := %s;', [ContractMethod.MethodHash.QuotedString]));
 
-            for MethodParameter in ContractMethod.FInputs do
+            for Parameter in ContractMethod.FInputs do
               begin
                 imp.Add('');
-                imp.Add('  MethodParam := TEthereumContractParameter.Create;');
-                imp.Add(Format('  MethodParam.Name := %s;', [MethodParameter.FName.QuotedString]));
-                imp.Add(Format('  MethodParam.&Type := %s;', [MethodParameter.FType.QuotedString]));
-                imp.Add('  Method.Inputs.Add(MethodParam);');
+                imp.Add('  Parameter := TEthereumContractParameter.Create;');
+                imp.Add(Format('  Parameter.Name := %s;', [Parameter.FName.QuotedString]));
+                imp.Add(Format('  Parameter.&Type := %s;', [Parameter.FType.QuotedString]));
+                imp.Add('  Method.Inputs.Add(Parameter);');
               end;
 
-            for MethodParameter in ContractMethod.FOutputs do
+            for Parameter in ContractMethod.FOutputs do
               begin
                 imp.Add('');
-                imp.Add('  MethodParam := TEthereumContractParameter.Create;');
-                imp.Add(Format('  MethodParam.Name := %s;', [MethodParameter.FName.QuotedString]));
-                imp.Add(Format('  MethodParam.&Type := %s;', [MethodParameter.FType.QuotedString]));
-                imp.Add('  Method.Outputs.Add(MethodParam);');
+                imp.Add('  Parameter := TEthereumContractParameter.Create;');
+                imp.Add(Format('  Parameter.Name := %s;', [Parameter.FName.QuotedString]));
+                imp.Add(Format('  Parameter.&Type := %s;', [Parameter.FType.QuotedString]));
+                imp.Add('  Method.Outputs.Add(Parameter);');
               end;
 
             imp.Add('  Methods.Add(Method);');
@@ -1721,23 +1722,38 @@ begin
 
         imp.Add('');
         imp.Add('  Event := TEthereumContractEvent.Create;');
-        imp.Add(Format('  Event.EventName := %s;', [ContractEvent.EventName.QuotedString]));
-        imp.Add(Format('  Event.EventType := %s;', [ContractEvent.EventType.QuotedString]));
-        imp.Add(Format('  Event.EventHash := %s;', [ContractEvent.EventHash.QuotedString]));
+        imp.Add(Format('  Event.EventName := %s;', [ContractEvent.FEventName.QuotedString]));
+        imp.Add(Format('  Event.EventType := %s;', [ContractEvent.FEventType.QuotedString]));
+        imp.Add(Format('  Event.EventHash := %s;', [ContractEvent.FEventHash.QuotedString]));
+        imp.Add(Format('  Event.EventAnonymous := %s;', [BoolToStr(ContractEvent.FEventAnonymous, True)]));
 
-        for MethodParameter in ContractEvent.FParameters do
+        for Parameter in ContractEvent.FParameters do
           begin
             imp.Add('');
-            imp.Add('  MethodParam := TEthereumContractParameter.Create;');
-            imp.Add(Format('  MethodParam.Name := %s;', [MethodParameter.FName.QuotedString]));
-            imp.Add(Format('  MethodParam.&Type := %s;', [MethodParameter.FType.QuotedString]));
-            imp.Add(Format('  MethodParam.Indexed := %s;', [BoolToStr(MethodParameter.FIndexed, True)]));
-            imp.Add('  Event.Parameters.Add(MethodParam);');
+            imp.Add('  Parameter := TEthereumContractParameter.Create;');
+            imp.Add(Format('  Parameter.Name := %s;', [Parameter.FName.QuotedString]));
+            imp.Add(Format('  Parameter.&Type := %s;', [Parameter.FType.QuotedString]));
+            imp.Add(Format('  Parameter.Indexed := %s;', [BoolToStr(Parameter.FIndexed, True)]));
+            imp.Add('  Event.Parameters.Add(Parameter);');
           end;
-        imp.Add(Format('//event %s here', [ContractMethod.FMethodName.QuotedString]));
+
+        imp.Add('  Events.Add(Event);');
       end;
 
     imp.Add('end;');
+    ImpPart.AddStrings(imp);
+
+    imp.Clear;
+    for ContractMethod in FMethods do
+      begin
+        imp.Add('');
+        imp.Add(ContractMethod.DelphiMethodDefinition(ContractName));
+      end;
+    for ContractEvent in FEvents do
+      begin
+        imp.Add('');
+        imp.Add(ContractEvent.DelphiEventDefinition(ContractName));
+      end;
     ImpPart.AddStrings(imp);
 
     int.Add('  end;');
@@ -1808,12 +1824,12 @@ begin
       end;
 end;
 
-function TEthereumContract.ErrorMethodNotFound(MethodName: String): Boolean;
+function TEthereumContract.ErrorNotFound(Source: String): Boolean;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
   FMethodError.code := -1;
-  FMethodError.message := Format('Method %s not found', [MethodName.QuotedString]);
+  FMethodError.message := Format('Method %s not found', [Source.QuotedString]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
 end;
@@ -1829,15 +1845,40 @@ begin
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
 end;
 
-function TEthereumContract.ErrorParamConvert(E: Exception;
-  MethodName: String): Boolean;
+function TEthereumContract.ErrorParamConvert(Source: String; E: Exception): Boolean;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
   FMethodError.code := -1;
-  FMethodError.message := Format('Parameter convert error %s on method %s', [E.Message, MethodName.QuotedString]);
+  FMethodError.message := Format('Parameter convert error %s on %s', [E.Message, Source.QuotedString]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
+end;
+
+class function TEthereumContract.DelphiParametersAssigner(
+  Parameters: TObjectList<TEthereumContractParameter>;
+  ParamNamePrefix: String): String;
+var
+  i: Integer;
+  n, t: String;
+  p: TEthereumContractParameter;
+begin
+  Result := '';
+  for i := 0 to Parameters.Count - 1 do
+    begin
+      p := Parameters[i];
+      n := p.FName;
+      t := p.FType;
+
+      DelphiSimpleConvertor(n, t);
+
+      if t = 'Boolean' then Result :=    Result + Format('          %s := %s[%d].AsBoolean;%s', [n, ParamNamePrefix, i, sLineBreak]) else
+      if t = 'String' then Result :=     Result + Format('          %s := %s[%d].AsString;%s', [n, ParamNamePrefix, i, sLineBreak]) else
+      if t = 'Integer' then Result :=    Result + Format('          %s := %s[%d].AsInteger;%s', [n, ParamNamePrefix, i, sLineBreak]) else
+      if t = 'Int64' then Result :=      Result + Format('          %s := %s[%d].AsInt64;%s', [n, ParamNamePrefix, i, sLineBreak]) else
+      if t = 'TByteDynArray' then Result := Result + Format('          %s := Method.Outputs[%d].AsBytes;%s', [n, ParamNamePrefix, i, sLineBreak]) else
+        Result := Result + Format('          %s := %s[%d].AsUNKNOWN;%s', [n, ParamNamePrefix, i, sLineBreak]);
+    end;
 end;
 
 function TEthereumContract.ParseABI(const JSONString: String): Boolean;
@@ -1920,12 +1961,12 @@ begin
             MethodType := (Method.Values['type'] as TJSONString).Value;
             MethodName := (Method.Values['name'] as TJSONString).Value;
 
-            if ContractMethod.FMethodType = 'constructor' then
+            if MethodType = 'constructor' then
               begin
-                //
+                // not supported contract constructor
               end else
 
-            if ContractMethod.FMethodType = 'function' then
+            if MethodType = 'function' then
               begin
                 ContractMethod := TEthereumContractMethod.Create;
                 ContractMethod.FMethodType := MethodType;
@@ -1943,7 +1984,7 @@ begin
                 FMethods.Add(ContractMethod);
               end else
 
-            if ContractMethod.FMethodType = 'event' then
+            if MethodType = 'event' then
               begin
                 ContractEvent := TEthereumContractEvent.Create;
                 ContractEvent.FEventType := MethodType;
@@ -1972,17 +2013,18 @@ begin
   end;
 end;
 
-function TEthereumContract.ParseCallCode(Method: TEthereumContractMethod; Code: String): Boolean;
+function TEthereumContract.ParseCallCode(Source, Code: String;
+  Destination: TObjectList<TEthereumContractParameter>): Boolean;
 var
   i: Integer;
-  p: TEthereumContractParameter;
   Parts: TList<String>;
+  p: TEthereumContractParameter;
 begin
   Code := ReplaceStr(Code, eth_hex, '');
 
   if (Code.Length = 0) or (Code.Length mod eth_len <> 0) then
     begin
-      Result := ErrorBadCallCode(Method.FMethodName);
+      Result := ErrorBadCallCode(Source);
       Exit;
     end;
 
@@ -1994,25 +2036,25 @@ begin
         Delete(Code, 1, eth_len);
       end;
 
-    for p in Method.FOutputs do
+    for p in Destination do
       if (p.FType = 'bool')
       or (p.FType = 'int64')
       or (p.FType = 'uint64') then
         begin
-          p.FValue := Parts[Method.FOutputs.IndexOf(p)];
+          p.FValue := Parts[Destination.IndexOf(p)];
         end else
       if p.FType = 'string' then
         begin
-          i := eth_hexToInt(Parts[Method.FOutputs.IndexOf(p)]) div eth_len;
-          if i > Method.FOutputs.Count then  //if offset more than parts.count
+          i := eth_hexToInt(Parts[Destination.IndexOf(p)]) div eth_len;
+          if i > Destination.Count then  //if offset more than parts.count
             begin
-              Result := ErrorBadCallCode(Method.FMethodName);
+              Result := ErrorBadCallCode(Source);
               Exit;
             end;
           p.FValue := Parts[i];
         end else
         begin
-          Result := ErrorTypeCast(Method, p, '');
+          Result := ErrorTypeCast(Source, p, '');
           Exit;
         end;
 
@@ -2022,13 +2064,13 @@ begin
   end;
 end;
 
-function TEthereumContract.ErrorTypeCast(Method: TEthereumContractMethod;
-  MethodParam: TEthereumContractParameter; PassedType: String): Boolean;
+function TEthereumContract.ErrorTypeCast(Source: String;
+  Param: TEthereumContractParameter; PassedType: String): Boolean;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
   FMethodError.code := -1;
-  FMethodError.message := Format('type cast error on input parameter %s.%s: %s with %s', [Method.FMethodName, MethodParam.FName, MethodParam.FType, PassedType]);
+  FMethodError.message := Format('type cast error on input parameter %s.%s: %s with %s', [Source, Param.FName, Param.FType, PassedType]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
 end;
@@ -2198,105 +2240,63 @@ end;
 function TEthereumContractEvent.DelphiEventDefinition(
   ContractClassName: String): String;
 var
-  i: Integer;
-  Inputs, Outputs, n, t: String;
-  Param: TEthereumContractParameter;
+  Filter, Read: String;
 begin
-  Inputs := TEthereumContract.NamesTypes(FInputs, 'const ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
-  Outputs := TEthereumContract.NamesTypes(FOutputs, 'out ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
-
-  Result := 'const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64';
-{var
-  //Code: String;
-  Topics: TArray<String>;
-  Event: TEthereumContractEvent;
-  Filter: TEth_FilterChangeClass;
-  CallResult: TObjectList<TEth_FilterChangeClass>;
-}
-  
-
-  if Inputs <> '' then
-    Result := Result + '; ';
-  Result := Result + Inputs;
-
-  if Outputs <> '' then
-    Result := Result + '; ';
-  Result := Result + Outputs;
+  Filter := 'const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64';
+  Read := 'const Index: Int64';
 
   if ContractClassName <> '' then
-    begin
-      Inputs := '';
-      Outputs := '';
-      ContractClassName := ContractClassName + '.';
+    Result := Format(
+      'function %s.filter_%s(%s): Boolean;' + sLineBreak +
+      'var' + sLineBreak +
+      '  Topics: TArray<String>;' + sLineBreak +
+      '  Event: TEthereumContractEvent;' + sLineBreak +
+      'begin' + sLineBreak +
+      '  Event := GetEvent(%s);' + sLineBreak +
+      '  if Assigned(Event) then' + sLineBreak +
+      '    begin' + sLineBreak +
+      '      Result := GetEventHash(Event);' + sLineBreak +
+      '      if Result then' + sLineBreak +
+      '        begin' + sLineBreak +
+      '          SetLength(Topics, 1);' + sLineBreak +
+      '          Topics[0] := Event.EventName;' + sLineBreak +
+      '          Event.Events.Clear;' + sLineBreak +
+      '          Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);' + sLineBreak +
+      '        end;' + sLineBreak +
+      '    end;' + sLineBreak +
+      'end;'  + sLineBreak +
 
-      for i := 0 to FOutputs.Count - 1 do
-        begin
-          Param := FOutputs[i];
-          n := Param.FName;
-          t := Param.FType;
-          TEthereumContract.DelphiSimpleConvertor(n, t);
-          if t = 'Boolean' then Outputs :=    Outputs + Format('          %s := Method.Outputs[%d].AsBoolean;%s', [n, i, sLineBreak]) else
-          if t = 'String' then Outputs :=     Outputs + Format('          %s := Method.Outputs[%d].AsString;%s', [n, i, sLineBreak]) else
-          if t = 'Integer' then Outputs :=    Outputs + Format('          %s := Method.Outputs[%d].AsInteger;%s', [n, i, sLineBreak]) else
-          if t = 'Int64' then Outputs :=      Outputs + Format('          %s := Method.Outputs[%d].AsInt64;%s', [n, i, sLineBreak]) else
-          if t = 'TByteDynArray' then Outputs := Outputs + Format('          %s := Method.Outputs[%d].AsBytes;%s', [n, i, sLineBreak]) else
-            Outputs := Outputs + Format('          %s := Method.Outputs[%d].AsUNKNOWN;%s', [n, i, sLineBreak]);
-        end;
 
+      'function %s.read_%s(%s): Boolean;' + sLineBreak +
+      'var' + sLineBreak +
+      '  Event: TEthereumContractEvent;' + sLineBreak +
+      'begin' + sLineBreak +
+      '  Event := GetEvent(%s);' + sLineBreak +
+      '  if Assigned(Event) then' + sLineBreak +
+      '    try' + sLineBreak +
+      '      Result := ParseCode(Event.Events[Index].Data);' + sLineBreak +
+      '      if Result then' + sLineBreak +
+      '        begin' + sLineBreak +
+      '          SetLength(Topics, 1);' + sLineBreak +
+      '          Topics[0] := Event.EventName;' + sLineBreak +
+      '          Event.Events.Clear;' + sLineBreak +
+      '          Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);' + sLineBreak +
+      '        end;' + sLineBreak +
+      '    end;' + sLineBreak +
+      'end;'  + sLineBreak +
 
-      Result := Format(
-        'function %s%s(%s): Boolean;' + sLineBreak +
-        'var' + sLineBreak +
-        '  Code, CallResult: String;' + sLineBreak +
-        '  Method: TEthereumContractMethod;' + sLineBreak +
-        'begin' + sLineBreak +
-        '  Method := GetMethod(%s);' + sLineBreak +
-        '  if Assigned(Method) then' + sLineBreak +
-        '    if Method.MethodConstant' + sLineBreak +
-        '      then Result := BuildCallCode(Method, [%s], Code) and eth_call(CoinAddress, ContractAddress, gas, gasPrice, 0, Code, ethbnLatest, 0, CallResult)' + sLineBreak +
-        '      else Result := BuildCallCode(Method, [%s], Code) and personal_signAndSendTransaction(CoinAddress, ContractAddress, gas, gasPrice, 0, Code, CoinPassword, CallResult)' + sLineBreak +
-        '  else' + sLineBreak +
-        '  begin' + sLineBreak +
-        '    Result := ErrorMethodNotFound(%s);' + sLineBreak +
-        '    Exit;' + sLineBreak +
-        '  end;' + sLineBreak +
-        '  if Result and (Method.Outputs.Count > 0) then' + sLineBreak +
-        '    begin' + sLineBreak +
-        '      Result := ParseCallCode(Method, CallResult);' + sLineBreak +
-        '      if Result then' + sLineBreak +
-        '        try' + sLineBreak +
-        '%s' +
-        '        except' + sLineBreak +
-        '        on E: Exception do' + sLineBreak +
-        '          Result := ErrorParamConvert(E, Method.MethodName);' + sLineBreak +
-        '        end' + sLineBreak +
-        '    end;' + sLineBreak +
-        'end;',
-        [
-          ContractClassName, FMethodName, Result,
-          FMethodName.QuotedString,
-          TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
-          TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
-          FMethodName.QuotedString,
-          Outputs
-        ]);
-    end else
-  Result := Format('    function %s(%s): Boolean;', [FMethodName, Result]);
-{
-  Event := GetEvent('event_set_int32');
+      [
+        ContractClassName, FEventName, Filter,
+        FEventName.QuotedString,
 
-  if Assigned(Event) then
-    begin
-      Result := GetEventHash(Event);
-      if Result then
-        begin
-          SetLength(Topics, 1);
-          Topics[1] := Event.EventName;
-          Event.FEvents.Clear;
-          Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.FEvents);
-        end;
-    end;
-}
+        ContractClassName, FEventName, Read,
+        FEventName.QuotedString
+      ]) else
+  Result := Format('    function filter_%s(%s): Boolean;', [FEventName, Result]);
+
+//  Outputs := TEthereumContract.NamesTypes(FOutputs, 'out ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
+//          TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
+
 end;
 
 destructor TEthereumContractEvent.Destroy;
@@ -2308,7 +2308,8 @@ end;
 
 function TEthereumContractEvent.EthereumEventDefinition: String;
 begin
-  Result := Format('%s(%s)', [FEventName, TEthereumContract.NamesTypes(FParameters, '', ',', '', False, True, nil)]);
+  //for events, hash string evaluating without parameters
+  Result := Format('%s()', [FEventName]);
 end;
 
 end.

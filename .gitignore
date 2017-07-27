@@ -1,4 +1,9 @@
 *.exe
 *.exe~
 *.dcu
+*.rsm
+*.~*
 .vscode/
+__history/
+__recovery/
+win32/
