@@ -1,0 +1,987 @@
+object Form3: TForm3
+  Left = 0
+  Top = 0
+  Caption = 'Form3'
+  ClientHeight = 673
+  ClientWidth = 1122
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  DesignerMasterStyle = 0
+  object TabControl1: TTabControl
+    Align = Client
+    Size.Width = 1122.000000000000000000
+    Size.Height = 673.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 4
+    TabOrder = 2
+    TabPosition = PlatformDefault
+    Sizes = (
+      1122s
+      647s
+      1122s
+      647s
+      1122s
+      647s
+      1122s
+      647s
+      1122s
+      647s
+      1122s
+      647s
+      1122s
+      647s)
+    object TabItemLog: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 80.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Setup&&Log'
+      ExplicitSize.cx = 70.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object PanelSetup: TPanel
+        Align = Top
+        Size.Width = 1122.000000000000000000
+        Size.Height = 57.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object EditServer: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 0
+          Text = '192.168.17.2'
+          Position.X = 24.000000000000000000
+          Position.Y = 16.000000000000000000
+          Size.Width = 161.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          OnChange = EditServerChange
+        end
+        object NumberBoxPort: TNumberBox
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 1
+          Cursor = crIBeam
+          Max = 65535.000000000000000000
+          Value = 8547.000000000000000000
+          Position.X = 192.000000000000000000
+          Position.Y = 16.000000000000000000
+          Size.Width = 41.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          OnChange = EditServerChange
+          object FloatAnimation1: TFloatAnimation
+            AnimationType = InOut
+            Duration = 0.200000002980232200
+            PropertyName = 'Value'
+            StartValue = 0.000000000000000000
+            StopValue = 0.000000000000000000
+          end
+        end
+        object ComboBoxFromAddress: TComboBox
+          Position.X = 272.000000000000000000
+          Position.Y = 16.000000000000000000
+          Size.Width = 297.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          OnChange = EditServerChange
+          OnClick = ComboBoxFromAddressClick
+        end
+        object EditFromPassword: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          TabOrder = 3
+          Text = '4927159'
+          Position.X = 584.000000000000000000
+          Position.Y = 16.000000000000000000
+          Size.Width = 153.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          OnChange = EditServerChange
+          object PasswordEditButton1: TPasswordEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 28.000000000000000000
+            Size.Height = 18.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+        end
+        object ButtonStartMiner: TButton
+          Position.X = 768.000000000000000000
+          Position.Y = 16.000000000000000000
+          TabOrder = 5
+          Text = 'Start miner'
+          OnClick = ButtonStartMinerClick
+        end
+        object ButtonStopMiner: TButton
+          Position.X = 856.000000000000000000
+          Position.Y = 16.000000000000000000
+          TabOrder = 4
+          Text = 'Stop miner'
+          OnClick = ButtonStopMinerClick
+        end
+        object CheckBoxHashRate: TCheckBox
+          Position.X = 952.000000000000000000
+          Position.Y = 16.000000000000000000
+          TabOrder = 6
+          Text = 'Show hash rate'
+        end
+      end
+      object StringGridLog: TStringGrid
+        Align = Client
+        CanFocus = True
+        ClipChildren = True
+        Size.Width = 1122.000000000000000000
+        Size.Height = 590.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        RowCount = 0
+        Viewport.Width = 1118.000000000000000000
+        Viewport.Height = 565.000000000000000000
+        object TimeColumn1: TTimeColumn
+          Header = 'Time'
+        end
+        object StringColumn3: TStringColumn
+          Header = 'Type'
+        end
+        object StringColumn4: TStringColumn
+          Header = 'Text'
+          Size.Width = 927.000000000000000000
+        end
+      end
+    end
+    object TabItemABI: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 38.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'ABI'
+      ExplicitSize.cx = 71.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object TabControlABI: TTabControl
+        Align = Client
+        Size.Width = 1122.000000000000000000
+        Size.Height = 606.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 0
+        TabOrder = 1
+        TabPosition = PlatformDefault
+        Sizes = (
+          1122s
+          580s
+          1122s
+          580s
+          1122s
+          580s
+          1122s
+          580s)
+        object TabItemABIFull: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 39.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Full'
+          ExplicitSize.cx = 39.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object MemoABIFull: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            Lines.Strings = (
+              '{'
+              
+                '  "abi": "[{\"constant\":true,\"inputs\":[],\"name\":\"type_byte' +
+                's32\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\"}],\"payab' +
+                'le\":false,\"type\":\"function\"},{\"constant\":false,\"inputs\"' +
+                ':[{\"name\":\"value\",\"type\":\"int32\"}],\"name\":\"set_int32\' +
+                '",\"outputs\":[{\"name\":\"\",\"type\":\"int32\"}],\"payable\":f' +
+                'alse,\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"n' +
+                'ame\":\"value\",\"type\":\"bytes32\"}],\"name\":\"set_bytes32\",' +
+                '\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\"}],\"payable\":f' +
+                'alse,\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"n' +
+                'ame\":\"value\",\"type\":\"int64\"}],\"name\":\"set_int64\",\"ou' +
+                'tputs\":[{\"name\":\"\",\"type\":\"int64\"}],\"payable\":false,\' +
+                '"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":' +
+                '\"type_bool\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"' +
+                'payable\":false,\"type\":\"function\"},{\"constant\":false,\"inp' +
+                'uts\":[{\"name\":\"value\",\"type\":\"bool\"}],\"name\":\"set_bo' +
+                'ol\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\"' +
+                ':false,\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\' +
+                '"name\":\"totalEvents\",\"outputs\":[{\"name\":\"\",\"type\":\"i' +
+                'nt64\"}],\"payable\":false,\"type\":\"function\"},{\"constant\":' +
+                'true,\"inputs\":[],\"name\":\"type_int32\",\"outputs\":[{\"name\' +
+                '":\"\",\"type\":\"int32\"}],\"payable\":false,\"type\":\"functio' +
+                'n\"},{\"constant\":false,\"inputs\":[{\"name\":\"value\",\"type\' +
+                '":\"string\"}],\"name\":\"set_string\",\"outputs\":[{\"name\":\"' +
+                '\",\"type\":\"string\"}],\"payable\":false,\"type\":\"function\"' +
+                '},{\"constant\":true,\"inputs\":[],\"name\":\"type_string\",\"ou' +
+                'tputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,' +
+                '\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\"' +
+                ':\"type_int64\",\"outputs\":[{\"name\":\"\",\"type\":\"int64\"}]' +
+                ',\"payable\":false,\"type\":\"function\"},{\"anonymous\":false,\' +
+                '"inputs\":[{\"indexed\":false,\"name\":\"value\",\"type\":\"int3' +
+                '2\"}],\"name\":\"type_int32\",\"type\":\"event\"},{\"anonymous\"' +
+                ':false,\"inputs\":[{\"indexed\":false,\"name\":\"value\",\"type\' +
+                '":\"int64\"}],\"name\":\"type_int64\",\"type\":\"event\"},{\"ano' +
+                'nymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"value\"' +
+                ',\"type\":\"bool\"}],\"name\":\"type_bool\",\"type\":\"event\"},' +
+                '{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"v' +
+                'alue\",\"type\":\"string\"}],\"name\":\"type_string\",\"type\":\' +
+                '"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"' +
+                'name\":\"value\",\"type\":\"bytes32\"}],\"name\":\"type_bytes32\' +
+                '",\"type\":\"event\"}]",'
+              '  "bytecode": '
+              
+                '"6060604052341561000c57fe5b5b6108348061001c6000396000f3006060604' +
+                '05236156100935763ffffffff60e060020a600035041663055825de811461009' +
+                '55780631613447b146100b75780637bf5cddc146100e657806394310ea214610' +
+                '10b57806397a4220d1461013a578063a66162a61461015e578063ba870686146' +
+                '10187578063c7d48022146101b0578063c9615770146101d9578063f8e19c611' +
+                '46102af578063f952143e1461033f575bfe5b341561009d57fe5b6100a561036' +
+                '8565b60408051918252519081900360200190f35b34156100bf57fe5b6100cd6' +
+                '0043560030b61036e565b60408051600392830b90920b8252519081900360200' +
+                '190f35b34156100ee57fe5b6100a5600435610403565b6040805191825251908' +
+                '1900360200190f35b341561011357fe5b61012160043560070b61046b565b604' +
+                '08051600792830b90920b8252519081900360200190f35b341561014257fe5b6' +
+                '1014a610503565b604080519115158252519081900360200190f35b341561016' +
+                '657fe5b61014a6004351515610513565b6040805191151582525190819003602' +
+                '00190f35b341561018f57fe5b6101216105a0565b60408051600792830b90920' +
+                'b8252519081900360200190f35b34156101b857fe5b6100cd6105a9565b60408' +
+                '051600392830b90920b8252519081900360200190f35b34156101e157fe5b610' +
+                '22f600480803590602001908201803590602001908080601f016020809104026' +
+                '0200160405190810160405280939291908181526020018383808284375094965' +
+                '06105be95505050505050565b604080516020808252835181830152835191928' +
+                '392908301918501908083838215610275575b805182526020831115610275576' +
+                '01f199092019160209182019101610255565b505050905090810190601f16801' +
+                '56102a15780820380516001836020036101000a031916815260200191505b509' +
+                '250505060405180910390f35b34156102b757fe5b61022f6106b0565b6040805' +
+                '1602080825283518183015283519192839290830191850190808383821561027' +
+                '5575b80518252602083111561027557601f19909201916020918201910161025' +
+                '5565b505050905090810190601f1680156102a15780820380516001836020036' +
+                '101000a031916815260200191505b509250505060405180910390f35b3415610' +
+                '34757fe5b61012161073d565b60408051600792830b90920b825251908190036' +
+                '0200190f35b60025481565b60008054600383810b63ffffffff8116680100000' +
+                '00000000000026bffffffff000000000000000019600785810b600101900b67f' +
+                'fffffffffffffff1667ffffffffffffffff19909516949094179390931692909' +
+                '2178355604080519290910b8252517f72d22042cfffdda6db1e71a2cfc6e6c21' +
+                'bb5e6f503a9c622081abd73c18c7ce09181900360200190a150805b919050565' +
+                'b60008054600781810b600101900b67ffffffffffffffff1667fffffffffffff' +
+                'fff1990911617815560028290556040805183815290517fda6bb55af93c6cf11' +
+                'c23d1059479f38c5444e49c1e3dfaac04608c8a0216b2849181900360200190a' +
+                '150805b919050565b6000805467ffffffffffffffff1981166001600792830b0' +
+                '1820b67ffffffffffffffff9081169190911773ffffffffffffffff000000000' +
+                '00000000000000019166c0100000000000000000000000085840b92831602178' +
+                '355604080519190920b815290517fbc2f79bbcfb7d6806f27fc9fdaca02e0d1b' +
+                'ea814a79382e2ec26c939d9eea7de916020908290030190a150805b919050565' +
+                'b60005460a060020a900460ff1681565b6000805467ffffffffffffffff19811' +
+                '667ffffffffffffffff6001600793840b0190920b919091161774ff000000000' +
+                '0000000000000000000000000000000191660a060020a8315159081029190911' +
+                '7825560408051918252517fd1c6f5a92d7bdf9894ce5bbd3842f927c2afd3eff' +
+                '302b358c23048f3d46e6ae0916020908290030190a150805b919050565b60005' +
+                '460070b81565b60005468010000000000000000900460030b81565b6105c6610' +
+                '756565b6000805467ffffffffffffffff19811667ffffffffffffffff6001600' +
+                '793840b810190930b1617909155825161060191906020850190610768565b507' +
+                'f9730c02dd36523b8d2a97108f38cfc827bbed94175b378f15fba7be256ce29f' +
+                '8826040518080602001828103825283818151815260200191508051906020019' +
+                '08083836000831461066f575b80518252602083111561066f57601f199092019' +
+                '16020918201910161064f565b505050905090810190601f16801561069b57808' +
+                '20380516001836020036101000a031916815260200191505b509250505060405' +
+                '180910390a150805b919050565b6001805460408051602060028486161561010' +
+                '0026000190190941693909304601f81018490048402820184019092528181529' +
+                '2918301828280156107355780601f1061070a576101008083540402835291602' +
+                '00191610735565b820191906000526020600020905b815481529060010190602' +
+                '00180831161071857829003601f168201915b505050505081565b6000546c010' +
+                '00000000000000000000000900460070b81565b6040805160208101909152600' +
+                '0815290565b82805460018160011615610100020316600290049060005260206' +
+                '0002090601f016020900481019282601f106107a957805160ff1916838001178' +
+                '5556107d6565b828001600101855582156107d6579182015b828111156107d65' +
+                '782518255916020019190600101906107bb565b5b506107e39291506107e7565'
+              '570c18bf5088e3b10c81cf82dc4da457f449686581cb60872e29970029",'
+              '  "functionHashes": {'
+              '    "set_bool(bool)": "a66162a6",'
+              '    "set_bytes32(bytes32)": "7bf5cddc",'
+              '    "set_int32(int32)": "1613447b",'
+              '    "set_int64(int64)": "94310ea2",'
+              '    "set_string(string)": "c9615770",'
+              '    "totalEvents()": "ba870686",'
+              '    "type_bool()": "97a4220d",'
+              '    "type_bytes32()": "055825de",'
+              '    "type_int32()": "c7d48022",'
+              '    "type_int64()": "f952143e",'
+              '    "type_string()": "f8e19c61"'
+              '  },'
+              '  "gasEstimates": {'
+              '    "creation": ['
+              '      451,'
+              '      420000'
+              '    ],'
+              '    "external": {'
+              '      "set_bool(bool)": 21573,'
+              '      "set_bytes32(bytes32)": 41428,'
+              '      "set_int32(int32)": 21505,'
+              '      "set_int64(int64)": 21537,'
+              '      "set_string(string)": null,'
+              '      "totalEvents()": 408,'
+              '      "type_bool()": 380,'
+              '      "type_bytes32()": 246,'
+              '      "type_int32()": 441,'
+              '      "type_int64()": 507,'
+              '      "type_string()": null'
+              '    },'
+              '    "internal": {}'
+              '  },'
+              '  "runtimeBytecode": '
+              
+                '"606060405236156100935763ffffffff60e060020a600035041663055825de8' +
+                '1146100955780631613447b146100b75780637bf5cddc146100e657806394310' +
+                'ea21461010b57806397a4220d1461013a578063a66162a61461015e578063ba8' +
+                '7068614610187578063c7d48022146101b0578063c9615770146101d9578063f' +
+                '8e19c61146102af578063f952143e1461033f575bfe5b341561009d57fe5b610' +
+                '0a5610368565b60408051918252519081900360200190f35b34156100bf57fe5' +
+                'b6100cd60043560030b61036e565b60408051600392830b90920b82525190819' +
+                '00360200190f35b34156100ee57fe5b6100a5600435610403565b60408051918' +
+                '252519081900360200190f35b341561011357fe5b61012160043560070b61046' +
+                'b565b60408051600792830b90920b8252519081900360200190f35b341561014' +
+                '257fe5b61014a610503565b604080519115158252519081900360200190f35b3' +
+                '41561016657fe5b61014a6004351515610513565b60408051911515825251908' +
+                '1900360200190f35b341561018f57fe5b6101216105a0565b604080516007928' +
+                '30b90920b8252519081900360200190f35b34156101b857fe5b6100cd6105a95' +
+                '65b60408051600392830b90920b8252519081900360200190f35b34156101e15' +
+                '7fe5b61022f600480803590602001908201803590602001908080601f0160208' +
+                '0910402602001604051908101604052809392919081815260200183838082843' +
+                '7509496506105be95505050505050565b6040805160208082528351818301528' +
+                '35191928392908301918501908083838215610275575b8051825260208311156' +
+                '1027557601f199092019160209182019101610255565b5050509050908101906' +
+                '01f1680156102a15780820380516001836020036101000a03191681526020019' +
+                '1505b509250505060405180910390f35b34156102b757fe5b61022f6106b0565' +
+                'b604080516020808252835181830152835191928392908301918501908083838' +
+                '215610275575b80518252602083111561027557601f199092019160209182019' +
+                '101610255565b505050905090810190601f1680156102a157808203805160018' +
+                '36020036101000a031916815260200191505b509250505060405180910390f35' +
+                'b341561034757fe5b61012161073d565b60408051600792830b90920b8252519' +
+                '081900360200190f35b60025481565b60008054600383810b63ffffffff81166' +
+                '8010000000000000000026bffffffff000000000000000019600785810b60010' +
+                '1900b67ffffffffffffffff1667ffffffffffffffff199095169490941793909' +
+                '316929092178355604080519290910b8252517f72d22042cfffdda6db1e71a2c' +
+                'fc6e6c21bb5e6f503a9c622081abd73c18c7ce09181900360200190a150805b9' +
+                '19050565b60008054600781810b600101900b67ffffffffffffffff1667fffff' +
+                'fffffffffff1990911617815560028290556040805183815290517fda6bb55af' +
+                '93c6cf11c23d1059479f38c5444e49c1e3dfaac04608c8a0216b284918190036' +
+                '0200190a150805b919050565b6000805467ffffffffffffffff1981166001600' +
+                '792830b01820b67ffffffffffffffff9081169190911773ffffffffffffffff0' +
+                '0000000000000000000000019166c0100000000000000000000000085840b928' +
+                '31602178355604080519190920b815290517fbc2f79bbcfb7d6806f27fc9fdac' +
+                'a02e0d1bea814a79382e2ec26c939d9eea7de916020908290030190a150805b9' +
+                '19050565b60005460a060020a900460ff1681565b6000805467fffffffffffff' +
+                'fff19811667ffffffffffffffff6001600793840b0190920b919091161774ff0' +
+                '000000000000000000000000000000000000000191660a060020a83151590810' +
+                '291909117825560408051918252517fd1c6f5a92d7bdf9894ce5bbd3842f927c' +
+                '2afd3eff302b358c23048f3d46e6ae0916020908290030190a150805b9190505' +
+                '65b60005460070b81565b60005468010000000000000000900460030b81565b6' +
+                '105c6610756565b6000805467ffffffffffffffff19811667fffffffffffffff' +
+                'f6001600793840b810190930b161790915582516106019190602085019061076' +
+                '8565b507f9730c02dd36523b8d2a97108f38cfc827bbed94175b378f15fba7be' +
+                '256ce29f88260405180806020018281038252838181518152602001915080519' +
+                '0602001908083836000831461066f575b80518252602083111561066f57601f1' +
+                '9909201916020918201910161064f565b505050905090810190601f168015610' +
+                '69b5780820380516001836020036101000a031916815260200191505b5092505' +
+                '05060405180910390a150805b919050565b60018054604080516020600284861' +
+                '615610100026000190190941693909304601f810184900484028201840190925' +
+                '281815292918301828280156107355780601f1061070a5761010080835404028' +
+                '3529160200191610735565b820191906000526020600020905b8154815290600' +
+                '1019060200180831161071857829003601f168201915b505050505081565b600' +
+                '0546c01000000000000000000000000900460070b81565b60408051602081019' +
+                '091526000815290565b828054600181600116156101000203166002900490600' +
+                '052602060002090601f016020900481019282601f106107a957805160ff19168' +
+                '380011785556107d6565b828001600101855582156107d6579182015b8281111' +
+                '56107d65782518255916020019190600101906107bb565b5b506107e39291506' +
+                '107e7565b5090565b61080591905b808211156107e357600081556001016107e'
+              '9",'
+              
+                '  "transactionHash": "0xa284aa1e3477c18bd3d7ce8bfb0bc7b8e4215a1f' +
+                'cc4ea20bbba8c3375641a282",'
+              
+                '  "contractAddress": "0x655692176986143bc1a6b793985193fde450b007' +
+                '"'
+              '}')
+            TextSettings.WordWrap = True
+            Align = Client
+            Size.Width = 1122.000000000000000000
+            Size.Height = 580.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Viewport.Width = 1102.000000000000000000
+            Viewport.Height = 576.000000000000000000
+          end
+        end
+        object TabItemABIShort: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 49.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Short'
+          ExplicitSize.cx = 49.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object MemoABIShort: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            Lines.Strings = (
+              
+                '[{"constant":false,"inputs":[{"name":"firstName","type":"string"' +
+                '},{"name":"lastName","type":"string"},{"name":"patronymicName","' +
+                'type":"string"},{"name":"age","type":"uint64"},{"name":"fullPhot' +
+                'o","type":"string"},{"name":"thumbnailPhoto","type":"string"}],"' +
+                'name":"addPhoto","outputs":[],"payable":false,"type":"function"}' +
+                ',{"constant":true,"inputs":[],"name":"totalEvents","outputs":[{"' +
+                'name":"","type":"uint64"}],"payable":false,"type":"function"},{"' +
+                'constant":false,"inputs":[{"name":"firstName","type":"string"},{' +
+                '"name":"lastName","type":"string"},{"name":"patronymicName","typ' +
+                'e":"string"},{"name":"age","type":"uint64"},{"name":"salt","type' +
+                '":"string"}],"name":"getCustomerHash","outputs":[{"name":"","typ' +
+                'e":"bytes32"}],"payable":false,"type":"function"},{"anonymous":f' +
+                'alse,"inputs":[{"indexed":true,"name":"customerHash","type":"byt' +
+                'es32"},{"indexed":false,"name":"fullPhoto","type":"string"},{"in' +
+                'dexed":false,"name":"thumbnailPhoto","type":"string"}],"name":"c' +
+                'ustomerPhoto","type":"event"},{"anonymous":false,"inputs":[{"ind' +
+                'exed":true,"name":"customerHash","type":"bytes32"},{"indexed":fa' +
+                'lse,"name":"firstName","type":"string"},{"indexed":false,"name":' +
+                '"lastName","type":"string"},{"indexed":false,"name":"patronymicN' +
+                'ame","type":"string"},{"indexed":false,"name":"age","type":"uint' +
+                '64"},{"indexed":false,"name":"fullPhoto","type":"string"},{"inde' +
+                'xed":false,"name":"thumbnailPhoto","type":"string"}],"name":"cus' +
+                'tomerPhotoTest","type":"event"}]')
+            TextSettings.WordWrap = True
+            Align = Client
+            Size.Width = 1122.000000000000000000
+            Size.Height = 580.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Viewport.Width = 1118.000000000000000000
+            Viewport.Height = 576.000000000000000000
+          end
+        end
+        object TabItemABICustom: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 61.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Custom'
+          ExplicitSize.cx = 61.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object MemoABICustom: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            TextSettings.WordWrap = True
+            Align = Client
+            Size.Width = 1122.000000000000000000
+            Size.Height = 580.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Viewport.Width = 1118.000000000000000000
+            Viewport.Height = 576.000000000000000000
+          end
+        end
+        object TabItemABIResult: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 52.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Result'
+          ExplicitSize.cx = 52.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object TabControl2: TTabControl
+            Align = Client
+            Size.Width = 1122.000000000000000000
+            Size.Height = 580.000000000000000000
+            Size.PlatformDefault = False
+            TabIndex = 0
+            TabOrder = 0
+            TabPosition = PlatformDefault
+            Sizes = (
+              1122s
+              554s
+              1122s
+              554s)
+            object TabItemDelphiResult: TTabItem
+              CustomIcon = <
+                item
+                end>
+              IsSelected = True
+              Size.Width = 55.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = ''
+              TabOrder = 0
+              Text = 'Delphi'
+              ExplicitSize.cx = 55.000000000000000000
+              ExplicitSize.cy = 26.000000000000000000
+              object MemoABIDelphiResult: TMemo
+                Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+                DataDetectorTypes = []
+                Align = Client
+                Size.Width = 1122.000000000000000000
+                Size.Height = 513.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                Viewport.Width = 1118.000000000000000000
+                Viewport.Height = 509.000000000000000000
+              end
+              object ButtonSaveDelphi: TButton
+                Align = Bottom
+                Position.Y = 513.000000000000000000
+                Size.Width = 1122.000000000000000000
+                Size.Height = 41.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 2
+                Text = 'Save'
+                OnClick = ButtonSaveDelphiClick
+              end
+            end
+            object TabItemABIBuildResult: TTabItem
+              CustomIcon = <
+                item
+                end>
+              IsSelected = False
+              Size.Width = 134.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = ''
+              TabOrder = 0
+              Text = 'ABI Build from Delphi'
+              ExplicitSize.cx = 134.000000000000000000
+              ExplicitSize.cy = 26.000000000000000000
+              object MemoABIBuildResult: TMemo
+                Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+                DataDetectorTypes = []
+                Align = Client
+                Size.Width = 1122.000000000000000000
+                Size.Height = 554.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                Viewport.Width = 1118.000000000000000000
+                Viewport.Height = 550.000000000000000000
+              end
+            end
+          end
+        end
+      end
+      object ButtonProcessABI: TButton
+        Align = Bottom
+        Position.Y = 606.000000000000000000
+        Size.Width = 1122.000000000000000000
+        Size.Height = 41.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Process ABI'
+        OnClick = ButtonProcessABIClick
+      end
+    end
+    object TabItemSolidity: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 60.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Solidity'
+      ExplicitSize.cx = 52.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object StatusBar1: TStatusBar
+        Position.Y = 625.000000000000000000
+        ShowSizeGrip = True
+        Size.Width = 1122.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+      end
+      object ButtonCompileSolidity: TButton
+        Align = Bottom
+        Position.Y = 574.000000000000000000
+        Size.Width = 1122.000000000000000000
+        Size.Height = 51.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Compile Solidity'
+        OnClick = ButtonCompileSolidityClick
+      end
+      object TabControlSolidity: TTabControl
+        Align = Client
+        Size.Width = 1122.000000000000000000
+        Size.Height = 574.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 0
+        TabOrder = 2
+        TabPosition = PlatformDefault
+        Sizes = (
+          1122s
+          548s
+          1122s
+          548s)
+        object TabItemSoliditySource: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 57.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Source'
+          ExplicitSize.cx = 57.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object MemoSoliditySource: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            Lines.Strings = (
+              'pragma solidity ^0.4.8;'
+              ''
+              'contract Photo {'
+              ''
+              '    uint64 public totalEvents;'
+              ''
+              
+                '    event customerPhoto(bytes32 indexed customerHash, string ful' +
+                'lPhoto, string thumbnailPhoto);'
+              
+                '    event customerPhotoTest(bytes32 indexed customerHash, string' +
+                ' firstName, string lastName, string patronymicName, uint64 age, ' +
+                'string fullPhoto, string thumbnailPhoto);'
+              ''
+              
+                '    function getCustomerHash(string firstName, string lastName, ' +
+                'string patronymicName, uint64 age, string salt) returns (bytes32' +
+                ') {'
+              
+                '        return sha3(firstName, lastName, patronymicName, age, sa' +
+                'lt);'
+              '    }'
+              ''
+              
+                '    function addPhoto(string firstName, string lastName, string ' +
+                'patronymicName, uint64 age, string fullPhoto, string thumbnailPh' +
+                'oto) {'
+              
+                '        var customerHash = getCustomerHash(firstName, lastName, ' +
+                'patronymicName, age, '#39#39');'
+              ''
+              '        customerPhoto(customerHash, fullPhoto, thumbnailPhoto);'
+              
+                '        customerPhotoTest(customerHash, firstName, lastName, pat' +
+                'ronymicName, age, fullPhoto, thumbnailPhoto);'
+              '        '
+              '        totalEvents++;'
+              '    }'
+              '}')
+            Align = Client
+            Size.Width = 1122.000000000000000000
+            Size.Height = 548.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Viewport.Width = 1118.000000000000000000
+            Viewport.Height = 544.000000000000000000
+          end
+        end
+        object TabItemSolidityResult: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 52.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Result'
+          ExplicitSize.cx = 52.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object MemoSolidityResult: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            TextSettings.WordWrap = True
+            Align = Client
+            Size.Width = 1122.000000000000000000
+            Size.Height = 548.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Viewport.Width = 1118.000000000000000000
+            Viewport.Height = 544.000000000000000000
+          end
+        end
+      end
+    end
+    object TabItemTransaction: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 80.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Transaction'
+      ExplicitSize.cx = 80.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object PanelTransaction: TPanel
+        Align = Top
+        Size.Width = 1122.000000000000000000
+        Size.Height = 41.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object EditTransaction: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = VertCenter
+          TabOrder = 0
+          Text = 
+            '0xfef7c572777ef61a4d419b23f3bc54523fec412129bc32f632b99481b99048' +
+            'dd'
+          Position.Y = 9.000000000000000000
+          Size.Width = 1122.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object EditButtonTransaction: TEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 60.000000000000000000
+            Size.Height = 18.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = 'Get'
+            OnClick = EditButtonTransactionClick
+          end
+        end
+      end
+      object StringGridTransation: TStringGrid
+        Align = Client
+        CanFocus = True
+        ClipChildren = True
+        Size.Width = 1122.000000000000000000
+        Size.Height = 606.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 1102.000000000000000000
+        Viewport.Height = 581.000000000000000000
+        object StringColumn1: TStringColumn
+          Header = 'Key'
+          Size.Width = 185.000000000000000000
+        end
+        object StringColumn2: TStringColumn
+          Header = 'Value'
+          Size.Width = 735.000000000000000000
+        end
+      end
+    end
+    object TabItem1: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 69.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'TabItem1'
+      ExplicitSize.cx = 69.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object ButtonInfo: TButton
+        Position.X = 296.000000000000000000
+        Position.Y = 14.000000000000000000
+        TabOrder = 4
+        Text = 'ButtonInfo'
+        OnClick = ButtonInfoClick
+      end
+      object ssh_post: TButton
+        Position.X = 392.000000000000000000
+        Position.Y = 14.000000000000000000
+        TabOrder = 1
+        Text = 'ssh_post'
+        OnClick = ssh_postClick
+      end
+      object AddPhoto: TButton
+        Position.X = 352.000000000000000000
+        Position.Y = 54.000000000000000000
+        TabOrder = 0
+        Text = 'Add photo'
+        OnClick = AddPhotoClick
+      end
+      object ButtonTotalEvents: TButton
+        Position.X = 344.000000000000000000
+        Position.Y = 110.000000000000000000
+        Size.Width = 145.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        Text = 'TotalEvents'
+        OnClick = ButtonTotalEventsClick
+      end
+    end
+    object Block: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 49.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Block'
+      ExplicitSize.cx = 49.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object Panel1: TPanel
+        Align = Top
+        Size.Width = 1122.000000000000000000
+        Size.Height = 41.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object EditBlock: TEdit
+          Touch.InteractiveGestures = [LongTap, DoubleTap]
+          Align = VertCenter
+          TabOrder = 0
+          Text = 
+            '0xa14d40f6437030826abf200bae0f053059d7348a53f3058d1cf3fb2dafa868' +
+            'a8'
+          Position.Y = 9.000000000000000000
+          Size.Width = 1122.000000000000000000
+          Size.Height = 22.000000000000000000
+          Size.PlatformDefault = False
+          object EditButtonBlock: TEditButton
+            CanFocus = False
+            Cursor = crArrow
+            Size.Width = 60.000000000000000000
+            Size.Height = 18.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Text = 'Get'
+            OnClick = EditButtonBlockClick
+          end
+        end
+      end
+      object StringGridBlock: TStringGrid
+        Align = Client
+        CanFocus = True
+        ClipChildren = True
+        Size.Width = 1122.000000000000000000
+        Size.Height = 606.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 1102.000000000000000000
+        Viewport.Height = 581.000000000000000000
+        object StringColumn5: TStringColumn
+          Header = 'Key'
+          Size.Width = 185.000000000000000000
+        end
+        object StringColumn6: TStringColumn
+          Header = 'Value'
+          Size.Width = 735.000000000000000000
+        end
+      end
+    end
+    object CallCode: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 68.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'CallCode'
+      ExplicitSize.cx = 68.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object CallCodeEdit: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        Align = Top
+        TabOrder = 0
+        Text = 
+          '6060604052341561000c57fe5b5b61089d8061001c6000396000f30060606040' +
+          '5263ffffffff60e060020a6000350416634664bf588114610037578063ba8706' +
+          '8614610192578063f8e0b31a146101bf575bfe5b341561003f57fe5b61019060' +
+          '0480803590602001908201803590602001908080601f01602080910402602001' +
+          '6040519081016040528093929190818152602001838380828437505060408051' +
+          '6020601f89358b01803591820183900483028401830190945280835297999881' +
+          '0197919650918201945092508291508401838280828437505060408051602060' +
+          '1f89358b01803591820183900483028401830190945280835297999881019791' +
+          '96509182019450925082915084018382808284375050604080516020601f818a' +
+          '01358b0180359182018390048302840183018552818452989a67ffffffffffff' +
+          'ffff8b35169a9099940197509195509182019350915081908401838280828437' +
+          '5050604080516020601f89358b01803591820183900483028401830190945280' +
+          '8352979998810197919650918201945092508291508401838280828437509496' +
+          '506102ed95505050505050565b005b341561019a57fe5b6101a26106e8565b60' +
+          '40805167ffffffffffffffff9092168252519081900360200190f35b34156101' +
+          'c757fe5b6102db600480803590602001908201803590602001908080601f0160' +
+          '2080910402602001604051908101604052809392919081815260200183838082' +
+          '84375050604080516020601f89358b0180359182018390048302840183019094' +
+          '5280835297999881019791965091820194509250829150840183828082843750' +
+          '50604080516020601f89358b0180359182018390048302840183019094528083' +
+          '5297999881019791965091820194509250829150840183828082843750506040' +
+          '80516020601f818a01358b018035918201839004830284018301855281845298' +
+          '9a67ffffffffffffffff8b35169a909994019750919550918201935091508190' +
+          '8401838280828437509496506106f895505050505050565b6040805191825251' +
+          '9081900360200190f35b600061030c8787878760206040519081016040528060' +
+          '008152506106f8565b905080600019167f243d5f7bc5ce0c0a93e72ceb189104' +
+          '3e59a3a2bb9b38ac2b96425ccad9d88126848460405180806020018060200183' +
+          '8103835285818151815260200191508051906020019080838360008314610385' +
+          '575b80518252602083111561038557601f199092019160209182019101610365' +
+          '565b505050905090810190601f1680156103b157808203805160018360200361' +
+          '01000a031916815260200191505b508381038252845181528451602091820191' +
+          '86019080838382156103f0575b8051825260208311156103f057601f1990920'
+        Size.Width = 1122.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        object CallCodeButton: TEditButton
+          CanFocus = False
+          Cursor = crArrow
+          Size.Width = 84.000000000000000000
+          Size.Height = 18.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Parse'
+          OnClick = CallCodeButtonClick
+        end
+      end
+    end
+  end
+  object TimerHashRate: TTimer
+    Interval = 5000
+    OnTimer = TimerHashRateTimer
+    Left = 768
+    Top = 8
+  end
+end
