@@ -2273,16 +2273,15 @@ begin
       'begin' + sLineBreak +
       '  Event := GetEvent(%s);' + sLineBreak +
       '  if Assigned(Event) then' + sLineBreak +
-      '    try' + sLineBreak +
+      '    begin'
       '      Result := ParseCode(Event.Events[Index].Data);' + sLineBreak +
-      '      if Result then' + sLineBreak +
-      '        begin' + sLineBreak +
-      '          SetLength(Topics, 1);' + sLineBreak +
-      '          Topics[0] := Event.EventName;' + sLineBreak +
-      '          Event.Events.Clear;' + sLineBreak +
-      '          Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);' + sLineBreak +
-      '        end;' + sLineBreak +
-      '    end;' + sLineBreak +
+      '      if Result then'
+      '        try' + sLineBreak +
+      '%s' +
+      '        except' + sLineBreak +
+      '     on E: Exception do' + sLineBreak +
+      '       Result := ErrorParamConvert(E, Method.MethodName);' + sLineBreak +
+      '     end' + sLineBreak +
       'end;'  + sLineBreak +
 
       [
