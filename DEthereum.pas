@@ -277,7 +277,7 @@ type
     function ErrorTypeCast(Source: String; Param: TEthereumContractParameter; PassedType: String): Boolean;
     function ErrorLengthMismatch(Source: String; Param: TEthereumContractParameter): Boolean;
     function ErrorParamConvert(Source: String; E: Exception): Boolean;
-    function ErrorNotEnoughParameters(Method: TEthereumContractMethod): Boolean;
+    function ErrorNotEnoughParameters(Source: String): Boolean;
   public
     constructor Create;
     destructor Destroy; override;
@@ -1453,7 +1453,7 @@ begin
 
   if Length(Params) <> Method.FInputs.Count then
     begin
-      ErrorNotEnoughParameters(Method);
+      ErrorNotEnoughParameters(Method.FMethodName);
       Exit;
     end;
 
@@ -1835,12 +1835,12 @@ begin
 end;
 
 function TEthereumContract.ErrorNotEnoughParameters(
-  Method: TEthereumContractMethod): Boolean;
+  Source: String): Boolean;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
   FMethodError.code := -1;
-  FMethodError.message := Format('Is not enough parameters for %s', [Method.MethodName.QuotedString]);
+  FMethodError.message := Format('Is not enough parameters for %s', [Source.QuotedString]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
 end;
