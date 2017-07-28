@@ -2107,9 +2107,9 @@ begin
     begin
       Inputs := '';
       Outputs := '';
-      ContractClassName := ContractClassName + '.';
-
-      for i := 0 to FOutputs.Count - 1 do
+      ContractClassName := ContractClassName + '.';     
+      
+      {for i := 0 to FOutputs.Count - 1 do
         begin
           Param := FOutputs[i];
           n := Param.FName;
@@ -2121,7 +2121,7 @@ begin
           if t = 'Int64' then Outputs :=      Outputs + Format('          %s := Method.Outputs[%d].AsInt64;%s', [n, i, sLineBreak]) else
           if t = 'TByteDynArray' then Outputs := Outputs + Format('          %s := Method.Outputs[%d].AsBytes;%s', [n, i, sLineBreak]) else
             Outputs := Outputs + Format('          %s := Method.Outputs[%d].AsUNKNOWN;%s', [n, i, sLineBreak]);
-        end;
+        end;}
 
 
       Result := Format(
@@ -2158,7 +2158,7 @@ begin
           TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
           TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
           FMethodName.QuotedString,
-          Outputs
+          TEthereumContract.DelphiParametersAssigner(FOutputs, 'Method.Outputs')//Outputs
         ]);
     end else
   Result := Format('    function %s(%s): Boolean;', [FMethodName, Result]);
@@ -2290,9 +2290,16 @@ begin
         FEventName.QuotedString,
 
         ContractClassName, FEventName, Read,
-        FEventName.QuotedString
+        FEventName.QuotedString,
+        TEthereumContract.DelphiParametersAssigner(FParameters, 'Event.Parameters')//Outputs
       ]) else
-  Result := Format('    function filter_%s(%s): Boolean;', [FEventName, Result]);
+  Result := Format(
+    '    function filter_%s(%s): Boolean;' + sLineBreak +
+    '    function read_%s(%s): Boolean;',
+    , [
+      FEventName, Result,
+      FEventName, Read
+    ]);
 
 //  Outputs := TEthereumContract.NamesTypes(FOutputs, 'out ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
 //          TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
