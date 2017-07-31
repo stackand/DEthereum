@@ -1872,12 +1872,14 @@ begin
 
       DelphiSimpleConvertor(n, t);
 
-      if t = 'Boolean' then Result :=    Result + Format('          %s := %s[%d].AsBoolean;%s', [n, ParamNamePrefix, i, sLineBreak]) else
-      if t = 'String' then Result :=     Result + Format('          %s := %s[%d].AsString;%s', [n, ParamNamePrefix, i, sLineBreak]) else
-      if t = 'Integer' then Result :=    Result + Format('          %s := %s[%d].AsInteger;%s', [n, ParamNamePrefix, i, sLineBreak]) else
-      if t = 'Int64' then Result :=      Result + Format('          %s := %s[%d].AsInt64;%s', [n, ParamNamePrefix, i, sLineBreak]) else
-      if t = 'TByteDynArray' then Result := Result + Format('          %s := Method.Outputs[%d].AsBytes;%s', [n, ParamNamePrefix, i, sLineBreak]) else
-        Result := Result + Format('          %s := %s[%d].AsUNKNOWN;%s', [n, ParamNamePrefix, i, sLineBreak]);
+      if t = 'Boolean' then t := 'AsBoolean' else
+      if t = 'String' then t := 'AsString' else
+      if t = 'Integer' then t := 'AsInteger' else
+      if t = 'Int64' then t := 'AsInt64' else
+      if t = 'TByteDynArray' then t := 'AsBytes' else
+      t := 'AsUNKNOWN';
+
+      Result := Result + Format('          %s := %s[%d].%s;', [n, ParamNamePrefix, i, t]) + sLineBreak;
     end;
 end;
 
@@ -2107,25 +2109,9 @@ begin
     begin
       Inputs := '';
       Outputs := '';
-      ContractClassName := ContractClassName + '.';     
-      
-      {for i := 0 to FOutputs.Count - 1 do
-        begin
-          Param := FOutputs[i];
-          n := Param.FName;
-          t := Param.FType;
-          TEthereumContract.DelphiSimpleConvertor(n, t);
-          if t = 'Boolean' then Outputs :=    Outputs + Format('          %s := Method.Outputs[%d].AsBoolean;%s', [n, i, sLineBreak]) else
-          if t = 'String' then Outputs :=     Outputs + Format('          %s := Method.Outputs[%d].AsString;%s', [n, i, sLineBreak]) else
-          if t = 'Integer' then Outputs :=    Outputs + Format('          %s := Method.Outputs[%d].AsInteger;%s', [n, i, sLineBreak]) else
-          if t = 'Int64' then Outputs :=      Outputs + Format('          %s := Method.Outputs[%d].AsInt64;%s', [n, i, sLineBreak]) else
-          if t = 'TByteDynArray' then Outputs := Outputs + Format('          %s := Method.Outputs[%d].AsBytes;%s', [n, i, sLineBreak]) else
-            Outputs := Outputs + Format('          %s := Method.Outputs[%d].AsUNKNOWN;%s', [n, i, sLineBreak]);
-        end;}
-
 
       Result := Format(
-        'function %s%s(%s): Boolean;' + sLineBreak +
+        'function %s.%s(%s): Boolean;' + sLineBreak +
         'var' + sLineBreak +
         '  Code, CallResult: String;' + sLineBreak +
         '  Method: TEthereumContractMethod;' + sLineBreak +
@@ -2137,18 +2123,18 @@ begin
         '      else Result := BuildCallCode(Method, [%s], Code) and personal_signAndSendTransaction(CoinAddress, ContractAddress, gas, gasPrice, 0, Code, CoinPassword, CallResult)' + sLineBreak +
         '  else' + sLineBreak +
         '  begin' + sLineBreak +
-        '    Result := ErrorMethodNotFound(%s);' + sLineBreak +
+        '    Result := ErrorNotFound(%s);' + sLineBreak +
         '    Exit;' + sLineBreak +
         '  end;' + sLineBreak +
         '  if Result and (Method.Outputs.Count > 0) then' + sLineBreak +
         '    begin' + sLineBreak +
-        '      Result := ParseCallCode(Method, CallResult);' + sLineBreak +
+        '      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);' + sLineBreak +
         '      if Result then' + sLineBreak +
         '        try' + sLineBreak +
         '%s' +
         '        except' + sLineBreak +
         '        on E: Exception do' + sLineBreak +
-        '          Result := ErrorParamConvert(E, Method.MethodName);' + sLineBreak +
+        '          Result := ErrorParamConvert(Method.MethodName, E);' + sLineBreak +
         '        end' + sLineBreak +
         '    end;' + sLineBreak +
         'end;',
@@ -2240,14 +2226,16 @@ end;
 function TEthereumContractEvent.DelphiEventDefinition(
   ContractClassName: String): String;
 var
-  Filter, Read: String;
+  Filter, Get: String;
 begin
   Filter := 'const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64';
-  Read := 'const Index: Int64';
+  Get := 'const Index: Int64';
+  if FParameters.Count > 0 then
+    Get := Get + '; ' + TEthereumContract.NamesTypes(FParameters, 'out ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
 
   if ContractClassName <> '' then
     Result := Format(
-      'function %s.filter_%s(%s): Boolean;' + sLineBreak +
+      'function %s.FilterEvent_%s(%s): Boolean;' + sLineBreak +
       'var' + sLineBreak +
       '  Topics: TArray<String>;' + sLineBreak +
       '  Event: TEthereumContractEvent;' + sLineBreak +
@@ -2263,46 +2251,48 @@ begin
       '          Event.Events.Clear;' + sLineBreak +
       '          Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);' + sLineBreak +
       '        end;' + sLineBreak +
-      '    end;' + sLineBreak +
+      '    end else' + sLineBreak +
+      '    Result := ErrorNotFound(%s);' + sLineBreak +
       'end;'  + sLineBreak +
 
+      sLineBreak +
 
-      'function %s.read_%s(%s): Boolean;' + sLineBreak +
+      'function %s.GetEvent_%s(%s): Boolean;' + sLineBreak +
       'var' + sLineBreak +
       '  Event: TEthereumContractEvent;' + sLineBreak +
       'begin' + sLineBreak +
       '  Event := GetEvent(%s);' + sLineBreak +
       '  if Assigned(Event) then' + sLineBreak +
-      '    begin'
-      '      Result := ParseCode(Event.Events[Index].Data);' + sLineBreak +
-      '      if Result then'
-      '        try' + sLineBreak +
+      '    try' + sLineBreak +
+      '      Result := ParseCallCode(Event.EventName, Event.Events[Index].Data, Event.Parameters);' + sLineBreak +
+      '      if Result then' + sLineBreak +
+      '        begin' + sLineBreak +
       '%s' +
-      '        except' + sLineBreak +
-      '     on E: Exception do' + sLineBreak +
-      '       Result := ErrorParamConvert(E, Method.MethodName);' + sLineBreak +
-      '     end' + sLineBreak +
-      'end;'  + sLineBreak +
-
+      '        end;' + sLineBreak +
+      '    except' + sLineBreak +
+      '      on E: Exception do' + sLineBreak +
+      '        Result := ErrorParamConvert(Event.EventName, E);' + sLineBreak +
+      '    end else' + sLineBreak +
+      '    Result := ErrorNotFound(%s);' + sLineBreak +
+      'end;'  + sLineBreak,
       [
         ContractClassName, FEventName, Filter,
         FEventName.QuotedString,
-
-        ContractClassName, FEventName, Read,
         FEventName.QuotedString,
-        TEthereumContract.DelphiParametersAssigner(FParameters, 'Event.Parameters')//Outputs
+
+        ContractClassName, FEventName, Get,
+        FEventName.QuotedString,
+        TEthereumContract.DelphiParametersAssigner(FParameters, 'Event.Parameters'),
+        FEventName.QuotedString
       ]) else
+
   Result := Format(
-    '    function filter_%s(%s): Boolean;' + sLineBreak +
-    '    function read_%s(%s): Boolean;',
-    , [
-      FEventName, Result,
-      FEventName, Read
+    '    function FilterEvent_%s(%s): Boolean;' + sLineBreak +
+    '    function GetEvent_%s(%s): Boolean;',
+    [
+      FEventName, Filter,
+      FEventName, Get
     ]);
-
-//  Outputs := TEthereumContract.NamesTypes(FOutputs, 'out ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
-//          TEthereumContract.NamesTypes(FInputs, '', ', ', '', True, False, TEthereumContract.DelphiForDynArrayConvertor),
-
 end;
 
 destructor TEthereumContractEvent.Destroy;

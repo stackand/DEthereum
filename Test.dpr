@@ -5,10 +5,10 @@ uses
   FMX.Forms,
   frmTest in 'frmTest.pas' {Form3},
   DEthereum.Types in 'DEthereum.Types.pas',
-  DEthereum in 'DEthereum.pas' {/  ,  DemoContract;},
-  DemoContract in 'DemoContract.pas';
+  DEthereum in 'DEthereum.pas'
+//  ;
+  ,DemoContract;
 
-//  ,  DemoContract;
 
 {$R *.res}
 
