@@ -13,7 +13,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  DEthereum, DEthereum.Types;//, DemoContract;
+  DEthereum, DEthereum.Types, DemoContract;
 
 type
   TForm3 = class(TForm)
@@ -80,6 +80,9 @@ type
     MemoABIDelphiResult: TMemo;
     MemoABIBuildResult: TMemo;
     ButtonSaveDelphi: TButton;
+    StringGridEvents: TStringGrid;
+    EventName: TStringColumn;
+    EventValues: TStringColumn;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -97,9 +100,11 @@ type
     procedure ButtonTotalEventsClick(Sender: TObject);
     procedure CallCodeButtonClick(Sender: TObject);
     procedure ButtonSaveDelphiClick(Sender: TObject);
+    procedure TabItem1Click(Sender: TObject);
   private
     { Private declarations }
     eth: TEthereum;
+    demo: TEth_ContractDemoContract;
     function BlockInfo(Bl: TEth_BlockClass): TArray<String>;
     function TransactionInfo(Tr: TEth_TransactionClass): TArray<String>;
     procedure InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid; ClearBefore: Boolean);
@@ -356,6 +361,7 @@ end;
 procedure TForm3.FormCreate(Sender: TObject);
 begin
   eth := TEthereum.Create;
+  demo := TEth_ContractDemoContract.Create;
 
   EditServerChange(nil);
 end;
@@ -363,6 +369,7 @@ end;
 procedure TForm3.FormDestroy(Sender: TObject);
 begin
   eth.Free;
+  demo.Free;
 end;
 
 procedure TForm3.InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid;
@@ -422,6 +429,20 @@ begin
   sl.Add('3');
 
   eth.shh_post('from', 'to', sl, 'Message', 64, 64, PostResult);
+end;
+
+procedure TForm3.TabItem1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  if StringGridEvents.RowCount = 0 then
+    for i := 0 to Demo.Events.Count - 1 do
+      begin
+        StringGridEvents.RowCount := StringGridEvents.RowCount + 1;
+        StringGridEvents.Cells[0, StringGridEvents.RowCount - 1] := demo.Events[i].EventName;
+        StringGridEvents.Cells[1, StringGridEvents.RowCount - 1] := demo.Events[i].DelphiEventDefinition(demo.Events[i].EventName);
+        {StringGridLog.Cells[2, StringGridLog.RowCount - 1] := Text;}
+      end;
 end;
 
 procedure TForm3.TimerHashRateTimer(Sender: TObject);

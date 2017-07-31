@@ -15,31 +15,32 @@ object Form3: TForm3
     Size.Width = 1122.000000000000000000
     Size.Height = 673.000000000000000000
     Size.PlatformDefault = False
+    TabHeight = 49.000000000000000000
     TabIndex = 4
     TabOrder = 2
     TabPosition = PlatformDefault
     Sizes = (
       1122s
-      647s
+      624s
       1122s
-      647s
+      624s
       1122s
-      647s
+      624s
       1122s
-      647s
+      624s
       1122s
-      647s
+      624s
       1122s
-      647s
+      624s
       1122s
-      647s)
+      624s)
     object TabItemLog: TTabItem
       CustomIcon = <
         item
         end>
       IsSelected = False
       Size.Width = 80.000000000000000000
-      Size.Height = 26.000000000000000000
+      Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
@@ -59,7 +60,7 @@ object Form3: TForm3
           Position.X = 24.000000000000000000
           Position.Y = 16.000000000000000000
           Size.Width = 161.000000000000000000
-          Size.Height = 22.000000000000000000
+          Size.Height = 30.000000000000000000
           Size.PlatformDefault = False
           OnChange = EditServerChange
         end
@@ -72,7 +73,7 @@ object Form3: TForm3
           Position.X = 192.000000000000000000
           Position.Y = 16.000000000000000000
           Size.Width = 41.000000000000000000
-          Size.Height = 22.000000000000000000
+          Size.Height = 30.000000000000000000
           Size.PlatformDefault = False
           OnChange = EditServerChange
           object FloatAnimation1: TFloatAnimation
@@ -87,7 +88,7 @@ object Form3: TForm3
           Position.X = 272.000000000000000000
           Position.Y = 16.000000000000000000
           Size.Width = 297.000000000000000000
-          Size.Height = 22.000000000000000000
+          Size.Height = 30.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 2
           OnChange = EditServerChange
@@ -100,14 +101,14 @@ object Form3: TForm3
           Position.X = 584.000000000000000000
           Position.Y = 16.000000000000000000
           Size.Width = 153.000000000000000000
-          Size.Height = 22.000000000000000000
+          Size.Height = 30.000000000000000000
           Size.PlatformDefault = False
           OnChange = EditServerChange
           object PasswordEditButton1: TPasswordEditButton
             CanFocus = False
             Cursor = crArrow
             Size.Width = 28.000000000000000000
-            Size.Height = 18.000000000000000000
+            Size.Height = 26.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
           end
@@ -138,12 +139,12 @@ object Form3: TForm3
         CanFocus = True
         ClipChildren = True
         Size.Width = 1122.000000000000000000
-        Size.Height = 590.000000000000000000
+        Size.Height = 567.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 2
         RowCount = 0
         Viewport.Width = 1118.000000000000000000
-        Viewport.Height = 565.000000000000000000
+        Viewport.Height = 542.000000000000000000
         object TimeColumn1: TTimeColumn
           Header = 'Time'
         end
@@ -162,7 +163,7 @@ object Form3: TForm3
         end>
       IsSelected = False
       Size.Width = 38.000000000000000000
-      Size.Height = 26.000000000000000000
+      Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
@@ -172,27 +173,28 @@ object Form3: TForm3
       object TabControlABI: TTabControl
         Align = Client
         Size.Width = 1122.000000000000000000
-        Size.Height = 606.000000000000000000
+        Size.Height = 583.000000000000000000
         Size.PlatformDefault = False
+        TabHeight = 49.000000000000000000
         TabIndex = 0
         TabOrder = 1
         TabPosition = PlatformDefault
         Sizes = (
           1122s
-          580s
+          534s
           1122s
-          580s
+          534s
           1122s
-          580s
+          534s
           1122s
-          580s)
+          534s)
         object TabItemABIFull: TTabItem
           CustomIcon = <
             item
             end>
           IsSelected = True
           Size.Width = 39.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
           TabOrder = 0
@@ -422,11 +424,11 @@ object Form3: TForm3
             TextSettings.WordWrap = True
             Align = Client
             Size.Width = 1122.000000000000000000
-            Size.Height = 580.000000000000000000
+            Size.Height = 534.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 1
             Viewport.Width = 1102.000000000000000000
-            Viewport.Height = 576.000000000000000000
+            Viewport.Height = 530.000000000000000000
           end
         end
         object TabItemABIShort: TTabItem
@@ -435,7 +437,7 @@ object Form3: TForm3
             end>
           IsSelected = False
           Size.Width = 49.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
           TabOrder = 0
@@ -473,11 +475,11 @@ object Form3: TForm3
             TextSettings.WordWrap = True
             Align = Client
             Size.Width = 1122.000000000000000000
-            Size.Height = 580.000000000000000000
+            Size.Height = 534.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 1
             Viewport.Width = 1118.000000000000000000
-            Viewport.Height = 576.000000000000000000
+            Viewport.Height = 530.000000000000000000
           end
         end
         object TabItemABICustom: TTabItem
@@ -486,7 +488,7 @@ object Form3: TForm3
             end>
           IsSelected = False
           Size.Width = 61.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
           TabOrder = 0
@@ -499,11 +501,11 @@ object Form3: TForm3
             TextSettings.WordWrap = True
             Align = Client
             Size.Width = 1122.000000000000000000
-            Size.Height = 580.000000000000000000
+            Size.Height = 534.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 1
             Viewport.Width = 1118.000000000000000000
-            Viewport.Height = 576.000000000000000000
+            Viewport.Height = 530.000000000000000000
           end
         end
         object TabItemABIResult: TTabItem
@@ -512,7 +514,7 @@ object Form3: TForm3
             end>
           IsSelected = False
           Size.Width = 52.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
           TabOrder = 0
@@ -522,23 +524,24 @@ object Form3: TForm3
           object TabControl2: TTabControl
             Align = Client
             Size.Width = 1122.000000000000000000
-            Size.Height = 580.000000000000000000
+            Size.Height = 534.000000000000000000
             Size.PlatformDefault = False
+            TabHeight = 49.000000000000000000
             TabIndex = 0
             TabOrder = 0
             TabPosition = PlatformDefault
             Sizes = (
               1122s
-              554s
+              485s
               1122s
-              554s)
+              485s)
             object TabItemDelphiResult: TTabItem
               CustomIcon = <
                 item
                 end>
               IsSelected = True
               Size.Width = 55.000000000000000000
-              Size.Height = 26.000000000000000000
+              Size.Height = 49.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = ''
               TabOrder = 0
@@ -550,15 +553,15 @@ object Form3: TForm3
                 DataDetectorTypes = []
                 Align = Client
                 Size.Width = 1122.000000000000000000
-                Size.Height = 513.000000000000000000
+                Size.Height = 444.000000000000000000
                 Size.PlatformDefault = False
                 TabOrder = 0
                 Viewport.Width = 1118.000000000000000000
-                Viewport.Height = 509.000000000000000000
+                Viewport.Height = 440.000000000000000000
               end
               object ButtonSaveDelphi: TButton
                 Align = Bottom
-                Position.Y = 513.000000000000000000
+                Position.Y = 444.000000000000000000
                 Size.Width = 1122.000000000000000000
                 Size.Height = 41.000000000000000000
                 Size.PlatformDefault = False
@@ -573,7 +576,7 @@ object Form3: TForm3
                 end>
               IsSelected = False
               Size.Width = 134.000000000000000000
-              Size.Height = 26.000000000000000000
+              Size.Height = 49.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = ''
               TabOrder = 0
@@ -585,11 +588,11 @@ object Form3: TForm3
                 DataDetectorTypes = []
                 Align = Client
                 Size.Width = 1122.000000000000000000
-                Size.Height = 554.000000000000000000
+                Size.Height = 485.000000000000000000
                 Size.PlatformDefault = False
                 TabOrder = 0
                 Viewport.Width = 1118.000000000000000000
-                Viewport.Height = 550.000000000000000000
+                Viewport.Height = 481.000000000000000000
               end
             end
           end
@@ -597,7 +600,7 @@ object Form3: TForm3
       end
       object ButtonProcessABI: TButton
         Align = Bottom
-        Position.Y = 606.000000000000000000
+        Position.Y = 583.000000000000000000
         Size.Width = 1122.000000000000000000
         Size.Height = 41.000000000000000000
         Size.PlatformDefault = False
@@ -612,7 +615,7 @@ object Form3: TForm3
         end>
       IsSelected = False
       Size.Width = 60.000000000000000000
-      Size.Height = 26.000000000000000000
+      Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
@@ -620,7 +623,7 @@ object Form3: TForm3
       ExplicitSize.cx = 52.000000000000000000
       ExplicitSize.cy = 26.000000000000000000
       object StatusBar1: TStatusBar
-        Position.Y = 625.000000000000000000
+        Position.Y = 602.000000000000000000
         ShowSizeGrip = True
         Size.Width = 1122.000000000000000000
         Size.Height = 22.000000000000000000
@@ -629,7 +632,7 @@ object Form3: TForm3
       end
       object ButtonCompileSolidity: TButton
         Align = Bottom
-        Position.Y = 574.000000000000000000
+        Position.Y = 551.000000000000000000
         Size.Width = 1122.000000000000000000
         Size.Height = 51.000000000000000000
         Size.PlatformDefault = False
@@ -640,23 +643,24 @@ object Form3: TForm3
       object TabControlSolidity: TTabControl
         Align = Client
         Size.Width = 1122.000000000000000000
-        Size.Height = 574.000000000000000000
+        Size.Height = 551.000000000000000000
         Size.PlatformDefault = False
+        TabHeight = 49.000000000000000000
         TabIndex = 0
         TabOrder = 2
         TabPosition = PlatformDefault
         Sizes = (
           1122s
-          548s
+          502s
           1122s
-          548s)
+          502s)
         object TabItemSoliditySource: TTabItem
           CustomIcon = <
             item
             end>
           IsSelected = True
           Size.Width = 57.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
           TabOrder = 0
@@ -708,11 +712,11 @@ object Form3: TForm3
               '}')
             Align = Client
             Size.Width = 1122.000000000000000000
-            Size.Height = 548.000000000000000000
+            Size.Height = 502.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 1
             Viewport.Width = 1118.000000000000000000
-            Viewport.Height = 544.000000000000000000
+            Viewport.Height = 498.000000000000000000
           end
         end
         object TabItemSolidityResult: TTabItem
@@ -721,7 +725,7 @@ object Form3: TForm3
             end>
           IsSelected = False
           Size.Width = 52.000000000000000000
-          Size.Height = 26.000000000000000000
+          Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
           TabOrder = 0
@@ -734,11 +738,11 @@ object Form3: TForm3
             TextSettings.WordWrap = True
             Align = Client
             Size.Width = 1122.000000000000000000
-            Size.Height = 548.000000000000000000
+            Size.Height = 502.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
             Viewport.Width = 1118.000000000000000000
-            Viewport.Height = 544.000000000000000000
+            Viewport.Height = 498.000000000000000000
           end
         end
       end
@@ -749,7 +753,7 @@ object Form3: TForm3
         end>
       IsSelected = False
       Size.Width = 80.000000000000000000
-      Size.Height = 26.000000000000000000
+      Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
@@ -769,15 +773,15 @@ object Form3: TForm3
           Text = 
             '0xfef7c572777ef61a4d419b23f3bc54523fec412129bc32f632b99481b99048' +
             'dd'
-          Position.Y = 9.000000000000000000
+          Position.Y = 5.000000000000000000
           Size.Width = 1122.000000000000000000
-          Size.Height = 22.000000000000000000
+          Size.Height = 30.000000000000000000
           Size.PlatformDefault = False
           object EditButtonTransaction: TEditButton
             CanFocus = False
             Cursor = crArrow
             Size.Width = 60.000000000000000000
-            Size.Height = 18.000000000000000000
+            Size.Height = 26.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
             Text = 'Get'
@@ -790,11 +794,11 @@ object Form3: TForm3
         CanFocus = True
         ClipChildren = True
         Size.Width = 1122.000000000000000000
-        Size.Height = 606.000000000000000000
+        Size.Height = 583.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
         Viewport.Width = 1102.000000000000000000
-        Viewport.Height = 581.000000000000000000
+        Viewport.Height = 558.000000000000000000
         object StringColumn1: TStringColumn
           Header = 'Key'
           Size.Width = 185.000000000000000000
@@ -811,43 +815,64 @@ object Form3: TForm3
         end>
       IsSelected = True
       Size.Width = 69.000000000000000000
-      Size.Height = 26.000000000000000000
+      Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
       Text = 'TabItem1'
+      OnClick = TabItem1Click
       ExplicitSize.cx = 69.000000000000000000
       ExplicitSize.cy = 26.000000000000000000
       object ButtonInfo: TButton
         Position.X = 296.000000000000000000
         Position.Y = 14.000000000000000000
-        TabOrder = 4
+        TabOrder = 5
         Text = 'ButtonInfo'
         OnClick = ButtonInfoClick
       end
       object ssh_post: TButton
         Position.X = 392.000000000000000000
         Position.Y = 14.000000000000000000
-        TabOrder = 1
+        TabOrder = 2
         Text = 'ssh_post'
         OnClick = ssh_postClick
       end
       object AddPhoto: TButton
-        Position.X = 352.000000000000000000
-        Position.Y = 54.000000000000000000
+        Position.X = 496.000000000000000000
+        Position.Y = 14.000000000000000000
         TabOrder = 0
         Text = 'Add photo'
         OnClick = AddPhotoClick
       end
       object ButtonTotalEvents: TButton
-        Position.X = 344.000000000000000000
-        Position.Y = 110.000000000000000000
+        Position.X = 592.000000000000000000
+        Position.Y = 6.000000000000000000
         Size.Width = 145.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 3
+        TabOrder = 4
         Text = 'TotalEvents'
         OnClick = ButtonTotalEventsClick
+      end
+      object StringGridEvents: TStringGrid
+        CanFocus = True
+        ClipChildren = True
+        Position.Y = 64.000000000000000000
+        Size.Width = 1122.000000000000000000
+        Size.Height = 560.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        RowCount = 0
+        Viewport.Width = 1118.000000000000000000
+        Viewport.Height = 535.000000000000000000
+        object EventName: TStringColumn
+          Header = 'Name'
+          Size.Width = 185.000000000000000000
+        end
+        object EventValues: TStringColumn
+          Header = 'Values'
+          Size.Width = 735.000000000000000000
+        end
       end
     end
     object Block: TTabItem
@@ -856,7 +881,7 @@ object Form3: TForm3
         end>
       IsSelected = False
       Size.Width = 49.000000000000000000
-      Size.Height = 26.000000000000000000
+      Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
@@ -876,15 +901,15 @@ object Form3: TForm3
           Text = 
             '0xa14d40f6437030826abf200bae0f053059d7348a53f3058d1cf3fb2dafa868' +
             'a8'
-          Position.Y = 9.000000000000000000
+          Position.Y = 5.000000000000000000
           Size.Width = 1122.000000000000000000
-          Size.Height = 22.000000000000000000
+          Size.Height = 30.000000000000000000
           Size.PlatformDefault = False
           object EditButtonBlock: TEditButton
             CanFocus = False
             Cursor = crArrow
             Size.Width = 60.000000000000000000
-            Size.Height = 18.000000000000000000
+            Size.Height = 26.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
             Text = 'Get'
@@ -897,11 +922,11 @@ object Form3: TForm3
         CanFocus = True
         ClipChildren = True
         Size.Width = 1122.000000000000000000
-        Size.Height = 606.000000000000000000
+        Size.Height = 583.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
         Viewport.Width = 1102.000000000000000000
-        Viewport.Height = 581.000000000000000000
+        Viewport.Height = 558.000000000000000000
         object StringColumn5: TStringColumn
           Header = 'Key'
           Size.Width = 185.000000000000000000
@@ -918,7 +943,7 @@ object Form3: TForm3
         end>
       IsSelected = False
       Size.Width = 68.000000000000000000
-      Size.Height = 26.000000000000000000
+      Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
@@ -963,13 +988,13 @@ object Form3: TForm3
           '01000a031916815260200191505b508381038252845181528451602091820191' +
           '86019080838382156103f0575b8051825260208311156103f057601f1990920'
         Size.Width = 1122.000000000000000000
-        Size.Height = 22.000000000000000000
+        Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
         object CallCodeButton: TEditButton
           CanFocus = False
           Cursor = crArrow
           Size.Width = 84.000000000000000000
-          Size.Height = 18.000000000000000000
+          Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 0
           Text = 'Parse'
