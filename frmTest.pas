@@ -435,7 +435,7 @@ procedure TForm3.TabItem1Click(Sender: TObject);
 var
   i: Integer;
 begin
-  if StringGridEvents.RowCount = 0 then
+  if (StringGridEvents.RowCount = 0) or Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
     for i := 0 to Demo.Events.Count - 1 do
       begin
         StringGridEvents.RowCount := StringGridEvents.RowCount + 1;
