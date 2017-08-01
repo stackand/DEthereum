@@ -1333,11 +1333,7 @@ begin
   Result := Event.FEventHash <> '';
 
   if not Result then
-    if web3_sha3([eth_strToHex(Event.EthereumEventDefinition)], Event.FEventHash) then
-      begin
-        Result := True;
-        Event.FEventHash := Copy(Event.FEventHash, 3, 8);
-      end;
+    Result := web3_sha3([eth_strToHex(Event.EthereumEventDefinition)], Event.FEventHash);
 end;
 
 function TEthereumContract.GetMethod(MethodName: String): TEthereumContractMethod;
@@ -1995,7 +1991,9 @@ begin
 
                 if Assigned(Inputs) then
                   ParametersFromArray(Inputs, ContractEvent.Parameters, '_', ContractEvent.FEventName);
-                if Assigned(Hashes) then
+
+                //disabled hash load, because jsons hash has truncated length
+                if False and Assigned(Hashes) then
                   Hashes.TryGetValue<string>(ContractEvent.EthereumEventDefinition, ContractEvent.FEventHash);
 
                 FEvents.Add(ContractEvent);

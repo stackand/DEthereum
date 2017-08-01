@@ -4,6 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  REST.Json,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
   FMX.StdCtrls, FMX.TabControl, FMX.EditBox, FMX.NumberBox, FMX.Edit, FMX.Ani,
@@ -52,7 +53,7 @@ type
     StringGridTransation: TStringGrid;
     StringColumn1: TStringColumn;
     StringColumn2: TStringColumn;
-    TabItem1: TTabItem;
+    TabItemEvents: TTabItem;
     ButtonInfo: TButton;
     ssh_post: TButton;
     PasswordEditButton1: TPasswordEditButton;
@@ -68,7 +69,7 @@ type
     StringGridBlock: TStringGrid;
     StringColumn5: TStringColumn;
     StringColumn6: TStringColumn;
-    AddPhoto: TButton;
+    set_int32: TButton;
     ButtonTotalEvents: TButton;
     CheckBoxHashRate: TCheckBox;
     CallCode: TTabItem;
@@ -96,11 +97,13 @@ type
     procedure EditButtonTransactionClick(Sender: TObject);
     procedure TimerHashRateTimer(Sender: TObject);
     procedure EditButtonBlockClick(Sender: TObject);
-    procedure AddPhotoClick(Sender: TObject);
+    procedure set_int32Click(Sender: TObject);
     procedure ButtonTotalEventsClick(Sender: TObject);
     procedure CallCodeButtonClick(Sender: TObject);
     procedure ButtonSaveDelphiClick(Sender: TObject);
-    procedure TabItem1Click(Sender: TObject);
+    procedure TabItemEventsClick(Sender: TObject);
+    procedure StringGridEventsCellClick(const Column: TColumn;
+      const Row: Integer);
   private
     { Private declarations }
     eth: TEthereum;
@@ -132,19 +135,12 @@ begin
   StringGridLog.Cells[2, StringGridLog.RowCount - 1] := Text;
 end;
 
-procedure TForm3.AddPhotoClick(Sender: TObject);
-{var
-  Demo: TEth_ContractDemoContract;
-  __set_int64: Int64;}
+procedure TForm3.set_int32Click(Sender: TObject);
+var
+  __set_int32: Integer;
 begin
-{  Demo := TEth_ContractDemoContract.Create;
-  SetupEthereum(Demo);
-  try
-//    Demo.totalEvents(1000000, 50000000);
-//    Demo.set_int64(1000000, 50000000, 112233445566, __set_int64);
-  finally
-    Demo.Free;
-  end;}
+  if Demo.set_int32(1000000, 50000000, 112233445566, __set_int32) then
+    ShowMessage(IntToStr(__set_int32));
 end;
 
 function TForm3.BlockInfo(Bl: TEth_BlockClass): TArray<String>;
@@ -356,6 +352,7 @@ end;
 procedure TForm3.EditServerChange(Sender: TObject);
 begin
   SetupEthereum(eth);
+  SetupEthereum(demo);
 end;
 
 procedure TForm3.FormCreate(Sender: TObject);
@@ -431,18 +428,27 @@ begin
   eth.shh_post('from', 'to', sl, 'Message', 64, 64, PostResult);
 end;
 
-procedure TForm3.TabItem1Click(Sender: TObject);
+procedure TForm3.StringGridEventsCellClick(const Column: TColumn;
+  const Row: Integer);
+begin
+ if Column.Index = 0 then
+   if Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
+     begin
+       //StringGridEvents.Cells[1, Row] := TJson.Format(Demo.Events[Column.Index].Events);
+     end;
+end;
+
+procedure TForm3.TabItemEventsClick(Sender: TObject);
 var
   i: Integer;
 begin
-  if (StringGridEvents.RowCount = 0) or Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
-    for i := 0 to Demo.Events.Count - 1 do
-      begin
-        StringGridEvents.RowCount := StringGridEvents.RowCount + 1;
-        StringGridEvents.Cells[0, StringGridEvents.RowCount - 1] := demo.Events[i].EventName;
-        StringGridEvents.Cells[1, StringGridEvents.RowCount - 1] := demo.Events[i].DelphiEventDefinition(demo.Events[i].EventName);
-        {StringGridLog.Cells[2, StringGridLog.RowCount - 1] := Text;}
-      end;
+  if StringGridEvents.RowCount = 0 then
+    if Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
+      for i := 0 to Demo.Events.Count - 1 do
+        begin
+          StringGridEvents.RowCount := StringGridEvents.RowCount + 1;
+          StringGridEvents.Cells[0, StringGridEvents.RowCount - 1] := demo.Events[i].EventName;
+        end;
 end;
 
 procedure TForm3.TimerHashRateTimer(Sender: TObject);

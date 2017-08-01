@@ -211,7 +211,7 @@ begin
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_int32';
   Event.EventType := 'event';
-  Event.EventHash := 'c7d48022';
+  Event.EventHash := '';
   Event.EventAnonymous := False;
 
   Parameter := TEthereumContractParameter.Create;
@@ -593,9 +593,9 @@ begin
       Result := GetEventHash(Event);
       if Result then
         begin
-          SetLength(Topics, 1);
-          Topics[0] := Event.EventName;
           Event.Events.Clear;
+          SetLength(Topics, 1);
+          Topics[0] := Event.EventHash;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
     end else
