@@ -2227,9 +2227,13 @@ var
   Filter, Get: String;
 begin
   Filter := 'const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64';
+<<<<<<< HEAD
+  Read := 'const Index: Int64;' + TEthereumContract.NamesTypes(FParameters, 'out ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
+=======
   Get := 'const Index: Int64';
   if FParameters.Count > 0 then
     Get := Get + '; ' + TEthereumContract.NamesTypes(FParameters, 'out ', '; ', ': ', True, True, TEthereumContract.DelphiSimpleConvertor);
+>>>>>>> 2891c380583809ba866ac1d9c5589e5c6145ade0
 
   if ContractClassName <> '' then
     Result := Format(
