@@ -13,7 +13,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  DEthereum, DEthereum.Types, DemoContract;
+  DEthereum, DEthereum.Types;//, DemoContract;
 
 type
   TForm3 = class(TForm)
@@ -128,18 +128,18 @@ begin
 end;
 
 procedure TForm3.AddPhotoClick(Sender: TObject);
-var
+{var
   Demo: TEth_ContractDemoContract;
-  __set_int64: Int64;
+  __set_int64: Int64;}
 begin
-  Demo := TEth_ContractDemoContract.Create;
+{  Demo := TEth_ContractDemoContract.Create;
   SetupEthereum(Demo);
   try
 //    Demo.totalEvents(1000000, 50000000);
 //    Demo.set_int64(1000000, 50000000, 112233445566, __set_int64);
   finally
     Demo.Free;
-  end;
+  end;}
 end;
 
 function TForm3.BlockInfo(Bl: TEth_BlockClass): TArray<String>;
@@ -267,13 +267,13 @@ begin
 end;
 
 procedure TForm3.ButtonTotalEventsClick(Sender: TObject);
-var
+{var
   __totalEvents: Int64;
   i: Int64;
   Demo: TEth_ContractDemoContract;
-  t: TArray<string>;
+  t: TArray<string>;}
 begin
-  Demo := TEth_ContractDemoContract.Create;
+{  Demo := TEth_ContractDemoContract.Create;
   SetupEthereum(Demo);
 //  t := TArray<String>.Create(''); Demo.Events[0].MethodHash
   try
@@ -287,7 +287,7 @@ begin
       end;
   finally
     Demo.Free;
-  end;
+  end;}
 end;
 
 procedure TForm3.CallCodeButtonClick(Sender: TObject);

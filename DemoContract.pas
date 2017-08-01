@@ -1,6 +1,6 @@
 unit DemoContract;
 
-// auto generated source at 27.07.2017 19:34:40
+// auto generated source at 31.07.2017 20:39:54
 
 interface
 
@@ -24,11 +24,16 @@ type
     function set_string(const gas, gasPrice: Int64; const value: String; out __set_string: String): Boolean;
     function type_string(const gas, gasPrice: Int64; out __type_string: String): Boolean;
     function type_int64(const gas, gasPrice: Int64; out __type_int64: Int64): Boolean;
-    function filter_type_int32(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
-    function filter_type_int64(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
-    function filter_type_bool(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
-    function filter_type_string(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
-    function filter_type_bytes32(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+    function FilterEvent_type_int32(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+    function GetEvent_type_int32(const Index: Int64; out value: Integer): Boolean;
+    function FilterEvent_type_int64(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+    function GetEvent_type_int64(const Index: Int64; out value: Int64): Boolean;
+    function FilterEvent_type_bool(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+    function GetEvent_type_bool(const Index: Int64; out value: Boolean): Boolean;
+    function FilterEvent_type_string(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+    function GetEvent_type_string(const Index: Int64; out value: String): Boolean;
+    function FilterEvent_type_bytes32(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+    function GetEvent_type_bytes32(const Index: Int64; out value: TByteDynArray): Boolean;
   end;
 
 implementation
@@ -43,7 +48,7 @@ procedure TEth_ContractDemoContract.InitContract;
 var
   Event: TEthereumContractEvent;
   Method: TEthereumContractMethod;
-  MethodParam: TEthereumContractParameter;
+  Parameter: TEthereumContractParameter;
 begin
 
   Method := TEthereumContractMethod.Create;
@@ -52,10 +57,10 @@ begin
   Method.MethodConstant := True;
   Method.MethodHash := '055825de';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__type_bytes32';
-  MethodParam.&Type := 'bytes32';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__type_bytes32';
+  Parameter.&Type := 'bytes32';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -64,15 +69,15 @@ begin
   Method.MethodConstant := False;
   Method.MethodHash := '1613447b';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'int32';
-  Method.Inputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'int32';
+  Method.Inputs.Add(Parameter);
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__set_int32';
-  MethodParam.&Type := 'int32';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__set_int32';
+  Parameter.&Type := 'int32';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -81,15 +86,15 @@ begin
   Method.MethodConstant := False;
   Method.MethodHash := '7bf5cddc';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'bytes32';
-  Method.Inputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'bytes32';
+  Method.Inputs.Add(Parameter);
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__set_bytes32';
-  MethodParam.&Type := 'bytes32';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__set_bytes32';
+  Parameter.&Type := 'bytes32';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -98,15 +103,15 @@ begin
   Method.MethodConstant := False;
   Method.MethodHash := '94310ea2';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'int64';
-  Method.Inputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'int64';
+  Method.Inputs.Add(Parameter);
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__set_int64';
-  MethodParam.&Type := 'int64';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__set_int64';
+  Parameter.&Type := 'int64';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -115,10 +120,10 @@ begin
   Method.MethodConstant := True;
   Method.MethodHash := '97a4220d';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__type_bool';
-  MethodParam.&Type := 'bool';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__type_bool';
+  Parameter.&Type := 'bool';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -127,15 +132,15 @@ begin
   Method.MethodConstant := False;
   Method.MethodHash := 'a66162a6';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'bool';
-  Method.Inputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'bool';
+  Method.Inputs.Add(Parameter);
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__set_bool';
-  MethodParam.&Type := 'bool';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__set_bool';
+  Parameter.&Type := 'bool';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -144,10 +149,10 @@ begin
   Method.MethodConstant := True;
   Method.MethodHash := 'ba870686';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__totalEvents';
-  MethodParam.&Type := 'int64';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__totalEvents';
+  Parameter.&Type := 'int64';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -156,10 +161,10 @@ begin
   Method.MethodConstant := True;
   Method.MethodHash := 'c7d48022';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__type_int32';
-  MethodParam.&Type := 'int32';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__type_int32';
+  Parameter.&Type := 'int32';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -168,15 +173,15 @@ begin
   Method.MethodConstant := False;
   Method.MethodHash := 'c9615770';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'string';
-  Method.Inputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'string';
+  Method.Inputs.Add(Parameter);
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__set_string';
-  MethodParam.&Type := 'string';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__set_string';
+  Parameter.&Type := 'string';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -185,10 +190,10 @@ begin
   Method.MethodConstant := True;
   Method.MethodHash := 'f8e19c61';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__type_string';
-  MethodParam.&Type := 'string';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__type_string';
+  Parameter.&Type := 'string';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Method := TEthereumContractMethod.Create;
@@ -197,75 +202,75 @@ begin
   Method.MethodConstant := True;
   Method.MethodHash := 'f952143e';
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := '__type_int64';
-  MethodParam.&Type := 'int64';
-  Method.Outputs.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := '__type_int64';
+  Parameter.&Type := 'int64';
+  Method.Outputs.Add(Parameter);
   Methods.Add(Method);
 
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_int32';
   Event.EventType := 'event';
-  Event.EventHash := '';
+  Event.EventHash := 'c7d48022';
   Event.EventAnonymous := False;
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'int32';
-  MethodParam.Indexed := False;
-  Event.Parameters.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'int32';
+  Parameter.Indexed := False;
+  Event.Parameters.Add(Parameter);
   Events.Add(Event);
 
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_int64';
   Event.EventType := 'event';
-  Event.EventHash := '';
+  Event.EventHash := 'f952143e';
   Event.EventAnonymous := False;
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'int64';
-  MethodParam.Indexed := False;
-  Event.Parameters.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'int64';
+  Parameter.Indexed := False;
+  Event.Parameters.Add(Parameter);
   Events.Add(Event);
 
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_bool';
   Event.EventType := 'event';
-  Event.EventHash := '';
+  Event.EventHash := '97a4220d';
   Event.EventAnonymous := False;
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'bool';
-  MethodParam.Indexed := False;
-  Event.Parameters.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'bool';
+  Parameter.Indexed := False;
+  Event.Parameters.Add(Parameter);
   Events.Add(Event);
 
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_string';
   Event.EventType := 'event';
-  Event.EventHash := '';
+  Event.EventHash := 'f8e19c61';
   Event.EventAnonymous := False;
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'string';
-  MethodParam.Indexed := False;
-  Event.Parameters.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'string';
+  Parameter.Indexed := False;
+  Event.Parameters.Add(Parameter);
   Events.Add(Event);
 
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_bytes32';
   Event.EventType := 'event';
-  Event.EventHash := '';
+  Event.EventHash := '055825de';
   Event.EventAnonymous := False;
 
-  MethodParam := TEthereumContractParameter.Create;
-  MethodParam.Name := 'value';
-  MethodParam.&Type := 'bytes32';
-  MethodParam.Indexed := False;
-  Event.Parameters.Add(MethodParam);
+  Parameter := TEthereumContractParameter.Create;
+  Parameter.Name := 'value';
+  Parameter.&Type := 'bytes32';
+  Parameter.Indexed := False;
+  Event.Parameters.Add(Parameter);
   Events.Add(Event);
 end;
 
@@ -286,13 +291,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __type_bytes32 := Method.Outputs[0].AsBytes;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -314,13 +319,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __set_int32 := Method.Outputs[0].AsInteger;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -342,13 +347,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __set_bytes32 := Method.Outputs[0].AsBytes;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -370,13 +375,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __set_int64 := Method.Outputs[0].AsInt64;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -398,13 +403,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __type_bool := Method.Outputs[0].AsBoolean;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -426,13 +431,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __set_bool := Method.Outputs[0].AsBoolean;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -454,13 +459,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __totalEvents := Method.Outputs[0].AsInt64;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -482,13 +487,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __type_int32 := Method.Outputs[0].AsInteger;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -510,13 +515,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __set_string := Method.Outputs[0].AsString;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -538,13 +543,13 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __type_string := Method.Outputs[0].AsString;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
@@ -566,18 +571,18 @@ begin
   end;
   if Result and (Method.Outputs.Count > 0) then
     begin
-      Result := ParseCallCode(Method, CallResult);
+      Result := ParseCallCode(Method.MethodName, CallResult, Method.Outputs);
       if Result then
         try
           __type_int64 := Method.Outputs[0].AsInt64;
         except
         on E: Exception do
-          Result := ErrorParamConvert(E, Method.MethodName);
+          Result := ErrorParamConvert(Method.MethodName, E);
         end
     end;
 end;
 
-function TEth_ContractDemoContract.filter_type_int32(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+function TEth_ContractDemoContract.FilterEvent_type_int32(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
 var
   Topics: TArray<String>;
   Event: TEthereumContractEvent;
@@ -593,10 +598,31 @@ begin
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
-    end;
+    end else
+    Result := ErrorNotFound('type_int32');
 end;
 
-function TEth_ContractDemoContract.filter_type_int64(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+function TEth_ContractDemoContract.GetEvent_type_int32(const Index: Int64; out value: Integer): Boolean;
+var
+  Event: TEthereumContractEvent;
+begin
+  Event := GetEvent('type_int32');
+  if Assigned(Event) then
+    try
+      Result := ParseCallCode(Event.EventName, Event.Events[Index].Data, Event.Parameters);
+      if Result then
+        begin
+          value := Event.Parameters[0].AsInteger;
+        end;
+    except
+      on E: Exception do
+        Result := ErrorParamConvert(Event.EventName, E);
+    end else
+    Result := ErrorNotFound('type_int32');
+end;
+
+
+function TEth_ContractDemoContract.FilterEvent_type_int64(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
 var
   Topics: TArray<String>;
   Event: TEthereumContractEvent;
@@ -612,10 +638,31 @@ begin
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
-    end;
+    end else
+    Result := ErrorNotFound('type_int64');
 end;
 
-function TEth_ContractDemoContract.filter_type_bool(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+function TEth_ContractDemoContract.GetEvent_type_int64(const Index: Int64; out value: Int64): Boolean;
+var
+  Event: TEthereumContractEvent;
+begin
+  Event := GetEvent('type_int64');
+  if Assigned(Event) then
+    try
+      Result := ParseCallCode(Event.EventName, Event.Events[Index].Data, Event.Parameters);
+      if Result then
+        begin
+          value := Event.Parameters[0].AsInt64;
+        end;
+    except
+      on E: Exception do
+        Result := ErrorParamConvert(Event.EventName, E);
+    end else
+    Result := ErrorNotFound('type_int64');
+end;
+
+
+function TEth_ContractDemoContract.FilterEvent_type_bool(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
 var
   Topics: TArray<String>;
   Event: TEthereumContractEvent;
@@ -631,10 +678,31 @@ begin
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
-    end;
+    end else
+    Result := ErrorNotFound('type_bool');
 end;
 
-function TEth_ContractDemoContract.filter_type_string(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+function TEth_ContractDemoContract.GetEvent_type_bool(const Index: Int64; out value: Boolean): Boolean;
+var
+  Event: TEthereumContractEvent;
+begin
+  Event := GetEvent('type_bool');
+  if Assigned(Event) then
+    try
+      Result := ParseCallCode(Event.EventName, Event.Events[Index].Data, Event.Parameters);
+      if Result then
+        begin
+          value := Event.Parameters[0].AsBoolean;
+        end;
+    except
+      on E: Exception do
+        Result := ErrorParamConvert(Event.EventName, E);
+    end else
+    Result := ErrorNotFound('type_bool');
+end;
+
+
+function TEth_ContractDemoContract.FilterEvent_type_string(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
 var
   Topics: TArray<String>;
   Event: TEthereumContractEvent;
@@ -650,10 +718,31 @@ begin
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
-    end;
+    end else
+    Result := ErrorNotFound('type_string');
 end;
 
-function TEth_ContractDemoContract.filter_type_bytes32(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
+function TEth_ContractDemoContract.GetEvent_type_string(const Index: Int64; out value: String): Boolean;
+var
+  Event: TEthereumContractEvent;
+begin
+  Event := GetEvent('type_string');
+  if Assigned(Event) then
+    try
+      Result := ParseCallCode(Event.EventName, Event.Events[Index].Data, Event.Parameters);
+      if Result then
+        begin
+          value := Event.Parameters[0].AsString;
+        end;
+    except
+      on E: Exception do
+        Result := ErrorParamConvert(Event.EventName, E);
+    end else
+    Result := ErrorNotFound('type_string');
+end;
+
+
+function TEth_ContractDemoContract.FilterEvent_type_bytes32(const FromBlockNumber: TEth_BlockNumber; const FromBlockNumberCustom: Int64; const ToBlockNumber: TEth_BlockNumber; const ToBlockNumberCustom: Int64): Boolean;
 var
   Topics: TArray<String>;
   Event: TEthereumContractEvent;
@@ -669,7 +758,28 @@ begin
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
-    end;
+    end else
+    Result := ErrorNotFound('type_bytes32');
 end;
+
+function TEth_ContractDemoContract.GetEvent_type_bytes32(const Index: Int64; out value: TByteDynArray): Boolean;
+var
+  Event: TEthereumContractEvent;
+begin
+  Event := GetEvent('type_bytes32');
+  if Assigned(Event) then
+    try
+      Result := ParseCallCode(Event.EventName, Event.Events[Index].Data, Event.Parameters);
+      if Result then
+        begin
+          value := Event.Parameters[0].AsBytes;
+        end;
+    except
+      on E: Exception do
+        Result := ErrorParamConvert(Event.EventName, E);
+    end else
+    Result := ErrorNotFound('type_bytes32');
+end;
+
 
 end.
