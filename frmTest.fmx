@@ -176,7 +176,7 @@ object Form3: TForm3
         Size.Height = 373.000000000000000000
         Size.PlatformDefault = False
         TabHeight = 49.000000000000000000
-        TabIndex = 0
+        TabIndex = 1
         TabOrder = 1
         TabPosition = PlatformDefault
         Sizes = (
@@ -192,7 +192,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 39.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -435,7 +435,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 49.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -814,12 +814,12 @@ object Form3: TForm3
         item
         end>
       IsSelected = True
-      Size.Width = 97.000000000000000000
+      Size.Width = 55.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
-      Text = 'TabItemEvents'
+      Text = 'Events'
       OnClick = TabItemEventsClick
       ExplicitSize.cx = 69.000000000000000000
       ExplicitSize.cy = 26.000000000000000000

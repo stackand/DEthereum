@@ -1,6 +1,6 @@
 unit DemoContract;
 
-// auto generated source at 31.07.2017 20:39:54
+// auto generated source at 02.08.2017 22:01:30
 
 interface
 
@@ -224,7 +224,7 @@ begin
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_int64';
   Event.EventType := 'event';
-  Event.EventHash := 'f952143e';
+  Event.EventHash := '';
   Event.EventAnonymous := False;
 
   Parameter := TEthereumContractParameter.Create;
@@ -237,7 +237,7 @@ begin
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_bool';
   Event.EventType := 'event';
-  Event.EventHash := '97a4220d';
+  Event.EventHash := '';
   Event.EventAnonymous := False;
 
   Parameter := TEthereumContractParameter.Create;
@@ -250,7 +250,7 @@ begin
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_string';
   Event.EventType := 'event';
-  Event.EventHash := 'f8e19c61';
+  Event.EventHash := '';
   Event.EventAnonymous := False;
 
   Parameter := TEthereumContractParameter.Create;
@@ -263,7 +263,7 @@ begin
   Event := TEthereumContractEvent.Create;
   Event.EventName := 'type_bytes32';
   Event.EventType := 'event';
-  Event.EventHash := '055825de';
+  Event.EventHash := '';
   Event.EventAnonymous := False;
 
   Parameter := TEthereumContractParameter.Create;
@@ -593,9 +593,9 @@ begin
       Result := GetEventHash(Event);
       if Result then
         begin
-          Event.Events.Clear;
           SetLength(Topics, 1);
           Topics[0] := Event.EventHash;
+          Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
     end else
@@ -634,7 +634,7 @@ begin
       if Result then
         begin
           SetLength(Topics, 1);
-          Topics[0] := Event.EventName;
+          Topics[0] := Event.EventHash;
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
@@ -674,7 +674,7 @@ begin
       if Result then
         begin
           SetLength(Topics, 1);
-          Topics[0] := Event.EventName;
+          Topics[0] := Event.EventHash;
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
@@ -714,7 +714,7 @@ begin
       if Result then
         begin
           SetLength(Topics, 1);
-          Topics[0] := Event.EventName;
+          Topics[0] := Event.EventHash;
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;
@@ -754,7 +754,7 @@ begin
       if Result then
         begin
           SetLength(Topics, 1);
-          Topics[0] := Event.EventName;
+          Topics[0] := Event.EventHash;
           Event.Events.Clear;
           Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);
         end;

@@ -1398,7 +1398,7 @@ begin
             Param := TJSONObject.Create;
             Param.AddPair('name', TJSONString.Create(ContractParameter.FName));
             Param.AddPair('type', TJSONString.Create(ContractParameter.FType));
-            Inputs.AddElement(Param);
+            Outputs.AddElement(Param);
           end;
 
         Methods.AddElement(Method);
@@ -2054,7 +2054,7 @@ begin
           p.FValue := Parts[i];
         end else
         begin
-          Result := ErrorTypeCast(Source, p, '');
+          Result := ErrorTypeCast(Source, p, p.FType);
           Exit;
         end;
 
@@ -2070,7 +2070,7 @@ begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
   FMethodError.code := -1;
-  FMethodError.message := Format('type cast error on input parameter %s.%s: %s with %s', [Source, Param.FName, Param.FType, PassedType]);
+  FMethodError.message := Format('type cast error on input parameter %s(%s): %s with %s', [Source, Param.FName, Param.FType, PassedType]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
 end;
@@ -2245,7 +2245,7 @@ begin
       '      if Result then' + sLineBreak +
       '        begin' + sLineBreak +
       '          SetLength(Topics, 1);' + sLineBreak +
-      '          Topics[0] := Event.EventName;' + sLineBreak +
+      '          Topics[0] := Event.EventHash;' + sLineBreak +
       '          Event.Events.Clear;' + sLineBreak +
       '          Result := eth_getLogs(FromBlockNumber, FromBlockNumberCustom, ToBlockNumber, ToBlockNumberCustom, ContractAddress, Topics, Event.Events);' + sLineBreak +
       '        end;' + sLineBreak +
