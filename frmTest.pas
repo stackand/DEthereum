@@ -76,14 +76,16 @@ type
     CallCodeEdit: TEdit;
     CallCodeButton: TEditButton;
     TabControl2: TTabControl;
-    TabItemDelphiResult: TTabItem;
+    TabItemDelphiSource: TTabItem;
     TabItemABIBuildResult: TTabItem;
-    MemoABIDelphiResult: TMemo;
-    MemoABIBuildResult: TMemo;
+    MemoABIDelphiSource: TMemo;
+    MemoContractABI: TMemo;
     ButtonSaveDelphi: TButton;
     StringGridEvents: TStringGrid;
     EventName: TStringColumn;
     EventValues: TStringColumn;
+    TabItemContract: TTabItem;
+    EditContractAddress: TEdit;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -201,9 +203,12 @@ begin
     end;
     if pa then
       begin
-        c.BuildDelphiSource('DemoContract', MemoABIDelphiResult.Lines);
+        c.BuildDelphiSource('DemoContract', MemoABIDelphiSource.Lines);
         if c.BuildABI(s, True) then
-          MemoABIBuildResult.Lines.Text := s;
+          begin
+            MemoContractABI.Lines.Text := s;
+            EditContractAddress.Text := c.ContractAddress;
+          end;
       end;
   finally
     c.Free;
@@ -250,7 +255,7 @@ end;
 
 procedure TForm3.ButtonSaveDelphiClick(Sender: TObject);
 begin
-  MemoABIDelphiResult.Lines.SaveToFile('DemoContract.pas');
+  MemoABIDelphiSource.Lines.SaveToFile('DemoContract.pas');
 end;
 
 procedure TForm3.ButtonStartMinerClick(Sender: TObject);
@@ -430,12 +435,24 @@ end;
 
 procedure TForm3.StringGridEventsCellClick(const Column: TColumn;
   const Row: Integer);
+var
+  b: Boolean;
+  Event: String;
+  bytes32: TByteDynArray;
 begin
- if Column.Index = 0 then
-   if Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
-     begin
-       //StringGridEvents.Cells[1, Row] := TJson.Format(Demo.Events[Column.Index].Events);
-     end;
+  Event := StringGridEvents.Cells[0, Row];
+  if Event = 'type_int32' then b := Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) else
+  if Event = 'type_int64' then b := Demo.FilterEvent_type_int64(ethbnEearliest, 0, ethbnLatest, 0) else
+  if Event = 'type_bool' then b := Demo.FilterEvent_type_bool(ethbnEearliest, 0, ethbnLatest, 0) else
+  if Event = 'type_string' then b := Demo.FilterEvent_type_string(ethbnEearliest, 0, ethbnLatest, 0) else
+  if Event = 'type_bytes32' then b := Demo.FilterEvent_type_bytes32(ethbnEearliest, 0, ethbnLatest, 0) else
+    ShowMessage('Unknown event name');
+
+  if b then
+    begin
+      Demo.GetEvent_type_bytes32(0, bytes32);
+      StringGridEvents.Cells[1, Row] := eth_bytesToHex(bytes32);
+    end;
 end;
 
 procedure TForm3.TabItemEventsClick(Sender: TObject);

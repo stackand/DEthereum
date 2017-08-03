@@ -33,6 +33,8 @@ object Form3: TForm3
       1041s
       414s
       1041s
+      414s
+      1041s
       414s)
     object TabItemLog: TTabItem
       CustomIcon = <
@@ -176,7 +178,7 @@ object Form3: TForm3
         Size.Height = 373.000000000000000000
         Size.PlatformDefault = False
         TabHeight = 49.000000000000000000
-        TabIndex = 1
+        TabIndex = 3
         TabOrder = 1
         TabPosition = PlatformDefault
         Sizes = (
@@ -435,7 +437,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 49.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -512,7 +514,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 52.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -535,20 +537,20 @@ object Form3: TForm3
               275s
               1041s
               275s)
-            object TabItemDelphiResult: TTabItem
+            object TabItemDelphiSource: TTabItem
               CustomIcon = <
                 item
                 end>
               IsSelected = True
-              Size.Width = 55.000000000000000000
+              Size.Width = 93.000000000000000000
               Size.Height = 49.000000000000000000
               Size.PlatformDefault = False
               StyleLookup = ''
               TabOrder = 0
-              Text = 'Delphi'
+              Text = 'Delphi source'
               ExplicitSize.cx = 55.000000000000000000
               ExplicitSize.cy = 26.000000000000000000
-              object MemoABIDelphiResult: TMemo
+              object MemoABIDelphiSource: TMemo
                 Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
                 DataDetectorTypes = []
                 Align = Client
@@ -583,16 +585,24 @@ object Form3: TForm3
               Text = 'ABI Build from Delphi'
               ExplicitSize.cx = 134.000000000000000000
               ExplicitSize.cy = 26.000000000000000000
-              object MemoABIBuildResult: TMemo
+              object MemoContractABI: TMemo
                 Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
                 DataDetectorTypes = []
                 Align = Client
                 Size.Width = 1041.000000000000000000
-                Size.Height = 275.000000000000000000
+                Size.Height = 245.000000000000000000
                 Size.PlatformDefault = False
-                TabOrder = 0
+                TabOrder = 1
                 Viewport.Width = 1037.000000000000000000
-                Viewport.Height = 271.000000000000000000
+                Viewport.Height = 241.000000000000000000
+              end
+              object EditContractAddress: TEdit
+                Touch.InteractiveGestures = [LongTap, DoubleTap]
+                Align = Top
+                TabOrder = 0
+                Size.Width = 1041.000000000000000000
+                Size.Height = 30.000000000000000000
+                Size.PlatformDefault = False
               end
             end
           end
@@ -646,7 +656,7 @@ object Form3: TForm3
         Size.Height = 341.000000000000000000
         Size.PlatformDefault = False
         TabHeight = 49.000000000000000000
-        TabIndex = 0
+        TabIndex = 1
         TabOrder = 2
         TabPosition = PlatformDefault
         Sizes = (
@@ -658,7 +668,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 57.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -723,7 +733,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 52.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -1002,6 +1012,18 @@ object Form3: TForm3
           OnClick = CallCodeButtonClick
         end
       end
+    end
+    object TabItemContract: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 66.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Contract'
     end
   end
   object TimerHashRate: TTimer

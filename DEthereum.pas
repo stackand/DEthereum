@@ -230,8 +230,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    function DelphiMethodDefinition(ContractClassName: String): String;
-    function EthereumMethodDefinition: String;
+    function DelphiMethodSignature(ContractClassName: String): String;
+    function EthereumMethodSignature: String;
     property MethodName: String read FMethodName write FMethodName;
     property MethodType: String read FMethodType write FMethodType;
     property MethodPayable: Boolean read FMethodPayable write FMethodPayable;
@@ -252,8 +252,8 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    function DelphiEventDefinition(ContractClassName: String): String;
-    function EthereumEventDefinition: String;
+    function DelphiEventSignature(ContractClassName: String): String;
+    function EthereumEventSignature: String;
     property EventName: String read FEventName write FEventName;
     property EventType: String read FEventType write FEventType;
     property EventHash: String read FEventHash write FEventHash;
@@ -1333,7 +1333,8 @@ begin
   Result := Event.FEventHash <> '';
 
   if not Result then
-    Result := web3_sha3([eth_strToHex(Event.EthereumEventDefinition)], Event.FEventHash);
+//    Result := web3_sha3([eth_strToHex(Event.EthereumEventSignature)], Event.FEventHash);
+    Result := web3_sha3([eth_strToHex(Event.EthereumEventSignature)], Event.FEventHash);
 end;
 
 function TEthereumContract.GetMethod(MethodName: String): TEthereumContractMethod;
@@ -1681,7 +1682,7 @@ begin
       begin
         if ContractMethod.FMethodType = 'function' then
           begin
-            int.Add(ContractMethod.DelphiMethodDefinition(''));
+            int.Add(ContractMethod.DelphiMethodSignature(''));
 
             imp.Add('');
             imp.Add('  Method := TEthereumContractMethod.Create;');
@@ -1714,7 +1715,7 @@ begin
 
     for ContractEvent in FEvents do
       begin
-        int.Add(ContractEvent.DelphiEventDefinition(''));
+        int.Add(ContractEvent.DelphiEventSignature(''));
 
         imp.Add('');
         imp.Add('  Event := TEthereumContractEvent.Create;');
@@ -1743,12 +1744,12 @@ begin
     for ContractMethod in FMethods do
       begin
         imp.Add('');
-        imp.Add(ContractMethod.DelphiMethodDefinition(ContractName));
+        imp.Add(ContractMethod.DelphiMethodSignature(ContractName));
       end;
     for ContractEvent in FEvents do
       begin
         imp.Add('');
-        imp.Add(ContractEvent.DelphiEventDefinition(ContractName));
+        imp.Add(ContractEvent.DelphiEventSignature(ContractName));
       end;
     ImpPart.AddStrings(imp);
 
@@ -1779,7 +1780,7 @@ begin
   Result := Method.FMethodHash <> '';
 
   if not Result then
-    if web3_sha3([eth_strToHex(Method.EthereumMethodDefinition)], Method.FMethodHash) then
+    if web3_sha3([eth_strToHex(Method.EthereumMethodSignature)], Method.FMethodHash) then
       begin
         Result := True;
         Method.FMethodHash := Copy(Method.FMethodHash, 3, 8);
@@ -1918,6 +1919,7 @@ begin
   try
     Hashes := nil;
     Initial := nil;
+    Methods := nil;
     try
       Initial := TJSONObject.ParseJSONValue(JSONString);
 
@@ -1977,7 +1979,7 @@ begin
                 if Assigned(Outputs) then
                   ParametersFromArray(Outputs, ContractMethod.Outputs, '__', ContractMethod.FMethodName);
                 if Assigned(Hashes) then
-                  Hashes.TryGetValue<string>(ContractMethod.EthereumMethodDefinition, ContractMethod.FMethodHash);
+                  Hashes.TryGetValue<string>(ContractMethod.EthereumMethodSignature, ContractMethod.FMethodHash);
 
                 FMethods.Add(ContractMethod);
               end else
@@ -1994,7 +1996,7 @@ begin
 
                 //disabled hash load, because jsons hash has truncated length
                 if False and Assigned(Hashes) then
-                  Hashes.TryGetValue<string>(ContractEvent.EthereumEventDefinition, ContractEvent.FEventHash);
+                  Hashes.TryGetValue<string>(ContractEvent.EthereumEventSignature, ContractEvent.FEventHash);
 
                 FEvents.Add(ContractEvent);
               end;
@@ -2084,7 +2086,7 @@ begin
   FOutputs := TObjectList<TEthereumContractParameter>.Create;
 end;
 
-function TEthereumContractMethod.DelphiMethodDefinition(ContractClassName: String): String;
+function TEthereumContractMethod.DelphiMethodSignature(ContractClassName: String): String;
 var
   i: Integer;
   Inputs, Outputs, n, t: String;
@@ -2155,7 +2157,7 @@ begin
   inherited;
 end;
 
-function TEthereumContractMethod.EthereumMethodDefinition: String;
+function TEthereumContractMethod.EthereumMethodSignature: String;
 begin
   Result := Format('%s(%s)', [FMethodName, TEthereumContract.NamesTypes(FInputs, '', ',', '', False, True, nil)]);
 end;
@@ -2221,7 +2223,7 @@ begin
   FParameters := TObjectList<TEthereumContractParameter>.Create;
 end;
 
-function TEthereumContractEvent.DelphiEventDefinition(
+function TEthereumContractEvent.DelphiEventSignature(
   ContractClassName: String): String;
 var
   Filter, Get: String;
@@ -2300,10 +2302,11 @@ begin
   inherited;
 end;
 
-function TEthereumContractEvent.EthereumEventDefinition: String;
+function TEthereumContractEvent.EthereumEventSignature: String;
 begin
   //for events, hash string evaluating without parameters
-  Result := Format('%s()', [FEventName]);
+//  Result := Format('%s()', [FEventName]);
+  Result := Format('%s(%s)', [FEventName, TEthereumContract.NamesTypes(FParameters, '', ',', '', False, True, nil)]);
 end;
 
 end.
