@@ -439,9 +439,16 @@ var
   b: Boolean;
   Event: String;
   bytes32: TByteDynArray;
+  ContractEvent: TEthereumContractEvent;
 begin
   Event := StringGridEvents.Cells[0, Row];
-  if Event = 'type_int32' then b := Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) else
+  if Event = 'type_int32' then
+    if Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
+      begin
+        ContractEvent := Demo.Event[Event];
+        ContractEvent.Events.
+      end
+  else
   if Event = 'type_int64' then b := Demo.FilterEvent_type_int64(ethbnEearliest, 0, ethbnLatest, 0) else
   if Event = 'type_bool' then b := Demo.FilterEvent_type_bool(ethbnEearliest, 0, ethbnLatest, 0) else
   if Event = 'type_string' then b := Demo.FilterEvent_type_string(ethbnEearliest, 0, ethbnLatest, 0) else

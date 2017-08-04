@@ -1024,6 +1024,8 @@ object Form3: TForm3
       StyleLookup = ''
       TabOrder = 0
       Text = 'Contract'
+      ExplicitSize.cx = 66.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
     end
   end
   object TimerHashRate: TTimer
