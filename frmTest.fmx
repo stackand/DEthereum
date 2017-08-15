@@ -16,10 +16,12 @@ object Form3: TForm3
     Size.Height = 463.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
-    TabIndex = 4
+    TabIndex = 1
     TabOrder = 2
     TabPosition = PlatformDefault
     Sizes = (
+      1041s
+      414s
       1041s
       414s
       1041s
@@ -157,6 +159,30 @@ object Form3: TForm3
           Header = 'Text'
           Size.Width = 927.000000000000000000
         end
+      end
+    end
+    object TabItemTextLog: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 64.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Text Log'
+      object MemoTextLog: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        TextSettings.WordWrap = True
+        Align = Client
+        Size.Width = 1041.000000000000000000
+        Size.Height = 414.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Viewport.Width = 1037.000000000000000000
+        Viewport.Height = 410.000000000000000000
       end
     end
     object TabItemABI: TTabItem
@@ -823,7 +849,7 @@ object Form3: TForm3
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 55.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False

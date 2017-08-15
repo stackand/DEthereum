@@ -86,6 +86,8 @@ type
     EventValues: TStringColumn;
     TabItemContract: TTabItem;
     EditContractAddress: TEdit;
+    TabItemTextLog: TTabItem;
+    MemoTextLog: TMemo;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -135,6 +137,14 @@ begin
   StringGridLog.Cells[0, StringGridLog.RowCount - 1] := DateTimeToStr(Now);
   StringGridLog.Cells[1, StringGridLog.RowCount - 1] := &Type;
   StringGridLog.Cells[2, StringGridLog.RowCount - 1] := Text;
+
+  MemoTextLog.Lines.Add(DateTimeToStr(Now));
+  MemoTextLog.Lines.Add(&Type);
+  MemoTextLog.Lines.Add(Text);
+
+  MemoTextLog.Lines.Add('');
+  MemoTextLog.Lines.Add('');
+  MemoTextLog.Lines.Add('');
 end;
 
 procedure TForm3.set_int32Click(Sender: TObject);
@@ -436,7 +446,9 @@ end;
 procedure TForm3.StringGridEventsCellClick(const Column: TColumn;
   const Row: Integer);
 var
+  i, j: Integer;
   b: Boolean;
+  s: String;
   Event: String;
   bytes32: TByteDynArray;
   ContractEvent: TEthereumContractEvent;
@@ -446,7 +458,11 @@ begin
     if Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
       begin
         ContractEvent := Demo.Event[Event];
-        ContractEvent.Events.
+        for i := 0 to ContractEvent.Events.Count - 1 do
+          if demo.GetEvent_type_int32(i, j)
+            then s := s + IntToStr(j)
+            else Exit;
+        StringGridEvents.Cells[1, Row] := s;
       end
   else
   if Event = 'type_int64' then b := Demo.FilterEvent_type_int64(ethbnEearliest, 0, ethbnLatest, 0) else
