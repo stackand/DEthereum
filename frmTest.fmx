@@ -16,7 +16,7 @@ object Form3: TForm3
     Size.Height = 463.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
-    TabIndex = 1
+    TabIndex = 5
     TabOrder = 2
     TabPosition = PlatformDefault
     Sizes = (
@@ -165,13 +165,15 @@ object Form3: TForm3
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 64.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
       Text = 'Text Log'
+      ExplicitSize.cx = 64.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
       object MemoTextLog: TMemo
         Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
         DataDetectorTypes = []
@@ -849,7 +851,7 @@ object Form3: TForm3
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 55.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
@@ -859,36 +861,12 @@ object Form3: TForm3
       OnClick = TabItemEventsClick
       ExplicitSize.cx = 69.000000000000000000
       ExplicitSize.cy = 26.000000000000000000
-      object ButtonInfo: TButton
-        Position.X = 296.000000000000000000
-        Position.Y = 14.000000000000000000
-        TabOrder = 5
-        Text = 'ButtonInfo'
-        OnClick = ButtonInfoClick
-      end
       object ssh_post: TButton
         Position.X = 392.000000000000000000
         Position.Y = 14.000000000000000000
-        TabOrder = 2
+        TabOrder = 1
         Text = 'ssh_post'
         OnClick = ssh_postClick
-      end
-      object set_int32: TButton
-        Position.X = 496.000000000000000000
-        Position.Y = 14.000000000000000000
-        TabOrder = 0
-        Text = 'set_int32'
-        OnClick = set_int32Click
-      end
-      object ButtonTotalEvents: TButton
-        Position.X = 592.000000000000000000
-        Position.Y = 14.000000000000000000
-        Size.Width = 145.000000000000000000
-        Size.Height = 22.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 4
-        Text = 'TotalEvents'
-        OnClick = ButtonTotalEventsClick
       end
       object StringGridEvents: TStringGrid
         CanFocus = True
@@ -897,7 +875,7 @@ object Form3: TForm3
         Size.Width = 1122.000000000000000000
         Size.Height = 560.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 1
+        TabOrder = 0
         RowCount = 0
         OnCellClick = StringGridEventsCellClick
         Viewport.Width = 1118.000000000000000000

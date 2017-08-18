@@ -54,7 +54,6 @@ type
     StringColumn1: TStringColumn;
     StringColumn2: TStringColumn;
     TabItemEvents: TTabItem;
-    ButtonInfo: TButton;
     ssh_post: TButton;
     PasswordEditButton1: TPasswordEditButton;
     StringGridLog: TStringGrid;
@@ -69,8 +68,6 @@ type
     StringGridBlock: TStringGrid;
     StringColumn5: TStringColumn;
     StringColumn6: TStringColumn;
-    set_int32: TButton;
-    ButtonTotalEvents: TButton;
     CheckBoxHashRate: TCheckBox;
     CallCode: TTabItem;
     CallCodeEdit: TEdit;
@@ -91,7 +88,6 @@ type
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure ButtonInfoClick(Sender: TObject);
     procedure ssh_postClick(Sender: TObject);
     procedure EditServerChange(Sender: TObject);
     procedure ButtonCompileSolidityClick(Sender: TObject);
@@ -101,8 +97,6 @@ type
     procedure EditButtonTransactionClick(Sender: TObject);
     procedure TimerHashRateTimer(Sender: TObject);
     procedure EditButtonBlockClick(Sender: TObject);
-    procedure set_int32Click(Sender: TObject);
-    procedure ButtonTotalEventsClick(Sender: TObject);
     procedure CallCodeButtonClick(Sender: TObject);
     procedure ButtonSaveDelphiClick(Sender: TObject);
     procedure TabItemEventsClick(Sender: TObject);
@@ -145,14 +139,6 @@ begin
   MemoTextLog.Lines.Add('');
   MemoTextLog.Lines.Add('');
   MemoTextLog.Lines.Add('');
-end;
-
-procedure TForm3.set_int32Click(Sender: TObject);
-var
-  __set_int32: Integer;
-begin
-  if Demo.set_int32(1000000, 50000000, 112233445566, __set_int32) then
-    ShowMessage(IntToStr(__set_int32));
 end;
 
 function TForm3.BlockInfo(Bl: TEth_BlockClass): TArray<String>;
@@ -227,42 +213,6 @@ begin
   TabControlABI.ActiveTab := TabItemABIResult;
 end;
 
-procedure TForm3.ButtonInfoClick(Sender: TObject);
-var
-  i: Integer;
-  HashRate: Int64;
-  s,v: String;
-  o: TEth_syncingClass;
-  Accounts: TArray<String>;
-  eb: TEth_BlockClass;
-  tc: TEth_TransactionClass;
-  bc: TEth_BlockClass;
-  trc: TEth_TransactionReceiptClass;
-begin
-  eth.web3_clientVersion(s);
-//  eth.RpcCall('eth_blockNumber', []);
-//  eth.RpcCall('eth_blockNumber', []);
-  eth.eth_hashrate(HashRate);
-  eth.eth_syncing(o);
-
-  eth.eth_accounts(Accounts);
-  eth.eth_getStorageAt('Accounts', 40, ethbnLatest, 0, s);
-
-  eth.eth_getBlockByNumber(30000, True, eb);
-
-//  eth.eth_compileSolidity('contract test { function multiply(uint a) returns(uint d) {   return a * 7;   } }', s);
-
-  eth.eth_getTransactionByHash('0xfef7c572777ef61a4d419b23f3bc54523fec412129bc32f632b99481b99048dd', tc);
-  eth.eth_getBlockByNumber(61483, True, bc);
-  eth.eth_getTransactionReceipt('0xfef7c572777ef61a4d419b23f3bc54523fec412129bc32f632b99481b99048dd', trc);
-  s := 'addPhoto(string,string,string,uint256,string,string)';
-  v := '0x';
-  for i := 1 to Length(s) do
-    v := v + IntToHex(Ord(s[i]), 2);
-  eth.web3_sha3([v], s);
-
-end;
-
 procedure TForm3.ButtonSaveDelphiClick(Sender: TObject);
 begin
   MemoABIDelphiSource.Lines.SaveToFile('DemoContract.pas');
@@ -280,30 +230,6 @@ var
   Result: Boolean;
 begin
   eth.miner_stop(Result);
-end;
-
-procedure TForm3.ButtonTotalEventsClick(Sender: TObject);
-{var
-  __totalEvents: Int64;
-  i: Int64;
-  Demo: TEth_ContractDemoContract;
-  t: TArray<string>;}
-begin
-{  Demo := TEth_ContractDemoContract.Create;
-  SetupEthereum(Demo);
-//  t := TArray<String>.Create(''); Demo.Events[0].MethodHash
-  try
-//    Demo.eth_newFilter(ethbnEearliest, 0, ethbnLatest, 0, Demo.ContractAddress, t, i);
-    if Demo.totalEvents(1000000, 50000000, __totalEvents) then
-      begin
-        ButtonTotalEvents.Text := __totalEvents.ToString;
-      end else
-      begin
-        ButtonTotalEvents.Text := '????';
-      end;
-  finally
-    Demo.Free;
-  end;}
 end;
 
 procedure TForm3.CallCodeButtonClick(Sender: TObject);

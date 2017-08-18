@@ -562,12 +562,10 @@ var
   s: String;
   jsa: TJSONArray;
   ParamObject: TJSONObject;
-  Change: TEth_FilterChangeClass;
   Changes: TEth_getFilterChangesClass;
 begin
   ParamObject := TJSONObject.Create;
   try
-
     ParamObject.AddPair(TJSONPair.Create('fromBlock', FromBlockNumber.ToString(FromBlockNumberCustom)));
     ParamObject.AddPair(TJSONPair.Create('toBlock', ToBlockNumber.ToString(ToBlockNumberCustom)));
     ParamObject.AddPair(TJSONPair.Create('address', ContractAddress));
@@ -577,13 +575,15 @@ begin
     ParamObject.AddPair(TJSONPair.Create('topics', jsa));
 
     Result := RpcCallNew<TEth_getFilterChangesClass>('eth_getLogs', [ParamObject], Changes);
-    if Result then
+    CallResult.FromJSON(Changes.result)
+
+{    if Result then
       begin
         for Change in Changes.result do
           CallResult.Add(Change);
 
         Changes.Free;
-      end;
+      end;}
   finally
     ParamObject.Free;
   end;
