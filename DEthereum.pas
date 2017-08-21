@@ -562,6 +562,7 @@ var
   s: String;
   jsa: TJSONArray;
   ParamObject: TJSONObject;
+  Change: TEth_FilterChangeClass;
   Changes: TEth_getFilterChangesClass;
 begin
   ParamObject := TJSONObject.Create;
@@ -575,15 +576,14 @@ begin
     ParamObject.AddPair(TJSONPair.Create('topics', jsa));
 
     Result := RpcCallNew<TEth_getFilterChangesClass>('eth_getLogs', [ParamObject], Changes);
-    CallResult.FromJSON(Changes.result)
 
-{    if Result then
+    if Result then
       begin
         for Change in Changes.result do
           CallResult.Add(Change);
-
+        Changes.result := [];
         Changes.Free;
-      end;}
+      end;
   finally
     ParamObject.Free;
   end;
@@ -2040,6 +2040,7 @@ begin
 
     for p in Destination do
       if (p.FType = 'bool')
+      or (p.FType = 'int32')
       or (p.FType = 'int64')
       or (p.FType = 'uint64') then
         begin

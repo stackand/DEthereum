@@ -386,7 +386,7 @@ begin
         ContractEvent := Demo.Event[Event];
         for i := 0 to ContractEvent.Events.Count - 1 do
           if demo.GetEvent_type_int32(i, j)
-            then s := s + IntToStr(j)
+            then s := s + Format('%s(%d)  ', [ContractEvent.Events[i].blockNumber, j])
             else Exit;
         StringGridEvents.Cells[1, Row] := s;
       end
@@ -396,12 +396,6 @@ begin
   if Event = 'type_string' then b := Demo.FilterEvent_type_string(ethbnEearliest, 0, ethbnLatest, 0) else
   if Event = 'type_bytes32' then b := Demo.FilterEvent_type_bytes32(ethbnEearliest, 0, ethbnLatest, 0) else
     ShowMessage('Unknown event name');
-
-  if b then
-    begin
-      Demo.GetEvent_type_bytes32(0, bytes32);
-      StringGridEvents.Cells[1, Row] := eth_bytesToHex(bytes32);
-    end;
 end;
 
 procedure TForm3.TabItemEventsClick(Sender: TObject);
