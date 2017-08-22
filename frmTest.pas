@@ -389,12 +389,20 @@ begin
             then s := s + Format('%s(%d)  ', [ContractEvent.Events[i].blockNumber, j])
             else Exit;
         StringGridEvents.Cells[1, Row] := s;
-      end
+      end else
   else
   if Event = 'type_int64' then b := Demo.FilterEvent_type_int64(ethbnEearliest, 0, ethbnLatest, 0) else
   if Event = 'type_bool' then b := Demo.FilterEvent_type_bool(ethbnEearliest, 0, ethbnLatest, 0) else
   if Event = 'type_string' then b := Demo.FilterEvent_type_string(ethbnEearliest, 0, ethbnLatest, 0) else
-  if Event = 'type_bytes32' then b := Demo.FilterEvent_type_bytes32(ethbnEearliest, 0, ethbnLatest, 0) else
+  if Event = 'type_bytes32' then
+    if Demo.FilterEvent_type_bytes32(ethbnEearliest, 0, ethbnLatest, 0) then
+      begin
+        ContractEvent := Demo.Event[Event];
+        for i := 0 to ContractEvent.Events.Count - 1 do
+          s := s + Format('%s(%s)  ', [ContractEvent.Events[i].blockNumber, ContractEvent.Events[i].Data]);
+        StringGridEvents.Cells[1, Row] := s;
+      end else
+  b := Demo.FilterEvent_type_bytes32(ethbnEearliest, 0, ethbnLatest, 0) else
     ShowMessage('Unknown event name');
 end;
 
