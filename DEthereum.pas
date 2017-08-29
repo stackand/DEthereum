@@ -18,11 +18,6 @@ const
   RPC_PARSE_ERROR      = -32700;
 
 type
-  uint256 = String;
-  bytes32 = String;
-
-//  TABITypes = (abitString);
-
   TEthereumContract = class;
 
   TEthereum = class
@@ -112,7 +107,8 @@ type
     function shh_newFilter(): Boolean;
     function shh_uninstallFilter(): Boolean;
     function shh_getFilterChanges(): Boolean;
-    function shh_getMessages(): Boolean;}
+    function shh_getMessages(): Boolean;
+}
     function personal_ecRecover(const message, signature: String; out CallResult: String): Boolean;
     function personal_importRawKey(const keydata, passphrase: String; out CallResult: String): Boolean;
     function personal_listAccounts(out CallResult: TArray<String>): Boolean;
@@ -145,7 +141,8 @@ type
     function admin_stopRPC(out CallResult: Boolean): Boolean;
     function admin_stopWS(out CallResult: Boolean): Boolean;
 
-{    function debug_backtraceAt(out CallResult: Boolean): Boolean;
+{   TO-DO
+    function debug_backtraceAt(out CallResult: Boolean): Boolean;
     function debug_blockProfile(out CallResult: Boolean): Boolean;
     function debug_cpuProfile(out CallResult: Boolean): Boolean;
     function debug_dumpBlock(out CallResult: Boolean): Boolean;
@@ -169,8 +166,8 @@ type
     function debug_verbosity(out CallResult: Boolean): Boolean;
     function debug_vmodule(out CallResult: Boolean): Boolean;
     function debug_writeBlockProfile(out CallResult: Boolean): Boolean;
-    function debug_writeMemProfile(out CallResult: Boolean): Boolean;}
-
+    function debug_writeMemProfile(out CallResult: Boolean): Boolean;
+}
     property RpcAddress: String read FRpcAddress write FRpcAddress;
     property RpcPort: Integer read FRpcPort write FRpcPort;
     property CoinAddress: String read FCoinAddress write FCoinAddress;
@@ -200,14 +197,23 @@ type
     procedure SetAsInt64(const Value: Int64);
     function GetAsBytes: TByteDynArray;
     procedure SetAsBytes(const Value: TByteDynArray);
+    function GetAsUInt32: UInt32;
+    function GetAsUInt64: UInt64;
+    procedure SetAsUInt64(const Value: UInt64);
+    procedure SetAsUInt32(const Value: UInt32);
+    function GetAsByte: Byte;
+    procedure SetAsByte(const Value: Byte);
   public
     property Name: String read FName write FName;
     property &Type: String read FType write FType;
     property Indexed: Boolean read FIndexed write FIndexed;
     property Value: String read FValue write FValue;
     property AsString: String read GetAsString write SetAsString;
+    property AsByte: Byte read GetAsByte write SetAsByte;
     property AsInteger: Integer read GetAsInteger write SetAsInteger;
+    property AsUInt32: UInt32 read GetAsUInt32 write SetAsUInt32;
     property AsInt64: Int64 read GetAsInt64 write SetAsInt64;
+    property AsUInt64: UInt64 read GetAsUInt64 write SetAsUInt64;
     property AsBoolean: Boolean read GetAsBoolean write SetAsBoolean;
     property AsBytes: TByteDynArray read GetAsBytes write SetAsBytes;
 //    property AsInt256: TBigInt read GetAsInt256;
@@ -1001,7 +1007,6 @@ var
 begin
   ParamObject := TJSONObject.Create;
   try
-
     if FromAddress = ''
       then ParamObject.AddPair(TJSONPair.Create('from', CoinAddress))
       else ParamObject.AddPair(TJSONPair.Create('from', FromAddress));
@@ -1331,7 +1336,6 @@ begin
   Result := Event.FEventHash <> '';
 
   if not Result then
-//    Result := web3_sha3([eth_strToHex(Event.EthereumEventSignature)], Event.FEventHash);
     Result := web3_sha3([eth_strToHex(Event.EthereumEventSignature)], Event.FEventHash);
 end;
 
@@ -1473,15 +1477,18 @@ begin
           Param.SetAsString(String(UnicodeString(TVarRec(Params[i]).VUnicodeString)));
 
         vtInteger:
-        if Param.FType <> 'int32' then
-          begin
-            ErrorTypeCast(Method.FMethodName, Param, 'vtInteger');
-            Exit;
-          end else
-        Param.SetAsInteger(TVarRec(Params[i]).VInteger);
+          if (Param.FType <> 'int8')
+          or (Param.FType <> 'int32')
+          or (Param.FType <> 'uint32') then
+            begin
+              ErrorTypeCast(Method.FMethodName, Param, 'vtInteger');
+              Exit;
+            end else
+          Param.SetAsInteger(TVarRec(Params[i]).VInteger);
 
         vtInt64:
-          if Param.FType <> 'int64' then
+          if (Param.FType <> 'int64')
+          or (Param.FType <> 'uint64') then
             begin
               ErrorTypeCast(Method.FMethodName, Param, 'vtInt64');
               Exit;
@@ -1530,8 +1537,11 @@ begin
           end else
         begin
           i := Method.FInputs.IndexOf(Param);
-          if (Param.FType = 'int32')
+          if (Param.FType = 'int8')
+          or (Param.FType = 'int32')
+          or (Param.FType = 'uint32')
           or (Param.FType = 'int64')
+          or (Param.FType = 'uint64')
           or (Param.FType = 'boolean') then
             begin
               StaticPart.Add(Param.FValue);
@@ -1806,8 +1816,11 @@ begin
 
       if t = 'Boolean' then t := 'AsBoolean' else
       if t = 'String' then t := 'AsString' else
+      if t = 'Byte' then t := 'AsByte' else
       if t = 'Integer' then t := 'AsInteger' else
+      if t = 'UInt32' then t := 'AsUInt32' else
       if t = 'Int64' then t := 'AsInt64' else
+      if t = 'UInt64' then t := 'AsUInt64' else
       if t = 'TByteDynArray' then t := 'AsBytes' else
       t := 'AsUNKNOWN';
 
@@ -2105,6 +2118,11 @@ begin
   Result := StrToBool(FValue);
 end;
 
+function TEthereumContractParameter.GetAsByte: Byte;
+begin
+  Result := StrToInt('$' + FValue);
+end;
+
 function TEthereumContractParameter.GetAsBytes: TByteDynArray;
 begin
   Result := eth_hexToBytes(FValue);
@@ -2125,9 +2143,24 @@ begin
   Result := eth_hexToStr(FValue);
 end;
 
+function TEthereumContractParameter.GetAsUInt32: UInt32;
+begin
+  Result := StrToUInt('$' + FValue);
+end;
+
+function TEthereumContractParameter.GetAsUInt64: UInt64;
+begin
+  Result := StrToUInt64('$' + FValue);
+end;
+
 procedure TEthereumContractParameter.SetAsBoolean(const Value: Boolean);
 begin
   FValue := eth_booleanToHex(Value, False, -eth_len);
+end;
+
+procedure TEthereumContractParameter.SetAsByte(const Value: Byte);
+begin
+  FValue := eth_intToHex(Value, False, -eth_len);
 end;
 
 procedure TEthereumContractParameter.SetAsBytes(const Value: TByteDynArray);
@@ -2148,6 +2181,16 @@ end;
 procedure TEthereumContractParameter.SetAsString(const Value: String);
 begin
   FValue := eth_strToHex(Value, False, eth_len);
+end;
+
+procedure TEthereumContractParameter.SetAsUInt32(const Value: UInt32);
+begin
+  FValue := eth_uintToHex(Value, False, -eth_len);
+end;
+
+procedure TEthereumContractParameter.SetAsUInt64(const Value: UInt64);
+begin
+  FValue := eth_uintToHex(Value, False, -eth_len);
 end;
 
 { TEthereumContractEvent }

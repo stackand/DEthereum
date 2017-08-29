@@ -278,10 +278,12 @@ type
 
 
 function eth_hexToInt(const s: String): Int64;
+function eth_hexToUInt(const s: String): UInt64;
 function eth_hexToStr(s: String): String;
 function eth_hexToBytes(s: String): TByteDynArray;
 function eth_booleanToHex(b: Boolean; HexPrefix: Boolean = True; Pad: Integer = 0): String;
 function eth_intToHex(i: Int64; HexPrefix: Boolean = True; Pad: Integer = 0): String;
+function eth_uintToHex(i: UInt64; HexPrefix: Boolean = True; Pad: Integer = 0): String;
 function eth_strToHex(const s: String; HexPrefix: Boolean = True; Pad: Integer = 0): String;
 function eth_bytesToStr(const b: TByteDynArray): String;
 function eth_bytesToHex(const b: TByteDynArray; HexPrefix: Boolean = True; Pad: Integer = 0): String;
@@ -336,9 +338,28 @@ begin
     Result := eth_hex + Result;
 end;
 
+function eth_uintToHex(i: UInt64; HexPrefix: Boolean = True; Pad: Integer = 0): String;
+begin
+  Result := IntToHex(i, 2);
+
+  if Pad <> 0 then
+    while Length(Result) mod abs(Pad * 2) > 0 do
+      if Pad > 0
+        then Result := Result + '0'
+        else Result := '0' + Result;
+
+  if HexPrefix then
+    Result := eth_hex + Result;
+end;
+
 function eth_hexToInt(const s: String): Int64;
 begin
   Result := StrToInt64('$' + StringReplace(s, eth_hex, '', []));
+end;
+
+function eth_hexToUInt(const s: String): UInt64;
+begin
+  Result := StrToUInt64('$' + StringReplace(s, eth_hex, '', []));
 end;
 
 function eth_strToHex(const s: String; HexPrefix: Boolean; Pad: Integer): String;
