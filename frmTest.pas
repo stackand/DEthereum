@@ -88,7 +88,6 @@ type
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure ssh_postClick(Sender: TObject);
     procedure EditServerChange(Sender: TObject);
     procedure ButtonCompileSolidityClick(Sender: TObject);
     procedure ComboBoxFromAddressClick(Sender: TObject);
@@ -353,20 +352,6 @@ begin
   Eth.OnMethodCall := OnMethodCall;
   Eth.OnMethodResult := OnMethodResult;
   Eth.OnMethodError := OnMethodError;
-end;
-
-procedure TForm3.ssh_postClick(Sender: TObject);
-var
-  sl: TStringList;
-  PostResult: Boolean;
-begin
-  sl := TStringList.Create;
-
-  sl.Add('1');
-  sl.Add('2');
-  sl.Add('3');
-
-  eth.shh_post('from', 'to', sl, 'Message', 64, 64, PostResult);
 end;
 
 procedure TForm3.StringGridEventsCellClick(const Column: TColumn;

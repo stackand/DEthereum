@@ -16,7 +16,7 @@ object Form3: TForm3
     Size.Height = 463.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
-    TabIndex = 5
+    TabIndex = 7
     TabOrder = 2
     TabPosition = PlatformDefault
     Sizes = (
@@ -206,7 +206,7 @@ object Form3: TForm3
         Size.Height = 373.000000000000000000
         Size.PlatformDefault = False
         TabHeight = 49.000000000000000000
-        TabIndex = 3
+        TabIndex = 0
         TabOrder = 1
         TabPosition = PlatformDefault
         Sizes = (
@@ -222,7 +222,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 39.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -542,7 +542,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 52.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -684,7 +684,7 @@ object Form3: TForm3
         Size.Height = 341.000000000000000000
         Size.PlatformDefault = False
         TabHeight = 49.000000000000000000
-        TabIndex = 1
+        TabIndex = 0
         TabOrder = 2
         TabPosition = PlatformDefault
         Sizes = (
@@ -696,7 +696,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 57.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -761,7 +761,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 52.000000000000000000
           Size.Height = 49.000000000000000000
           Size.PlatformDefault = False
@@ -851,7 +851,7 @@ object Form3: TForm3
       CustomIcon = <
         item
         end>
-      IsSelected = True
+      IsSelected = False
       Size.Width = 55.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
@@ -866,7 +866,6 @@ object Form3: TForm3
         Position.Y = 14.000000000000000000
         TabOrder = 1
         Text = 'ssh_post'
-        OnClick = ssh_postClick
       end
       object StringGridEvents: TStringGrid
         CanFocus = True
@@ -956,7 +955,7 @@ object Form3: TForm3
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 68.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False

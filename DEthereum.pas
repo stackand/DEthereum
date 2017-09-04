@@ -15,7 +15,8 @@ uses
 }
 
 const
-  RPC_PARSE_ERROR      = -32700;
+  RPC_PARSE_ERROR = -32700;
+  RPC_ERROR       = -32701;
 
 type
   TEthereumContract = class;
@@ -1312,7 +1313,7 @@ function TEthereumContract.ErrorLengthMismatch(Source: String;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
-  FMethodError.code := -1;
+  FMethodError.code := RPC_ERROR;
   FMethodError.message := Format('value length mismath on input parameter %s.%s:%s, value %s', [Source, Param.FName, Param.FType, Param.FValue]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
@@ -1356,7 +1357,7 @@ function TEthereumContract.ErrorBadCallCode(Source: String): Boolean;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
-  FMethodError.code := -1;
+  FMethodError.code := RPC_ERROR;
   FMethodError.message := Format('Bad %s call code ', [Source.QuotedString]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
@@ -1770,7 +1771,7 @@ function TEthereumContract.ErrorNotFound(Source: String): Boolean;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
-  FMethodError.code := -1;
+  FMethodError.code := RPC_ERROR;
   FMethodError.message := Format('Method %s not found', [Source.QuotedString]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
@@ -1781,7 +1782,7 @@ function TEthereumContract.ErrorNotEnoughParameters(
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
-  FMethodError.code := -1;
+  FMethodError.code := RPC_ERROR;
   FMethodError.message := Format('Is not enough parameters for %s', [Source.QuotedString]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
@@ -1791,7 +1792,7 @@ function TEthereumContract.ErrorParamConvert(Source: String; E: Exception): Bool
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
-  FMethodError.code := -1;
+  FMethodError.code := RPC_ERROR;
   FMethodError.message := Format('Parameter convert error %s on %s', [E.Message, Source.QuotedString]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
@@ -2020,7 +2021,7 @@ function TEthereumContract.ErrorTypeCast(Source: String;
 begin
   FreeAndNil(FMethodError);
   FMethodError := TEth_ErrorClass.Create;
-  FMethodError.code := -1;
+  FMethodError.code := RPC_ERROR;
   FMethodError.message := Format('type cast error on input parameter %s(%s): %s with %s', [Source, Param.FName, Param.FType, PassedType]);
   Result := False;
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
