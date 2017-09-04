@@ -217,7 +217,6 @@ type
     property AsUInt64: UInt64 read GetAsUInt64 write SetAsUInt64;
     property AsBoolean: Boolean read GetAsBoolean write SetAsBoolean;
     property AsBytes: TByteDynArray read GetAsBytes write SetAsBytes;
-//    property AsInt256: TBigInt read GetAsInt256;
   end;
 
 
@@ -1287,17 +1286,12 @@ class procedure TEthereumContract.DelphiSimpleConvertor(var EthName,
 begin
   if EthType = 'bool' then EthType := 'Boolean' else
   if EthType = 'string' then EthType := 'String' else
-
-  if (pos('uint', EthType) = 1) or (pos('int', EthType) = 1) then
-    case StrToIntDef(StringReplace(StringReplace(EthType, 'uint', '', []), 'int', '', []), 0) of
-      8:      EthType := 'Byte';
-      16:     EthType := 'Word';
-      32:     EthType := 'Integer';
-      33..64: EthType := 'Int64';
-    end else
-
+  if EthType = 'int8' then EthType := 'Byte' else
+  if EthType = 'int32' then EthType := 'Integer' else
+  if EthType = 'uint32' then EthType := 'UInt32' else
+  if EthType = 'int64' then EthType := 'Int64' else
+  if EthType = 'uint64' then EthType := 'UInt64' else
   if pos('bytes', EthType) = 1 then EthType := 'TByteDynArray' else
-
   EthType := 'TUnknown_' + EthType;
 end;
 
