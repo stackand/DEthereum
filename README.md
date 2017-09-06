@@ -1,7 +1,7 @@
 # DEthereum 
 
 DEthereum is the Delphi integration library for Ethereum, it allows you:
-- interact with Ethereum nodes like geth, eth using RPC
+- interact with Ethereum nodes like geth/parity using RPC
 - generating Delphi classes from solidity/ABI
 - generating ABI from runtime TEthereumContrtact class
 
