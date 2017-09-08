@@ -18,4 +18,7 @@ DEthereum is the Delphi integration library for Ethereum, it allows you:
 |Boolean|bool|
 |String|string|
 
-## Example of use:
+## Requirements 
+- Embarcadero® Delphi 10.2 (on later version not tested)
+
+
