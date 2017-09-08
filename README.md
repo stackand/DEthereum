@@ -9,7 +9,7 @@ DEthereum is the Delphi integration library for Ethereum, it allows you:
 - web3_*
 - eth_*
 - db_*
-- ssh_* (particular) 
+- ssh_* (partially) 
 - personal_*
 - tx_poll_*
 - miner_*
