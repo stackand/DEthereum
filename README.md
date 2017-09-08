@@ -14,7 +14,7 @@ DEthereum is the Delphi integration library for Ethereum, it allows you:
 - tx_poll_*
 - miner_*
 - admin_*
-- debug_* (not supported)
+- debug_* (not yet supported)
 
 ## Supported types map for contracts:
 |Delphi|Solidity
