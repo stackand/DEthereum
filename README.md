@@ -5,8 +5,18 @@ DEthereum is the Delphi integration library for Ethereum, it allows you:
 - generating Delphi classes from solidity/ABI
 - generating ABI from runtime TEthereumContrtact class
 
-## Supported types map for contracts:
+## Supported RPC calls:
+- web3_*
+- eth_*
+- db_*
+- ssh_* (particular) 
+- personal_*
+- tx_poll_*
+- miner_*
+- admin_*
+- debug_* (not supported)
 
+## Supported types map for contracts:
 |Delphi|Solidity
 |-|-
 |Byte|uint8|
@@ -20,5 +30,4 @@ DEthereum is the Delphi integration library for Ethereum, it allows you:
 
 ## Requirements 
 - Embarcadero® Delphi 10.2 (on later version not tested)
-
 
