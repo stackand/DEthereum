@@ -18,49 +18,61 @@ uses
 
 type
   TForm3 = class(TForm)
+    TimerHashRate: TTimer;
     TabControl1: TTabControl;
-    TabItemABI: TTabItem;
     TabItemLog: TTabItem;
-    TabItemSolidity: TTabItem;
-    StatusBar1: TStatusBar;
-    TabControlABI: TTabControl;
-    TabItemABIFull: TTabItem;
-    TabItemABIShort: TTabItem;
-    MemoABIFull: TMemo;
-    MemoABIShort: TMemo;
-    TabItemABIResult: TTabItem;
-    ButtonProcessABI: TButton;
     PanelSetup: TPanel;
     EditServer: TEdit;
     NumberBoxPort: TNumberBox;
     FloatAnimation1: TFloatAnimation;
+    ComboBoxFromAddress: TComboBox;
+    EditFromPassword: TEdit;
+    PasswordEditButton1: TPasswordEditButton;
+    ButtonStartMiner: TButton;
+    ButtonStopMiner: TButton;
+    CheckBoxHashRate: TCheckBox;
+    StringGridLog: TStringGrid;
+    TimeColumn1: TTimeColumn;
+    StringColumn3: TStringColumn;
+    StringColumn4: TStringColumn;
+    TabItemTextLog: TTabItem;
+    MemoTextLog: TMemo;
+    TabItemABI: TTabItem;
+    TabControlABI: TTabControl;
+    TabItemABIFull: TTabItem;
+    MemoABIFull: TMemo;
+    TabItemABIShort: TTabItem;
+    MemoABIShort: TMemo;
+    TabItemABICustom: TTabItem;
+    MemoABICustom: TMemo;
+    TabItemABIResult: TTabItem;
+    TabControl2: TTabControl;
+    TabItemDelphiSource: TTabItem;
+    MemoABIDelphiSource: TMemo;
+    ButtonSaveDelphi: TButton;
+    TabItemABIBuildResult: TTabItem;
+    MemoContractABI: TMemo;
+    EditContractAddress: TEdit;
+    ButtonProcessABI: TButton;
+    TabItemSolidity: TTabItem;
+    StatusBar1: TStatusBar;
     ButtonCompileSolidity: TButton;
     TabControlSolidity: TTabControl;
     TabItemSoliditySource: TTabItem;
-    TabItemSolidityResult: TTabItem;
     MemoSoliditySource: TMemo;
+    TabItemSolidityResult: TTabItem;
     MemoSolidityResult: TMemo;
     TabItemTransaction: TTabItem;
-    TabItemABICustom: TTabItem;
-    MemoABICustom: TMemo;
     PanelTransaction: TPanel;
     EditTransaction: TEdit;
-    ComboBoxFromAddress: TComboBox;
-    EditFromPassword: TEdit;
-    ButtonStartMiner: TButton;
-    ButtonStopMiner: TButton;
     EditButtonTransaction: TEditButton;
     StringGridTransation: TStringGrid;
     StringColumn1: TStringColumn;
     StringColumn2: TStringColumn;
     TabItemEvents: TTabItem;
-    ssh_post: TButton;
-    PasswordEditButton1: TPasswordEditButton;
-    StringGridLog: TStringGrid;
-    StringColumn3: TStringColumn;
-    StringColumn4: TStringColumn;
-    TimeColumn1: TTimeColumn;
-    TimerHashRate: TTimer;
+    StringGridEvents: TStringGrid;
+    EventName: TStringColumn;
+    EventValues: TStringColumn;
     Block: TTabItem;
     Panel1: TPanel;
     EditBlock: TEdit;
@@ -68,23 +80,6 @@ type
     StringGridBlock: TStringGrid;
     StringColumn5: TStringColumn;
     StringColumn6: TStringColumn;
-    CheckBoxHashRate: TCheckBox;
-    CallCode: TTabItem;
-    CallCodeEdit: TEdit;
-    CallCodeButton: TEditButton;
-    TabControl2: TTabControl;
-    TabItemDelphiSource: TTabItem;
-    TabItemABIBuildResult: TTabItem;
-    MemoABIDelphiSource: TMemo;
-    MemoContractABI: TMemo;
-    ButtonSaveDelphi: TButton;
-    StringGridEvents: TStringGrid;
-    EventName: TStringColumn;
-    EventValues: TStringColumn;
-    TabItemContract: TTabItem;
-    EditContractAddress: TEdit;
-    TabItemTextLog: TTabItem;
-    MemoTextLog: TMemo;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -265,7 +260,6 @@ begin
     if eth.eth_getBlockByHash(EditBlock.Text, True, Bl) and Assigned(Bl) then
       begin
         InfoToStringGrid(BlockInfo(Bl), StringGridBlock, True);
-
         for i := 0 to Length(Bl.transactions) - 1 do
           begin
             InfoToStringGrid([Format('Transaction %d', [i]), ''], StringGridBlock, False);

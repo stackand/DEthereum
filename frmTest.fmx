@@ -10,20 +10,22 @@ object Form3: TForm3
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignerMasterStyle = 0
+  object TimerHashRate: TTimer
+    Interval = 5000
+    OnTimer = TimerHashRateTimer
+    Left = 768
+    Top = 8
+  end
   object TabControl1: TTabControl
     Align = Client
     Size.Width = 1041.000000000000000000
     Size.Height = 463.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
-    TabIndex = 7
+    TabIndex = 5
     TabOrder = 2
     TabPosition = PlatformDefault
     Sizes = (
-      1041s
-      414s
-      1041s
-      414s
       1041s
       414s
       1041s
@@ -851,7 +853,7 @@ object Form3: TForm3
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 55.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
@@ -861,24 +863,18 @@ object Form3: TForm3
       OnClick = TabItemEventsClick
       ExplicitSize.cx = 69.000000000000000000
       ExplicitSize.cy = 26.000000000000000000
-      object ssh_post: TButton
-        Position.X = 392.000000000000000000
-        Position.Y = 14.000000000000000000
-        TabOrder = 1
-        Text = 'ssh_post'
-      end
       object StringGridEvents: TStringGrid
+        Align = Client
         CanFocus = True
         ClipChildren = True
-        Position.Y = 64.000000000000000000
-        Size.Width = 1122.000000000000000000
-        Size.Height = 560.000000000000000000
+        Size.Width = 1041.000000000000000000
+        Size.Height = 414.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
         RowCount = 0
         OnCellClick = StringGridEventsCellClick
-        Viewport.Width = 1118.000000000000000000
-        Viewport.Height = 535.000000000000000000
+        Viewport.Width = 1037.000000000000000000
+        Viewport.Height = 389.000000000000000000
         object EventName: TStringColumn
           Header = 'Event'
           Size.Width = 185.000000000000000000
@@ -951,90 +947,5 @@ object Form3: TForm3
         end
       end
     end
-    object CallCode: TTabItem
-      CustomIcon = <
-        item
-        end>
-      IsSelected = True
-      Size.Width = 68.000000000000000000
-      Size.Height = 49.000000000000000000
-      Size.PlatformDefault = False
-      StyleLookup = ''
-      TabOrder = 0
-      Text = 'CallCode'
-      ExplicitSize.cx = 68.000000000000000000
-      ExplicitSize.cy = 26.000000000000000000
-      object CallCodeEdit: TEdit
-        Touch.InteractiveGestures = [LongTap, DoubleTap]
-        Align = Top
-        TabOrder = 0
-        Text = 
-          '6060604052341561000c57fe5b5b61089d8061001c6000396000f30060606040' +
-          '5263ffffffff60e060020a6000350416634664bf588114610037578063ba8706' +
-          '8614610192578063f8e0b31a146101bf575bfe5b341561003f57fe5b61019060' +
-          '0480803590602001908201803590602001908080601f01602080910402602001' +
-          '6040519081016040528093929190818152602001838380828437505060408051' +
-          '6020601f89358b01803591820183900483028401830190945280835297999881' +
-          '0197919650918201945092508291508401838280828437505060408051602060' +
-          '1f89358b01803591820183900483028401830190945280835297999881019791' +
-          '96509182019450925082915084018382808284375050604080516020601f818a' +
-          '01358b0180359182018390048302840183018552818452989a67ffffffffffff' +
-          'ffff8b35169a9099940197509195509182019350915081908401838280828437' +
-          '5050604080516020601f89358b01803591820183900483028401830190945280' +
-          '8352979998810197919650918201945092508291508401838280828437509496' +
-          '506102ed95505050505050565b005b341561019a57fe5b6101a26106e8565b60' +
-          '40805167ffffffffffffffff9092168252519081900360200190f35b34156101' +
-          'c757fe5b6102db600480803590602001908201803590602001908080601f0160' +
-          '2080910402602001604051908101604052809392919081815260200183838082' +
-          '84375050604080516020601f89358b0180359182018390048302840183019094' +
-          '5280835297999881019791965091820194509250829150840183828082843750' +
-          '50604080516020601f89358b0180359182018390048302840183019094528083' +
-          '5297999881019791965091820194509250829150840183828082843750506040' +
-          '80516020601f818a01358b018035918201839004830284018301855281845298' +
-          '9a67ffffffffffffffff8b35169a909994019750919550918201935091508190' +
-          '8401838280828437509496506106f895505050505050565b6040805191825251' +
-          '9081900360200190f35b600061030c8787878760206040519081016040528060' +
-          '008152506106f8565b905080600019167f243d5f7bc5ce0c0a93e72ceb189104' +
-          '3e59a3a2bb9b38ac2b96425ccad9d88126848460405180806020018060200183' +
-          '8103835285818151815260200191508051906020019080838360008314610385' +
-          '575b80518252602083111561038557601f199092019160209182019101610365' +
-          '565b505050905090810190601f1680156103b157808203805160018360200361' +
-          '01000a031916815260200191505b508381038252845181528451602091820191' +
-          '86019080838382156103f0575b8051825260208311156103f057601f1990920'
-        Size.Width = 1041.000000000000000000
-        Size.Height = 30.000000000000000000
-        Size.PlatformDefault = False
-        object CallCodeButton: TEditButton
-          CanFocus = False
-          Cursor = crArrow
-          Size.Width = 84.000000000000000000
-          Size.Height = 26.000000000000000000
-          Size.PlatformDefault = False
-          TabOrder = 0
-          Text = 'Parse'
-          OnClick = CallCodeButtonClick
-        end
-      end
-    end
-    object TabItemContract: TTabItem
-      CustomIcon = <
-        item
-        end>
-      IsSelected = False
-      Size.Width = 66.000000000000000000
-      Size.Height = 49.000000000000000000
-      Size.PlatformDefault = False
-      StyleLookup = ''
-      TabOrder = 0
-      Text = 'Contract'
-      ExplicitSize.cx = 66.000000000000000000
-      ExplicitSize.cy = 49.000000000000000000
-    end
-  end
-  object TimerHashRate: TTimer
-    Interval = 5000
-    OnTimer = TimerHashRateTimer
-    Left = 768
-    Top = 8
   end
 end
