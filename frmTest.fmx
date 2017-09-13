@@ -22,7 +22,7 @@ object Form3: TForm3
     Size.Height = 463.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
-    TabIndex = 5
+    TabIndex = 6
     TabOrder = 2
     TabPosition = PlatformDefault
     Sizes = (
@@ -787,7 +787,7 @@ object Form3: TForm3
         end
       end
     end
-    object TabItemTransaction: TTabItem
+    object TabTransaction: TTabItem
       CustomIcon = <
         item
         end>
@@ -845,42 +845,6 @@ object Form3: TForm3
         end
         object StringColumn2: TStringColumn
           Header = 'Value'
-          Size.Width = 735.000000000000000000
-        end
-      end
-    end
-    object TabItemEvents: TTabItem
-      CustomIcon = <
-        item
-        end>
-      IsSelected = True
-      Size.Width = 55.000000000000000000
-      Size.Height = 49.000000000000000000
-      Size.PlatformDefault = False
-      StyleLookup = ''
-      TabOrder = 0
-      Text = 'Events'
-      OnClick = TabItemEventsClick
-      ExplicitSize.cx = 69.000000000000000000
-      ExplicitSize.cy = 26.000000000000000000
-      object StringGridEvents: TStringGrid
-        Align = Client
-        CanFocus = True
-        ClipChildren = True
-        Size.Width = 1041.000000000000000000
-        Size.Height = 414.000000000000000000
-        Size.PlatformDefault = False
-        TabOrder = 0
-        RowCount = 0
-        OnCellClick = StringGridEventsCellClick
-        Viewport.Width = 1037.000000000000000000
-        Viewport.Height = 389.000000000000000000
-        object EventName: TStringColumn
-          Header = 'Event'
-          Size.Width = 185.000000000000000000
-        end
-        object EventValues: TStringColumn
-          Header = 'Values'
           Size.Width = 735.000000000000000000
         end
       end
@@ -944,6 +908,113 @@ object Form3: TForm3
         object StringColumn6: TStringColumn
           Header = 'Value'
           Size.Width = 735.000000000000000000
+        end
+      end
+    end
+    object TabDemo: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 53.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Demo'
+      object TabControl3: TTabControl
+        Align = Client
+        Size.Width = 1041.000000000000000000
+        Size.Height = 414.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 1
+        TabOrder = 0
+        TabPosition = Bottom
+        Sizes = (
+          1041s
+          388s
+          1041s
+          388s)
+        object TabDemoEvents: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 55.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Events'
+          OnClick = TabDemoEventsClick
+          ExplicitSize.cx = 69.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object StringGridEvents: TStringGrid
+            Align = Client
+            CanFocus = True
+            ClipChildren = True
+            Size.Width = 1041.000000000000000000
+            Size.Height = 388.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            RowCount = 0
+            OnCellClick = StringGridEventsCellClick
+            Viewport.Width = 1037.000000000000000000
+            Viewport.Height = 363.000000000000000000
+            object EventName: TStringColumn
+              Header = 'Event'
+              Size.Width = 185.000000000000000000
+            end
+            object EventValues: TStringColumn
+              Header = 'Values'
+              Size.Width = 735.000000000000000000
+            end
+          end
+        end
+        object TabDemoMethods: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 68.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Methods'
+          OnClick = TabDemoMethodsClick
+          object StringGridMethods: TStringGrid
+            Align = Client
+            CanFocus = True
+            ClipChildren = True
+            Size.Width = 1041.000000000000000000
+            Size.Height = 388.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            RowCount = 0
+            Viewport.Width = 1037.000000000000000000
+            Viewport.Height = 363.000000000000000000
+            object StringColumn7: TStringColumn
+              Header = 'Name'
+              Size.Width = 185.000000000000000000
+            end
+            object StringColumn8: TStringColumn
+              Header = 'Type'
+              Size.Width = 71.000000000000000000
+            end
+            object StringColumn9: TStringColumn
+              Header = 'Payable'
+              Size.Width = 71.000000000000000000
+            end
+            object StringColumn10: TStringColumn
+              Header = 'Constant'
+              Size.Width = 71.000000000000000000
+            end
+            object StringColumn11: TStringColumn
+              Header = 'Value'
+              Size.Width = 519.000000000000000000
+            end
+          end
         end
       end
     end

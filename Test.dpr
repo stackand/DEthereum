@@ -4,9 +4,8 @@ uses
   System.StartUpCopy,
   FMX.Forms,
   frmTest in 'frmTest.pas' {Form3},
-  DEthereum.Types in 'DEthereum.Types.pas',
-  DEthereum in 'DEthereum.pas'
-  ;
+  DEthereum.Types in 'DEthereum.Types.pas'
+    ;
 //  ,DemoContract;
 
 

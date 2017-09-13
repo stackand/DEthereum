@@ -14,7 +14,8 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  DEthereum, DEthereum.Types, DemoContract;
+  DEthereum, DEthereum.Types, DemoContract, System.Math.Vectors, FMX.Controls3D,
+  FMX.Objects3D;
 
 type
   TForm3 = class(TForm)
@@ -62,17 +63,13 @@ type
     MemoSoliditySource: TMemo;
     TabItemSolidityResult: TTabItem;
     MemoSolidityResult: TMemo;
-    TabItemTransaction: TTabItem;
+    TabTransaction: TTabItem;
     PanelTransaction: TPanel;
     EditTransaction: TEdit;
     EditButtonTransaction: TEditButton;
     StringGridTransation: TStringGrid;
     StringColumn1: TStringColumn;
     StringColumn2: TStringColumn;
-    TabItemEvents: TTabItem;
-    StringGridEvents: TStringGrid;
-    EventName: TStringColumn;
-    EventValues: TStringColumn;
     Block: TTabItem;
     Panel1: TPanel;
     EditBlock: TEdit;
@@ -80,6 +77,19 @@ type
     StringGridBlock: TStringGrid;
     StringColumn5: TStringColumn;
     StringColumn6: TStringColumn;
+    TabDemo: TTabItem;
+    TabControl3: TTabControl;
+    TabDemoEvents: TTabItem;
+    StringGridEvents: TStringGrid;
+    EventName: TStringColumn;
+    EventValues: TStringColumn;
+    TabDemoMethods: TTabItem;
+    StringGridMethods: TStringGrid;
+    StringColumn7: TStringColumn;
+    StringColumn8: TStringColumn;
+    StringColumn9: TStringColumn;
+    StringColumn10: TStringColumn;
+    StringColumn11: TStringColumn;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -93,9 +103,10 @@ type
     procedure EditButtonBlockClick(Sender: TObject);
     procedure CallCodeButtonClick(Sender: TObject);
     procedure ButtonSaveDelphiClick(Sender: TObject);
-    procedure TabItemEventsClick(Sender: TObject);
+    procedure TabDemoEventsClick(Sender: TObject);
     procedure StringGridEventsCellClick(const Column: TColumn;
       const Row: Integer);
+    procedure TabDemoMethodsClick(Sender: TObject);
   private
     { Private declarations }
     eth: TEthereum;
@@ -385,7 +396,23 @@ begin
     ShowMessage('Unknown event name');
 end;
 
-procedure TForm3.TabItemEventsClick(Sender: TObject);
+procedure TForm3.TabDemoMethodsClick(Sender: TObject);
+var
+  i: Integer;
+begin
+  StringGridMethods.RowCount := 0;
+  for i := 0 to Demo.Methods.Count - 1 do
+    begin
+      StringGridMethods.RowCount := StringGridMethods.RowCount + 1;
+      StringGridMethods.Cells[0, StringGridMethods.RowCount - 1] := Demo.Methods[i].MethodName;
+      StringGridMethods.Cells[1, StringGridMethods.RowCount - 1] := Demo.Methods[i].MethodType;
+      StringGridMethods.Cells[2, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodPayable, True);
+      StringGridMethods.Cells[3, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodConstant, True);
+      StringGridMethods.Cells[4, StringGridMethods.RowCount - 1] := Demo.Methods[i].MethodConstant, True);
+    end;
+end;
+
+procedure TForm3.TabDemoEventsClick(Sender: TObject);
 var
   i: Integer;
 begin
