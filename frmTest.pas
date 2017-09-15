@@ -3,7 +3,7 @@ unit frmTest;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, Generics.Collections,
   REST.Json,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo,
@@ -365,51 +365,45 @@ var
   i, j: Integer;
   b: Boolean;
   s: String;
-  Event: String;
+  EventHash: String;
   bytes32: TByteDynArray;
-  ContractEvent: TEthereumContractEvent;
+  Topics: TArray<String>;
+  Event: TEthereumContractEvent;
+  Events: TObjectList<TEth_FilterChangeClass>;
 begin
-  Event := StringGridEvents.Cells[0, Row];
-  if Event = 'type_int32' then
-    if Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
+  Event := Demo.Event[StringGridEvents.Cells[0, Row]];
+  Events := TObjectList<TEth_FilterChangeClass>.Create(nil);
+  try
+    if Assigned(Event) and Demo.GetEventHash(Event) then
       begin
-        ContractEvent := Demo.Event[Event];
-        for i := 0 to ContractEvent.Events.Count - 1 do
-          if demo.GetEvent_type_int32(i, j)
-            then s := s + Format('%s(%d)  ', [ContractEvent.Events[i].blockNumber, j])
-            else Exit;
-        StringGridEvents.Cells[1, Row] := s;
-      end else
-  else
-  if Event = 'type_int64' then b := Demo.FilterEvent_type_int64(ethbnEearliest, 0, ethbnLatest, 0) else
-  if Event = 'type_bool' then b := Demo.FilterEvent_type_bool(ethbnEearliest, 0, ethbnLatest, 0) else
-  if Event = 'type_string' then b := Demo.FilterEvent_type_string(ethbnEearliest, 0, ethbnLatest, 0) else
-  if Event = 'type_bytes32' then
-    if Demo.FilterEvent_type_bytes32(ethbnEearliest, 0, ethbnLatest, 0) then
-      begin
-        ContractEvent := Demo.Event[Event];
-        for i := 0 to ContractEvent.Events.Count - 1 do
-          s := s + Format('%s(%s)  ', [ContractEvent.Events[i].blockNumber, ContractEvent.Events[i].Data]);
-        StringGridEvents.Cells[1, Row] := s;
-      end else
-  b := Demo.FilterEvent_type_bytes32(ethbnEearliest, 0, ethbnLatest, 0) else
-    ShowMessage('Unknown event name');
+        SetLength(Topics, 1);
+        Topics[0] := Event.EventHash;
+        if Demo.eth_getLogs(ethbnEearliest, 0, ethbnLatest, 0, Demo.ContractAddress, Topics, Events) then
+          begin
+            for i := 0 to Events.Count - 1 do
+              s := s + Format('%s(%d)', [Events[i].blockNumber, j]);
+            StringGridEvents.Cells[1, Row] := s;
+          end;
+      end;
+  finally
+    Events.Free;
+  end;
 end;
 
 procedure TForm3.TabDemoMethodsClick(Sender: TObject);
 var
   i: Integer;
 begin
-  StringGridMethods.RowCount := 0;
-  for i := 0 to Demo.Methods.Count - 1 do
-    begin
-      StringGridMethods.RowCount := StringGridMethods.RowCount + 1;
-      StringGridMethods.Cells[0, StringGridMethods.RowCount - 1] := Demo.Methods[i].MethodName;
-      StringGridMethods.Cells[1, StringGridMethods.RowCount - 1] := Demo.Methods[i].MethodType;
-      StringGridMethods.Cells[2, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodPayable, True);
-      StringGridMethods.Cells[3, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodConstant, True);
-      StringGridMethods.Cells[4, StringGridMethods.RowCount - 1] := Demo.Methods[i].MethodConstant, True);
-    end;
+  if StringGridMethods.RowCount = 0 then
+    for i := 0 to Demo.Methods.Count - 1 do
+      begin
+        StringGridMethods.RowCount := StringGridMethods.RowCount + 1;
+        StringGridMethods.Cells[0, StringGridMethods.RowCount - 1] := Demo.Methods[i].EthereumMethodSignature;
+        StringGridMethods.Cells[1, StringGridMethods.RowCount - 1] := Demo.Methods[i].MethodType;
+        StringGridMethods.Cells[2, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodPayable, True);
+        StringGridMethods.Cells[3, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodConstant, True);
+        StringGridMethods.Cells[4, StringGridMethods.RowCount - 1] := '***';
+      end;
 end;
 
 procedure TForm3.TabDemoEventsClick(Sender: TObject);
@@ -417,12 +411,11 @@ var
   i: Integer;
 begin
   if StringGridEvents.RowCount = 0 then
-    if Demo.FilterEvent_type_int32(ethbnEearliest, 0, ethbnLatest, 0) then
-      for i := 0 to Demo.Events.Count - 1 do
-        begin
-          StringGridEvents.RowCount := StringGridEvents.RowCount + 1;
-          StringGridEvents.Cells[0, StringGridEvents.RowCount - 1] := demo.Events[i].EventName;
-        end;
+    for i := 0 to Demo.Events.Count - 1 do
+      begin
+        StringGridEvents.RowCount := StringGridEvents.RowCount + 1;
+        StringGridEvents.Cells[0, StringGridEvents.RowCount - 1] := demo.Events[i].EventName;
+      end;
 end;
 
 procedure TForm3.TimerHashRateTimer(Sender: TObject);

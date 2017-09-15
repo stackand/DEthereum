@@ -922,12 +922,14 @@ object Form3: TForm3
       StyleLookup = ''
       TabOrder = 0
       Text = 'Demo'
+      ExplicitSize.cx = 53.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
       object TabControl3: TTabControl
         Align = Client
         Size.Width = 1041.000000000000000000
         Size.Height = 414.000000000000000000
         Size.PlatformDefault = False
-        TabIndex = 1
+        TabIndex = 0
         TabOrder = 0
         TabPosition = Bottom
         Sizes = (
@@ -939,7 +941,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 55.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
@@ -975,7 +977,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 68.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
@@ -983,6 +985,8 @@ object Form3: TForm3
           TabOrder = 0
           Text = 'Methods'
           OnClick = TabDemoMethodsClick
+          ExplicitSize.cx = 68.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
           object StringGridMethods: TStringGrid
             Align = Client
             CanFocus = True
