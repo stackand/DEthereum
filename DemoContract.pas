@@ -37,6 +37,7 @@ type
   end;
 
 implementation
+
 constructor TEth_ContractDemoContract.Create;
 begin
   inherited;

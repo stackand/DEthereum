@@ -90,6 +90,11 @@ type
     StringColumn9: TStringColumn;
     StringColumn10: TStringColumn;
     StringColumn11: TStringColumn;
+    TabState: TTabItem;
+    StringGridState: TStringGrid;
+    StringColumn12: TStringColumn;
+    StringColumn13: TStringColumn;
+    StringColumn16: TStringColumn;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -107,6 +112,7 @@ type
     procedure StringGridEventsCellClick(const Column: TColumn;
       const Row: Integer);
     procedure TabDemoMethodsClick(Sender: TObject);
+    procedure TabStateClick(Sender: TObject);
   private
     { Private declarations }
     eth: TEthereum;
@@ -403,6 +409,40 @@ begin
         StringGridMethods.Cells[2, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodPayable, True);
         StringGridMethods.Cells[3, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodConstant, True);
         StringGridMethods.Cells[4, StringGridMethods.RowCount - 1] := '***';
+      end;
+end;
+
+procedure TForm3.TabStateClick(Sender: TObject);
+var
+  i, j: Integer;
+  Code, CallResult: String;
+  Method: TEthereumContractMethod;
+begin
+  if StringGridState.RowCount = 0 then
+    for i := 0 to Demo.Methods.Count - 1 do
+      begin
+        Method := Demo.Methods[i];
+        if Method.MethodConstant and (Method.Outputs.Count > 0) then
+          begin
+            StringGridState.RowCount := StringGridState.RowCount + 1;
+            StringGridState.Cells[0, StringGridState.RowCount - 1] := Method.MethodName;
+            StringGridState.Cells[1, StringGridState.RowCount - 1] := Method.MethodType;
+            if Demo.BuildCallCode(Method, [], Code)
+            and Demo.eth_call(Demo.CoinAddress, Demo.ContractAddress, 100000, 100000, 0, Code, ethbnLatest, 0, CallResult) then
+              begin
+                if (Method.Outputs.Count > 0)
+                and Demo.ParseCallCode(ClassName, CallResult, Method.Outputs) then
+                  begin
+                    Code := '';
+                    for j := 0 to Method.Outputs.Count - 1 do
+                      Code := Code + Format('%d: %s: %s: %s', [j, Method.Outputs[j].Name, Method.Outputs[j].&Type, Method.Outputs[j].Value]) + sLineBreak;
+                    StringGridState.Cells[2, StringGridState.RowCount - 1] := Code;
+                  end
+                else StringGridState.Cells[2, StringGridState.RowCount - 1] := Demo.MethodError.message;
+              end
+            else
+              StringGridState.Cells[2, StringGridState.RowCount - 1] := Demo.MethodError.message;
+          end;
       end;
 end;
 

@@ -1985,11 +1985,12 @@ begin
       if (p.FType = 'bool')
       or (p.FType = 'int32')
       or (p.FType = 'int64')
-      or (p.FType = 'uint64') then
+      or (p.FType = 'uint64')
+      or (p.FType = 'bytes32') then
         begin
           p.FValue := Parts[Destination.IndexOf(p)];
         end else
-      if p.FType = 'string' then
+      if (p.FType = 'string') then
         begin
           i := eth_hexToInt(Parts[Destination.IndexOf(p)]) div eth_len;
           if i > Destination.Count then  //if offset more than parts.count
