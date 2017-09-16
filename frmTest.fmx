@@ -22,7 +22,7 @@ object Form3: TForm3
     Size.Height = 463.000000000000000000
     Size.PlatformDefault = False
     TabHeight = 49.000000000000000000
-    TabIndex = 6
+    TabIndex = 5
     TabOrder = 2
     TabPosition = PlatformDefault
     Sizes = (
@@ -853,7 +853,7 @@ object Form3: TForm3
       CustomIcon = <
         item
         end>
-      IsSelected = False
+      IsSelected = True
       Size.Width = 49.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
@@ -911,17 +911,17 @@ object Form3: TForm3
         end
       end
     end
-    object TabDemo: TTabItem
+    object TabWatch: TTabItem
       CustomIcon = <
         item
         end>
-      IsSelected = True
-      Size.Width = 53.000000000000000000
+      IsSelected = False
+      Size.Width = 54.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
-      Text = 'Demo'
+      Text = 'Watch'
       ExplicitSize.cx = 53.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       object TabControl3: TTabControl
@@ -929,7 +929,7 @@ object Form3: TForm3
         Size.Width = 1041.000000000000000000
         Size.Height = 414.000000000000000000
         Size.PlatformDefault = False
-        TabIndex = 1
+        TabIndex = 2
         TabOrder = 0
         TabPosition = Bottom
         Sizes = (
@@ -939,7 +939,7 @@ object Form3: TForm3
           388s
           1041s
           388s)
-        object TabDemoEvents: TTabItem
+        object TabEvents: TTabItem
           CustomIcon = <
             item
             end>
@@ -950,7 +950,7 @@ object Form3: TForm3
           StyleLookup = ''
           TabOrder = 0
           Text = 'Events'
-          OnClick = TabDemoEventsClick
+          OnClick = TabEventsClick
           ExplicitSize.cx = 69.000000000000000000
           ExplicitSize.cy = 26.000000000000000000
           object StringGridEvents: TStringGrid
@@ -979,7 +979,7 @@ object Form3: TForm3
           CustomIcon = <
             item
             end>
-          IsSelected = True
+          IsSelected = False
           Size.Width = 47.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
@@ -1012,18 +1012,18 @@ object Form3: TForm3
             end
           end
         end
-        object TabDemoMethods: TTabItem
+        object TabMethods: TTabItem
           CustomIcon = <
             item
             end>
-          IsSelected = False
+          IsSelected = True
           Size.Width = 68.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
           TabOrder = 0
           Text = 'Methods'
-          OnClick = TabDemoMethodsClick
+          OnClick = TabMethodsClick
           ExplicitSize.cx = 68.000000000000000000
           ExplicitSize.cy = 26.000000000000000000
           object StringGridMethods: TStringGrid

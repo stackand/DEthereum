@@ -77,13 +77,13 @@ type
     StringGridBlock: TStringGrid;
     StringColumn5: TStringColumn;
     StringColumn6: TStringColumn;
-    TabDemo: TTabItem;
+    TabWatch: TTabItem;
     TabControl3: TTabControl;
-    TabDemoEvents: TTabItem;
+    TabEvents: TTabItem;
     StringGridEvents: TStringGrid;
     EventName: TStringColumn;
     EventValues: TStringColumn;
-    TabDemoMethods: TTabItem;
+    TabMethods: TTabItem;
     StringGridMethods: TStringGrid;
     StringColumn7: TStringColumn;
     StringColumn8: TStringColumn;
@@ -108,10 +108,10 @@ type
     procedure EditButtonBlockClick(Sender: TObject);
     procedure CallCodeButtonClick(Sender: TObject);
     procedure ButtonSaveDelphiClick(Sender: TObject);
-    procedure TabDemoEventsClick(Sender: TObject);
+    procedure TabEventsClick(Sender: TObject);
     procedure StringGridEventsCellClick(const Column: TColumn;
       const Row: Integer);
-    procedure TabDemoMethodsClick(Sender: TObject);
+    procedure TabMethodsClick(Sender: TObject);
     procedure TabStateClick(Sender: TObject);
   private
     { Private declarations }
@@ -396,7 +396,7 @@ begin
   end;
 end;
 
-procedure TForm3.TabDemoMethodsClick(Sender: TObject);
+procedure TForm3.TabMethodsClick(Sender: TObject);
 var
   i: Integer;
 begin
@@ -446,7 +446,7 @@ begin
       end;
 end;
 
-procedure TForm3.TabDemoEventsClick(Sender: TObject);
+procedure TForm3.TabEventsClick(Sender: TObject);
 var
   i: Integer;
 begin
