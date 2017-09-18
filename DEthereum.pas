@@ -282,6 +282,7 @@ type
     function ErrorLengthMismatch(Source: String; Param: TEthereumContractParameter): Boolean;
     function ErrorParamConvert(Source: String; E: Exception): Boolean;
     function ErrorNotEnoughParameters(Source: String): Boolean;
+    function ErrorBadJSON: Boolean;
   public
     constructor Create;
     destructor Destroy; override;
@@ -1357,6 +1358,16 @@ begin
   if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
 end;
 
+function TEthereumContract.ErrorBadJSON: Boolean;
+begin
+  FreeAndNil(FMethodError);
+  FMethodError := TEth_ErrorClass.Create;
+  FMethodError.code := RPC_ERROR;
+  FMethodError.message := 'Bad JSON';
+  Result := False;
+  if not Result and Assigned(FOnMethodError) then FOnMethodError(Self);
+end;
+
 function TEthereumContract.BuildABI(out JSONString: String; const Pretty: Boolean = False;
   const IncludeValue: Boolean = False): Boolean;
 var
@@ -1890,6 +1901,11 @@ begin
             begin
               Method.TryGetValue<TJSONArray>('abiDefinition', Methods);
             end else;
+        end else
+
+        begin
+          Result := ErrorBadJSON;
+          Exit;
         end;
 
       if Assigned(Methods) then

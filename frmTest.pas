@@ -56,7 +56,6 @@ type
     EditContractAddress: TEdit;
     ButtonProcessABI: TButton;
     TabItemSolidity: TTabItem;
-    StatusBar1: TStatusBar;
     ButtonCompileSolidity: TButton;
     TabControlSolidity: TTabControl;
     TabItemSoliditySource: TTabItem;
@@ -95,6 +94,14 @@ type
     StringColumn12: TStringColumn;
     StringColumn13: TStringColumn;
     StringColumn16: TStringColumn;
+    TabItemWatch: TTabItem;
+    EditWatchAddress: TEdit;
+    ButtonWatchABI: TButton;
+    PathLabel1: TPathLabel;
+    FloatAnimation2: TFloatAnimation;
+    MemoWatchABI: TMemo;
+    StatusBar: TStatusBar;
+    LabelError: TLabel;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -113,10 +120,12 @@ type
       const Row: Integer);
     procedure TabMethodsClick(Sender: TObject);
     procedure TabStateClick(Sender: TObject);
+    procedure ButtonWatchABIClick(Sender: TObject);
   private
     { Private declarations }
     eth: TEthereum;
     demo: TEth_ContractDemoContract;
+    FWatch: TEth_ContractDemoContract;
     function BlockInfo(Bl: TEth_BlockClass): TArray<String>;
     function TransactionInfo(Tr: TEth_TransactionClass): TArray<String>;
     procedure InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid; ClearBefore: Boolean);
@@ -243,6 +252,21 @@ begin
   eth.miner_stop(Result);
 end;
 
+procedure TForm3.ButtonWatchABIClick(Sender: TObject);
+begin
+  SetupEthereum(FWatch);
+  FWatch.Methods.Clear;
+  FWatch.Events.Clear;
+  if FWatch.ParseABI(MemoWatchABI.Text) then
+    begin
+      FWatch.ContractAddress := EditWatchAddress.Text;
+      StringGridEvents.RowCount := 0;
+      StringGridState.RowCount := 0;
+      StringGridMethods.RowCount := 0;
+      SetupEthereum(FWatch);
+    end;
+end;
+
 procedure TForm3.CallCodeButtonClick(Sender: TObject);
 var
   c: TEthereumContract;
@@ -310,6 +334,7 @@ procedure TForm3.FormCreate(Sender: TObject);
 begin
   eth := TEthereum.Create;
   demo := TEth_ContractDemoContract.Create;
+  FWatch := TEth_ContractDemoContract.Create;
 
   EditServerChange(nil);
 end;
@@ -318,6 +343,7 @@ procedure TForm3.FormDestroy(Sender: TObject);
 begin
   eth.Free;
   demo.Free;
+  FWatch.Free;
 end;
 
 procedure TForm3.InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid;
@@ -343,7 +369,8 @@ end;
 
 procedure TForm3.OnMethodError(Sender: TObject);
 begin
-  AddLog('Error', (Sender as TEthereum).MethodError.code.ToString + ': ' + (Sender as TEthereum).MethodError.message);
+  LabelError.Text := (Sender as TEthereum).MethodError.code.ToString + ': ' + (Sender as TEthereum).MethodError.message;
+  AddLog('Error', LabelError.Text);
 end;
 
 procedure TForm3.OnMethodResult(Sender: TObject);
@@ -377,14 +404,14 @@ var
   Event: TEthereumContractEvent;
   Events: TObjectList<TEth_FilterChangeClass>;
 begin
-  Event := Demo.Event[StringGridEvents.Cells[0, Row]];
-  Events := TObjectList<TEth_FilterChangeClass>.Create(nil);
+  !!! Events := TObjectList<TEth_FilterChangeClass>.Create(nil);
+  Event := FWatch.Event[StringGridEvents.Cells[0, Row]];
   try
-    if Assigned(Event) and Demo.GetEventHash(Event) then
+    if Assigned(Event) and FWatch.GetEventHash(Event) then
       begin
         SetLength(Topics, 1);
         Topics[0] := Event.EventHash;
-        if Demo.eth_getLogs(ethbnEearliest, 0, ethbnLatest, 0, Demo.ContractAddress, Topics, Events) then
+        if FWatch.eth_getLogs(ethbnEearliest, 0, ethbnLatest, 0, FWatch.ContractAddress, Topics, Events) then
           begin
             for i := 0 to Events.Count - 1 do
               s := s + Format('%s(%d)', [Events[i].blockNumber, j]);
@@ -401,13 +428,13 @@ var
   i: Integer;
 begin
   if StringGridMethods.RowCount = 0 then
-    for i := 0 to Demo.Methods.Count - 1 do
+    for i := 0 to FWatch.Methods.Count - 1 do
       begin
         StringGridMethods.RowCount := StringGridMethods.RowCount + 1;
-        StringGridMethods.Cells[0, StringGridMethods.RowCount - 1] := Demo.Methods[i].EthereumMethodSignature;
-        StringGridMethods.Cells[1, StringGridMethods.RowCount - 1] := Demo.Methods[i].MethodType;
-        StringGridMethods.Cells[2, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodPayable, True);
-        StringGridMethods.Cells[3, StringGridMethods.RowCount - 1] := BoolToStr(Demo.Methods[i].MethodConstant, True);
+        StringGridMethods.Cells[0, StringGridMethods.RowCount - 1] := FWatch.Methods[i].EthereumMethodSignature;
+        StringGridMethods.Cells[1, StringGridMethods.RowCount - 1] := FWatch.Methods[i].MethodType;
+        StringGridMethods.Cells[2, StringGridMethods.RowCount - 1] := BoolToStr(FWatch.Methods[i].MethodPayable, True);
+        StringGridMethods.Cells[3, StringGridMethods.RowCount - 1] := BoolToStr(FWatch.Methods[i].MethodConstant, True);
         StringGridMethods.Cells[4, StringGridMethods.RowCount - 1] := '***';
       end;
 end;
@@ -419,9 +446,9 @@ var
   Method: TEthereumContractMethod;
 begin
   if StringGridState.RowCount = 0 then
-    for i := 0 to Demo.Methods.Count - 1 do
+    for i := 0 to FWatch.Methods.Count - 1 do
       begin
-        Method := Demo.Methods[i];
+        Method := FWatch.Methods[i];
         if Method.MethodConstant and (Method.Outputs.Count > 0) then
           begin
             StringGridState.RowCount := StringGridState.RowCount + 1;
@@ -451,10 +478,10 @@ var
   i: Integer;
 begin
   if StringGridEvents.RowCount = 0 then
-    for i := 0 to Demo.Events.Count - 1 do
+    for i := 0 to FWatch.Events.Count - 1 do
       begin
         StringGridEvents.RowCount := StringGridEvents.RowCount + 1;
-        StringGridEvents.Cells[0, StringGridEvents.RowCount - 1] := demo.Events[i].EventName;
+        StringGridEvents.Cells[0, StringGridEvents.RowCount - 1] := FWatch.Events[i].EventName;
       end;
 end;
 
