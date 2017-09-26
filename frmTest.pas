@@ -94,14 +94,15 @@ type
     StringColumn12: TStringColumn;
     StringColumn13: TStringColumn;
     StringColumn16: TStringColumn;
-    TabItemWatch: TTabItem;
-    EditWatchAddress: TEdit;
-    ButtonWatchABI: TButton;
+    TabIABI: TTabItem;
     PathLabel1: TPathLabel;
     FloatAnimation2: TFloatAnimation;
     MemoWatchABI: TMemo;
     StatusBar: TStatusBar;
     LabelError: TLabel;
+    EditWatchAddress: TEdit;
+    StringColumn14: TStringColumn;
+    StringColumn15: TStringColumn;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -120,7 +121,8 @@ type
       const Row: Integer);
     procedure TabMethodsClick(Sender: TObject);
     procedure TabStateClick(Sender: TObject);
-    procedure ButtonWatchABIClick(Sender: TObject);
+    procedure MemoWatchABIChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     eth: TEthereum;
@@ -252,21 +254,6 @@ begin
   eth.miner_stop(Result);
 end;
 
-procedure TForm3.ButtonWatchABIClick(Sender: TObject);
-begin
-  SetupEthereum(FWatch);
-  FWatch.Methods.Clear;
-  FWatch.Events.Clear;
-  if FWatch.ParseABI(MemoWatchABI.Text) then
-    begin
-      FWatch.ContractAddress := EditWatchAddress.Text;
-      StringGridEvents.RowCount := 0;
-      StringGridState.RowCount := 0;
-      StringGridMethods.RowCount := 0;
-      SetupEthereum(FWatch);
-    end;
-end;
-
 procedure TForm3.CallCodeButtonClick(Sender: TObject);
 var
   c: TEthereumContract;
@@ -346,6 +333,11 @@ begin
   FWatch.Free;
 end;
 
+procedure TForm3.FormShow(Sender: TObject);
+begin
+  MemoWatchABIChange(nil);
+end;
+
 procedure TForm3.InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid;
   ClearBefore: Boolean);
 var
@@ -359,6 +351,22 @@ begin
       StringGrid.RowCount := StringGrid.RowCount + 1;
       StringGrid.Cells[0, StringGrid.RowCount - 1] := Info[i * 2];
       StringGrid.Cells[1, StringGrid.RowCount - 1] := Info[i * 2 + 1];
+    end;
+end;
+
+procedure TForm3.MemoWatchABIChange(Sender: TObject);
+begin
+  SetupEthereum(FWatch);
+  FWatch.ContractAddress := EditContractAddress.Text;
+  FWatch.Methods.Clear;
+  FWatch.Events.Clear;
+  if FWatch.ParseABI(MemoWatchABI.Text) then
+    begin
+      FWatch.ContractAddress := EditWatchAddress.Text;
+      StringGridEvents.RowCount := 0;
+      StringGridState.RowCount := 0;
+      StringGridMethods.RowCount := 0;
+      SetupEthereum(FWatch);
     end;
 end;
 
@@ -404,19 +412,24 @@ var
   Event: TEthereumContractEvent;
   Events: TObjectList<TEth_FilterChangeClass>;
 begin
-  !!! Events := TObjectList<TEth_FilterChangeClass>.Create(nil);
+  Events := nil;
   Event := FWatch.Event[StringGridEvents.Cells[0, Row]];
   try
     if Assigned(Event) and FWatch.GetEventHash(Event) then
       begin
+        StringGridEvents.Cells[1, Row] := Event.EventHash;
+        StringGridEvents.Cells[2, Row] := Event.EthereumEventSignature;
+
         SetLength(Topics, 1);
         Topics[0] := Event.EventHash;
         if FWatch.eth_getLogs(ethbnEearliest, 0, ethbnLatest, 0, FWatch.ContractAddress, Topics, Events) then
           begin
             for i := 0 to Events.Count - 1 do
               s := s + Format('%s(%d)', [Events[i].blockNumber, j]);
-            StringGridEvents.Cells[1, Row] := s;
-          end;
+          end else
+            s := FWatch.MethodError.message;
+
+        StringGridEvents.Cells[3, Row] := s;
       end;
   finally
     Events.Free;
