@@ -1,4 +1,4 @@
-unit frmTest;
+unit frmMain;
 
 interface
 
@@ -15,10 +15,10 @@ uses
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.StorageBin,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client,
   DEthereum, DEthereum.Types, DemoContract, System.Math.Vectors, FMX.Controls3D,
-  FMX.Objects3D;
+  FMX.Objects3D, FMX.Menus;
 
 type
-  TForm3 = class(TForm)
+  TformMain = class(TForm)
     TimerHashRate: TTimer;
     TabControl1: TTabControl;
     TabItemLog: TTabItem;
@@ -64,18 +64,10 @@ type
     MemoSolidityResult: TMemo;
     TabTransaction: TTabItem;
     PanelTransaction: TPanel;
-    EditTransaction: TEdit;
-    EditButtonTransaction: TEditButton;
-    StringGridTransation: TStringGrid;
-    StringColumn1: TStringColumn;
-    StringColumn2: TStringColumn;
     Block: TTabItem;
     Panel1: TPanel;
     EditBlock: TEdit;
     EditButtonBlock: TEditButton;
-    StringGridBlock: TStringGrid;
-    StringColumn5: TStringColumn;
-    StringColumn6: TStringColumn;
     TabWatch: TTabItem;
     TabControl3: TTabControl;
     TabEvents: TTabItem;
@@ -103,6 +95,18 @@ type
     EditWatchAddress: TEdit;
     StringColumn14: TStringColumn;
     StringColumn15: TStringColumn;
+    SearchEditButton1: TSearchEditButton;
+    TabItem1: TTabItem;
+    EditAddress: TEdit;
+    StringGridTransactions: TStringGrid;
+    StringColumn17: TStringColumn;
+    StringColumn18: TStringColumn;
+    SearchTransactions: TSearchEditButton;
+    PopupMenuNew: TPopupMenu;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -111,9 +115,7 @@ type
     procedure ComboBoxFromAddressClick(Sender: TObject);
     procedure ButtonStartMinerClick(Sender: TObject);
     procedure ButtonStopMinerClick(Sender: TObject);
-    procedure EditButtonTransactionClick(Sender: TObject);
     procedure TimerHashRateTimer(Sender: TObject);
-    procedure EditButtonBlockClick(Sender: TObject);
     procedure CallCodeButtonClick(Sender: TObject);
     procedure ButtonSaveDelphiClick(Sender: TObject);
     procedure TabEventsClick(Sender: TObject);
@@ -121,16 +123,15 @@ type
       const Row: Integer);
     procedure TabMethodsClick(Sender: TObject);
     procedure TabStateClick(Sender: TObject);
-    procedure MemoWatchABIChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure MemoWatchABIChange(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
   private
     { Private declarations }
-    eth: TEthereum;
+    FEth: TEthereum;
     demo: TEth_ContractDemoContract;
     FWatch: TEth_ContractDemoContract;
-    function BlockInfo(Bl: TEth_BlockClass): TArray<String>;
-    function TransactionInfo(Tr: TEth_TransactionClass): TArray<String>;
-    procedure InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid; ClearBefore: Boolean);
     procedure OnMethodError(Sender: TObject);
     procedure OnMethodCall(Sender: TObject);
     procedure OnMethodResult(Sender: TObject);
@@ -141,13 +142,50 @@ type
   end;
 
 var
-  Form3: TForm3;
+  Eth: TEthereum;
+  formMain: TformMain;
+
+procedure InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid; ClearBefore: Boolean);
+procedure RecordToStringGrid(Info: TArray<String>; StringGrid: TStringGrid; ClearBefore: Boolean);
 
 implementation
 
+uses
+  frmTransaction,
+  frmBlock;
+
+procedure InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid;
+  ClearBefore: Boolean);
+var
+  i: Integer;
+begin
+  if ClearBefore then
+    StringGrid.RowCount := 0;
+
+  for i := 0 to (Length(Info) - 1) div 2 do
+    begin
+      StringGrid.RowCount := StringGrid.RowCount + 1;
+      StringGrid.Cells[0, StringGrid.RowCount - 1] := Info[i * 2];
+      StringGrid.Cells[1, StringGrid.RowCount - 1] := Info[i * 2 + 1];
+    end;
+end;
+
+procedure RecordToStringGrid(Info: TArray<String>; StringGrid: TStringGrid;
+  ClearBefore: Boolean);
+var
+  i: Integer;
+begin
+  if ClearBefore then
+    StringGrid.RowCount := 0;
+
+  StringGrid.RowCount := StringGrid.RowCount + 1;
+  for i := 0 to (Length(Info) - 1) do
+    StringGrid.Cells[i, StringGrid.RowCount - 1] := Info[i];
+end;
+
 {$R *.fmx}
 
-procedure TForm3.AddLog(&Type, Text: String);
+procedure TformMain.AddLog(&Type, Text: String);
 begin
   StringGridLog.RowCount := StringGridLog.RowCount + 1;
   StringGridLog.Cells[0, StringGridLog.RowCount - 1] := DateTimeToStr(Now);
@@ -163,28 +201,7 @@ begin
   MemoTextLog.Lines.Add('');
 end;
 
-function TForm3.BlockInfo(Bl: TEth_BlockClass): TArray<String>;
-begin
-  Result := [
-    'number',           Bl.number,
-    'hash',             Bl.hash,
-    'parentHash',       Bl.parentHash,
-    'number',           Bl.number,
-    'difficulty',       Bl.difficulty,
-    'totalDifficulty',  Bl.totalDifficulty,
-    'nonce',            Bl.nonce,
-    'mixHash',          Bl.mixHash,
-    'parentHash',       Bl.parentHash,
-    'receiptsRoot',     Bl.receiptsRoot,
-    'stateRoot',        Bl.stateRoot,
-    'timestamp',        Bl.timestamp,
-    'sha3Uncles',       Bl.sha3Uncles,
-    'logsBloom',        Bl.logsBloom,
-    'transactionsRoot', Bl.transactionsRoot
-  ];
-end;
-
-procedure TForm3.ButtonCompileSolidityClick(Sender: TObject);
+procedure TformMain.ButtonCompileSolidityClick(Sender: TObject);
 var
   s: String;
 begin
@@ -199,7 +216,7 @@ begin
     end;
 end;
 
-procedure TForm3.ButtonProcessABIClick(Sender: TObject);
+procedure TformMain.ButtonProcessABIClick(Sender: TObject);
 var
   s: String;
   pa: Boolean;
@@ -235,26 +252,26 @@ begin
   TabControlABI.ActiveTab := TabItemABIResult;
 end;
 
-procedure TForm3.ButtonSaveDelphiClick(Sender: TObject);
+procedure TformMain.ButtonSaveDelphiClick(Sender: TObject);
 begin
   MemoABIDelphiSource.Lines.SaveToFile('DemoContract.pas');
 end;
 
-procedure TForm3.ButtonStartMinerClick(Sender: TObject);
+procedure TformMain.ButtonStartMinerClick(Sender: TObject);
 var
   Result: Boolean;
 begin
   eth.miner_start(1, Result);
 end;
 
-procedure TForm3.ButtonStopMinerClick(Sender: TObject);
+procedure TformMain.ButtonStopMinerClick(Sender: TObject);
 var
   Result: Boolean;
 begin
   eth.miner_stop(Result);
 end;
 
-procedure TForm3.CallCodeButtonClick(Sender: TObject);
+procedure TformMain.CallCodeButtonClick(Sender: TObject);
 var
   c: TEthereumContract;
 begin
@@ -266,7 +283,7 @@ begin
   end;
 end;
 
-procedure TForm3.ComboBoxFromAddressClick(Sender: TObject);
+procedure TformMain.ComboBoxFromAddressClick(Sender: TObject);
 var
   Account: String;
   Accounts: TArray<String>;
@@ -279,82 +296,35 @@ begin
     end;
 end;
 
-procedure TForm3.EditButtonBlockClick(Sender: TObject);
-var
-  i: Integer;
-  Bl: TEth_BlockClass;
-begin
-  try
-    if eth.eth_getBlockByHash(EditBlock.Text, True, Bl) and Assigned(Bl) then
-      begin
-        InfoToStringGrid(BlockInfo(Bl), StringGridBlock, True);
-        for i := 0 to Length(Bl.transactions) - 1 do
-          begin
-            InfoToStringGrid([Format('Transaction %d', [i]), ''], StringGridBlock, False);
-            InfoToStringGrid(TransactionInfo(Bl.transactions[i]), StringGridBlock, False);
-          end;
-      end;
-  finally
-    FreeAndNil(Bl);
-  end;
-end;
-
-procedure TForm3.EditButtonTransactionClick(Sender: TObject);
-var
-  Tr: TEth_TransactionClass;
-begin
-  try
-    if eth.eth_getTransactionByHash(EditTransaction.Text, Tr) and Assigned(Tr) then
-      InfoToStringGrid(TransactionInfo(Tr), StringGridTransation, True);
-  finally
-    FreeAndNil(Tr);
-  end;
-end;
-
-procedure TForm3.EditServerChange(Sender: TObject);
+procedure TformMain.EditServerChange(Sender: TObject);
 begin
   SetupEthereum(eth);
   SetupEthereum(demo);
 end;
 
-procedure TForm3.FormCreate(Sender: TObject);
+procedure TformMain.FormCreate(Sender: TObject);
 begin
-  eth := TEthereum.Create;
+  FEth := TEthereum.Create;
   demo := TEth_ContractDemoContract.Create;
   FWatch := TEth_ContractDemoContract.Create;
 
+  Eth := FEth;
   EditServerChange(nil);
 end;
 
-procedure TForm3.FormDestroy(Sender: TObject);
+procedure TformMain.FormDestroy(Sender: TObject);
 begin
-  eth.Free;
+  Eth.Free;
   demo.Free;
   FWatch.Free;
 end;
 
-procedure TForm3.FormShow(Sender: TObject);
+procedure TformMain.FormShow(Sender: TObject);
 begin
   MemoWatchABIChange(nil);
 end;
 
-procedure TForm3.InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid;
-  ClearBefore: Boolean);
-var
-  i: Integer;
-begin
-  if ClearBefore then
-    StringGrid.RowCount := 0;
-
-  for i := 0 to (Length(Info) - 1) div 2 do
-    begin
-      StringGrid.RowCount := StringGrid.RowCount + 1;
-      StringGrid.Cells[0, StringGrid.RowCount - 1] := Info[i * 2];
-      StringGrid.Cells[1, StringGrid.RowCount - 1] := Info[i * 2 + 1];
-    end;
-end;
-
-procedure TForm3.MemoWatchABIChange(Sender: TObject);
+procedure TformMain.MemoWatchABIChange(Sender: TObject);
 begin
   SetupEthereum(FWatch);
   FWatch.ContractAddress := EditContractAddress.Text;
@@ -370,23 +340,23 @@ begin
     end;
 end;
 
-procedure TForm3.OnMethodCall(Sender: TObject);
+procedure TformMain.OnMethodCall(Sender: TObject);
 begin
   AddLog('Call', (Sender as TEthereum).MethodCall.ToJSON);
 end;
 
-procedure TForm3.OnMethodError(Sender: TObject);
+procedure TformMain.OnMethodError(Sender: TObject);
 begin
   LabelError.Text := (Sender as TEthereum).MethodError.code.ToString + ': ' + (Sender as TEthereum).MethodError.message;
   AddLog('Error', LabelError.Text);
 end;
 
-procedure TForm3.OnMethodResult(Sender: TObject);
+procedure TformMain.OnMethodResult(Sender: TObject);
 begin
   AddLog('Result', (Sender as TEthereum).MethodResult.ToJSON);
 end;
 
-procedure TForm3.SetupEthereum(Eth: TEthereum);
+procedure TformMain.SetupEthereum(Eth: TEthereum);
 begin
   Eth.RpcAddress := EditServer.Text;
   Eth.RpcPort := Trunc(NumberBoxPort.Value);
@@ -400,7 +370,33 @@ begin
   Eth.OnMethodError := OnMethodError;
 end;
 
-procedure TForm3.StringGridEventsCellClick(const Column: TColumn;
+procedure TformMain.SpeedButton1Click(Sender: TObject);
+var
+  Tab: TTabItem;
+  formTr: TformTransaction;
+begin
+  Tab := TabControl1.Add;
+  Tab.Text := TformTransaction.ClassName;
+
+  formTr := TformTransaction.Create(Tab);
+  formTr.Align := TAlignLayout.Client;
+  formTr.Parent := Tab;
+end;
+
+procedure TformMain.SpeedButton2Click(Sender: TObject);
+var
+  Tab: TTabItem;
+  form: TformBlock;
+begin
+  Tab := TabControl1.Add;
+  Tab.Text := TformBlock.ClassName;
+
+  form := TformBlock.Create(Tab);
+  form.Align := TAlignLayout.Client;
+  form.Parent := Tab;
+end;
+
+procedure TformMain.StringGridEventsCellClick(const Column: TColumn;
   const Row: Integer);
 var
   i, j: Integer;
@@ -436,7 +432,7 @@ begin
   end;
 end;
 
-procedure TForm3.TabMethodsClick(Sender: TObject);
+procedure TformMain.TabMethodsClick(Sender: TObject);
 var
   i: Integer;
 begin
@@ -452,7 +448,7 @@ begin
       end;
 end;
 
-procedure TForm3.TabStateClick(Sender: TObject);
+procedure TformMain.TabStateClick(Sender: TObject);
 var
   i, j: Integer;
   Code, CallResult: String;
@@ -486,7 +482,7 @@ begin
       end;
 end;
 
-procedure TForm3.TabEventsClick(Sender: TObject);
+procedure TformMain.TabEventsClick(Sender: TObject);
 var
   i: Integer;
 begin
@@ -498,7 +494,7 @@ begin
       end;
 end;
 
-procedure TForm3.TimerHashRateTimer(Sender: TObject);
+procedure TformMain.TimerHashRateTimer(Sender: TObject);
 var
   Version: String;
   HashRate: Int64;
@@ -506,25 +502,6 @@ begin
   if CheckBoxHashRate.IsChecked
   and eth.web3_clientVersion(Version) and eth.eth_hashrate(HashRate) then
       Caption := Format('%s - %.2f Kh/s', [Version, HashRate/1000]);
-end;
-
-function TForm3.TransactionInfo(Tr: TEth_TransactionClass): TArray<String>;
-begin
-  Result := [
-    'blockHash',          Tr.blockHash,
-    'blockNumber',        Tr.blockNumber,
-    'from',               Tr.from,
-    'gas',                Tr.gas,
-    'gasPrice',           Tr.gasPrice,
-    'hash',               Tr.hash,
-    'input',              Tr.input,
-    'nonce',              Tr.nonce,
-    'r',                  Tr.r,
-    's',                  Tr.s,
-    'transactionIndex',   Tr.transactionIndex,
-    'v',                  Tr.v,
-    'value',              Tr.value
-  ];
 end;
 
 end.

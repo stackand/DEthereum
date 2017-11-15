@@ -1,0 +1,44 @@
+object formTransaction: TformTransaction
+  Size.Width = 680.000000000000000000
+  Size.Height = 394.000000000000000000
+  Size.PlatformDefault = False
+  object EditSearch: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Top
+    TabOrder = 0
+    Hint = 'Transaction address'
+    Size.Width = 680.000000000000000000
+    Size.Height = 30.000000000000000000
+    Size.PlatformDefault = False
+    ParentShowHint = False
+    ShowHint = True
+    object SearchButton: TSearchEditButton
+      CanFocus = False
+      Cursor = crArrow
+      Size.Width = 28.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      OnClick = SearchButtonClick
+    end
+  end
+  object StringGridTransation: TStringGrid
+    Align = Client
+    CanFocus = True
+    ClipChildren = True
+    Size.Width = 680.000000000000000000
+    Size.Height = 364.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Viewport.Width = 680.000000000000000000
+    Viewport.Height = 364.000000000000000000
+    object StringColumn1: TStringColumn
+      Header = 'Key'
+      Size.Width = 185.000000000000000000
+    end
+    object StringColumn2: TStringColumn
+      Header = 'Value'
+      Size.Width = 735.000000000000000000
+    end
+  end
+end

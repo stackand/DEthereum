@@ -1,0 +1,112 @@
+object formBlock: TformBlock
+  Size.Width = 1271.000000000000000000
+  Size.Height = 466.000000000000000000
+  Size.PlatformDefault = False
+  object EditSearch: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Top
+    TabOrder = 0
+    Hint = 'Transaction address'
+    Size.Width = 1271.000000000000000000
+    Size.Height = 30.000000000000000000
+    Size.PlatformDefault = False
+    ParentShowHint = False
+    ShowHint = True
+    object SearchButton: TSearchEditButton
+      CanFocus = False
+      Cursor = crArrow
+      Size.Width = 28.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      OnClick = SearchButtonClick
+    end
+  end
+  object TabControl1: TTabControl
+    Align = Client
+    Size.Width = 1271.000000000000000000
+    Size.Height = 436.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 1
+    TabOrder = 1
+    TabPosition = PlatformDefault
+    Sizes = (
+      1271s
+      410s
+      1271s
+      410s)
+    object General: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 85.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'General info'
+      object StringGridBlock: TStringGrid
+        Align = Client
+        CanFocus = True
+        ClipChildren = True
+        Size.Width = 1271.000000000000000000
+        Size.Height = 410.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 1271.000000000000000000
+        Viewport.Height = 410.000000000000000000
+        object StringColumn5: TStringColumn
+          Header = 'Key'
+          Size.Width = 185.000000000000000000
+        end
+        object StringColumn6: TStringColumn
+          Header = 'Value'
+          Size.Width = 735.000000000000000000
+        end
+      end
+    end
+    object Transactions: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 85.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Transactions'
+      object StringGridList: TStringGrid
+        Align = Client
+        CanFocus = True
+        ClipChildren = True
+        Size.Width = 1271.000000000000000000
+        Size.Height = 410.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 1251.000000000000000000
+        Viewport.Height = 385.000000000000000000
+        object StringColumn1: TStringColumn
+          OnGesture = StringColumn1Gesture
+          Header = 'Hash'
+          Size.Width = 185.000000000000000000
+        end
+        object StringColumn2: TStringColumn
+          Header = 'From'
+          Size.Width = 199.000000000000000000
+        end
+        object StringColumn3: TStringColumn
+          Header = 'To'
+          Size.Width = 175.000000000000000000
+        end
+        object StringColumn4: TStringColumn
+          Header = 'Amount'
+        end
+        object StringColumn7: TStringColumn
+          Header = 'Fee'
+        end
+      end
+    end
+  end
+end

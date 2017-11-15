@@ -3,9 +3,10 @@ program Test;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  frmTest in 'frmTest.pas' {Form3},
-  DEthereum.Types in 'DEthereum.Types.pas'
-    ;
+  frmMain in 'frmMain.pas' {formMain},
+  DEthereum.Types in 'DEthereum.Types.pas',
+  frmBlock in 'frmBlock.pas' {formBlock: TFrame};
+
 //  ,DemoContract;
 
 
@@ -13,6 +14,6 @@ uses
 
 begin
   Application.Initialize;
-  Application.CreateForm(TForm3, Form3);
+  Application.CreateForm(TformMain, formMain);
   Application.Run;
 end.

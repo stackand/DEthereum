@@ -865,6 +865,7 @@ begin
     Http.Request.BasicAuthentication := True;
     Http.Request.Username := FCoinAddress;
     Http.Request.Password := FCoinPassword;
+    Http.Request.ContentType := 'application/json';
 
     try
       JSA := TJSONArray.Create;

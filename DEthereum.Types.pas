@@ -40,6 +40,9 @@ type
     FTransactionIndex: String;
     FV: String;
     FValue: String;
+    FPublicKey: String;
+    FTo: String;
+    FRaw: String;
   public
     property blockHash: String read FBlockHash write FBlockHash;
     property blockNumber: String read FBlockNumber write FBlockNumber;
@@ -49,8 +52,11 @@ type
     property hash: String read FHash write FHash;
     property input: String read FInput write FInput;
     property nonce: String read FNonce write FNonce;
+    property publicKey: String read FPublicKey write FPublicKey;
     property r: String read FR write FR;
+    property raw: String read FRaw write FRaw;
     property s: String read FS write FS;
+    property &to: String read FTo write FTo;
     property transactionIndex: String read FTransactionIndex write FTransactionIndex;
     property v: String read FV write FV;
     property value: String read FValue write FValue;
@@ -354,12 +360,14 @@ end;
 
 function eth_hexToInt(const s: String): Int64;
 begin
-  Result := StrToInt64('$' + StringReplace(s, eth_hex, '', []));
+//  Result := StrToInt64('$' + StringReplace(s, eth_hex, '', []));
+  Result := StrToInt64(s);
 end;
 
 function eth_hexToUInt(const s: String): UInt64;
 begin
-  Result := StrToUInt64('$' + StringReplace(s, eth_hex, '', []));
+//  Result := StrToUInt64('$' + StringReplace(s, eth_hex, '', []));
+  Result := StrToUInt64(s);
 end;
 
 function eth_strToHex(const s: String; HexPrefix: Boolean; Pad: Integer): String;
