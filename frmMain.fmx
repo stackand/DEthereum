@@ -824,15 +824,12 @@ object formMain: TformMain
         item
         end>
       IsSelected = True
-      Size.Width = 410.000000000000000000
+      Size.Width = 99.000000000000000000
       Size.Height = 49.000000000000000000
       Size.PlatformDefault = False
       StyleLookup = ''
       TabOrder = 0
-      Text = 
-        'llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll' +
-        'llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll' +
-        'llllk'
+      Text = 'ContractWatch'
       ExplicitSize.cx = 53.000000000000000000
       ExplicitSize.cy = 49.000000000000000000
       object TabControl3: TTabControl
