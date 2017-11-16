@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   System.Rtti, FMX.Grid.Style, FMX.Grid, FMX.ScrollBox, FMX.Edit,
-  FMX.Controls.Presentation,
+  FMX.Controls.Presentation, FMX.TabControl,
   DEthereum, DEthereum.Types;
 
 type
@@ -17,6 +17,8 @@ type
     StringColumn1: TStringColumn;
     StringColumn2: TStringColumn;
     procedure SearchButtonClick(Sender: TObject);
+    procedure StringGridTransationCellDblClick(const Column: TColumn;
+      const Row: Integer);
   private
     { Private declarations }
     function TransactionInfo(Tr: TEth_TransactionClass): TArray<String>;
@@ -27,9 +29,19 @@ type
 implementation
 
 uses
-  frmMain;
+  frmMain,
+  frmBlock;
 
 {$R *.fmx}
+
+procedure TformTransaction.StringGridTransationCellDblClick(
+  const Column: TColumn; const Row: Integer);
+begin
+  if SameText(Column.Header, 'BlockHash') then
+    NewTabBlock(StringGridTransation.Cells[Column.Index, StringGridTransation.Row]) else
+  if SameText(Column.Header, 'TransactionHash') then
+    NewTabTransaction(StringGridTransation.Cells[Column.Index, StringGridTransation.Row]);
+end;
 
 function TformTransaction.TransactionInfo(Tr: TEth_TransactionClass): TArray<String>;
 begin

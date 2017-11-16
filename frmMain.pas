@@ -20,6 +20,13 @@ uses
 type
   TformMain = class(TForm)
     TimerHashRate: TTimer;
+    StatusBar: TStatusBar;
+    LabelError: TLabel;
+    PopupMenuNew: TPopupMenu;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
     TabControl1: TTabControl;
     TabItemLog: TTabItem;
     PanelSetup: TPanel;
@@ -62,18 +69,23 @@ type
     MemoSoliditySource: TMemo;
     TabItemSolidityResult: TTabItem;
     MemoSolidityResult: TMemo;
-    TabTransaction: TTabItem;
-    PanelTransaction: TPanel;
-    Block: TTabItem;
-    Panel1: TPanel;
-    EditBlock: TEdit;
-    EditButtonBlock: TEditButton;
-    TabWatch: TTabItem;
+    TabContractWatch: TTabItem;
     TabControl3: TTabControl;
+    TabIABI: TTabItem;
+    PathLabel1: TPathLabel;
+    FloatAnimation2: TFloatAnimation;
+    MemoWatchABI: TMemo;
     TabEvents: TTabItem;
     StringGridEvents: TStringGrid;
     EventName: TStringColumn;
+    StringColumn14: TStringColumn;
+    StringColumn15: TStringColumn;
     EventValues: TStringColumn;
+    TabState: TTabItem;
+    StringGridState: TStringGrid;
+    StringColumn12: TStringColumn;
+    StringColumn13: TStringColumn;
+    StringColumn16: TStringColumn;
     TabMethods: TTabItem;
     StringGridMethods: TStringGrid;
     StringColumn7: TStringColumn;
@@ -81,32 +93,14 @@ type
     StringColumn9: TStringColumn;
     StringColumn10: TStringColumn;
     StringColumn11: TStringColumn;
-    TabState: TTabItem;
-    StringGridState: TStringGrid;
-    StringColumn12: TStringColumn;
-    StringColumn13: TStringColumn;
-    StringColumn16: TStringColumn;
-    TabIABI: TTabItem;
-    PathLabel1: TPathLabel;
-    FloatAnimation2: TFloatAnimation;
-    MemoWatchABI: TMemo;
-    StatusBar: TStatusBar;
-    LabelError: TLabel;
     EditWatchAddress: TEdit;
-    StringColumn14: TStringColumn;
-    StringColumn15: TStringColumn;
     SearchEditButton1: TSearchEditButton;
-    TabItem1: TTabItem;
-    EditAddress: TEdit;
-    StringGridTransactions: TStringGrid;
-    StringColumn17: TStringColumn;
-    StringColumn18: TStringColumn;
-    SearchTransactions: TSearchEditButton;
-    PopupMenuNew: TPopupMenu;
-    MenuItem1: TMenuItem;
-    MenuItem2: TMenuItem;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
+    Splitter1: TSplitter;
+    StringGridEventList: TStringGrid;
+    StringColumn1: TStringColumn;
+    StringColumn2: TStringColumn;
+    StringColumn5: TStringColumn;
+    StringColumn6: TStringColumn;
     procedure ButtonProcessABIClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -127,6 +121,9 @@ type
     procedure MemoWatchABIChange(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
+    procedure StringColumn2Tap(Sender: TObject; const Point: TPointF);
+    procedure StringGridEventListCellDblClick(const Column: TColumn;
+      const Row: Integer);
   private
     { Private declarations }
     FEth: TEthereum;
@@ -147,6 +144,8 @@ var
 
 procedure InfoToStringGrid(Info: TArray<String>; StringGrid: TStringGrid; ClearBefore: Boolean);
 procedure RecordToStringGrid(Info: TArray<String>; StringGrid: TStringGrid; ClearBefore: Boolean);
+procedure NewTabTransaction(Hash: String);
+procedure NewTabBlock(Hash: String);
 
 implementation
 
@@ -181,6 +180,41 @@ begin
   StringGrid.RowCount := StringGrid.RowCount + 1;
   for i := 0 to (Length(Info) - 1) do
     StringGrid.Cells[i, StringGrid.RowCount - 1] := Info[i];
+end;
+
+
+procedure NewTabTransaction(Hash: String);
+var
+  Tab: TTabItem;
+  form: TformTransaction;
+begin
+  Tab := formMain.TabControl1.Add;
+  formMain.TabControl1.ActiveTab := Tab;
+
+  Tab.Text := TformTransaction.ClassName;
+
+  form := TformTransaction.Create(Tab);
+  form.Align := TAlignLayout.Client;
+  form.Parent := Tab;
+  form.EditSearch.Text := Hash;
+  form.SearchButtonClick(nil);
+end;
+
+procedure NewTabBlock(Hash: String);
+var
+  Tab: TTabItem;
+  form: TformBlock;
+begin
+  Tab := formMain.TabControl1.Add;
+  formMain.TabControl1.ActiveTab := Tab;
+
+  Tab.Text := TformBlock.ClassName;
+
+  form := TformBlock.Create(Tab);
+  form.Align := TAlignLayout.Client;
+  form.Parent := Tab;
+  form.EditSearch.Text := Hash;
+  form.SearchButtonClick(nil);
 end;
 
 {$R *.fmx}
@@ -396,8 +430,24 @@ begin
   form.Parent := Tab;
 end;
 
+procedure TformMain.StringColumn2Tap(Sender: TObject; const Point: TPointF);
+begin
+  NewTabTransaction(StringGridEventList.Cells[StringGridEventList.Col, StringGridEventList.Row]);
+end;
+
+procedure TformMain.StringGridEventListCellDblClick(const Column: TColumn;
+  const Row: Integer);
+begin
+  if SameText(Column.Header, 'BlockHash') then
+    NewTabBlock(StringGridEventList.Cells[Column.Index, StringGridEventList.Row]) else
+  if SameText(Column.Header, 'TransactionHash') then
+    NewTabTransaction(StringGridEventList.Cells[Column.Index, StringGridEventList.Row]);
+end;
+
 procedure TformMain.StringGridEventsCellClick(const Column: TColumn;
   const Row: Integer);
+const
+  FixedCol = 4;
 var
   i, j: Integer;
   b: Boolean;
@@ -405,31 +455,53 @@ var
   EventHash: String;
   bytes32: TByteDynArray;
   Topics: TArray<String>;
+  NewColumn: TStringColumn;
   Event: TEthereumContractEvent;
-  Events: TObjectList<TEth_FilterChangeClass>;
 begin
-  Events := nil;
   Event := FWatch.Event[StringGridEvents.Cells[0, Row]];
-  try
-    if Assigned(Event) and FWatch.GetEventHash(Event) then
-      begin
-        StringGridEvents.Cells[1, Row] := Event.EventHash;
-        StringGridEvents.Cells[2, Row] := Event.EthereumEventSignature;
+  if Assigned(Event) then
+    begin
+      StringGridEventList.Model.BeginUpdate;
+      StringGridEventList.RowCount := 0;
+      while StringGridEventList.Model.ColumnCount > FixedCol do
+        StringGridEventList.Model.RemoveColumn(FixedCol);
+      for i := Event.Parameters.Count - 1 downto 0 do
+        begin
+          NewColumn := TStringColumn.Create(StringGridEventList);
+          NewColumn.Header := Format('%s(%s)', [Event.Parameters[i].Name, Event.Parameters[i].&Type]);
+          StringGridEventList.Model.InsertColumn(FixedCol, NewColumn);
+        end;
+      StringGridEventList.Model.EndUpdate;
 
-        SetLength(Topics, 1);
-        Topics[0] := Event.EventHash;
-        if FWatch.eth_getLogs(ethbnEearliest, 0, ethbnLatest, 0, FWatch.ContractAddress, Topics, Events) then
-          begin
-            for i := 0 to Events.Count - 1 do
-              s := s + Format('%s(%d)', [Events[i].blockNumber, j]);
-          end else
-            s := FWatch.MethodError.message;
+      if FWatch.GetEventHash(Event) then
+        begin
+          StringGridEvents.Cells[1, Row] := Event.EventHash;
+          StringGridEvents.Cells[2, Row] := Event.EthereumEventSignature;
 
-        StringGridEvents.Cells[3, Row] := s;
-      end;
-  finally
-    Events.Free;
-  end;
+          SetLength(Topics, 1);
+          Topics[0] := Event.EventHash;
+          Event.Events.Clear;
+          if FWatch.eth_getLogs(ethbnEearliest, 0, ethbnLatest, 0, FWatch.ContractAddress, Topics, Event.Events) then
+            for i := 0 to Event.Events.Count - 1 do
+              begin
+                s := ',' + s + Event.Events[i].blockNumber;
+                AddLog('callcode', Event.Events[i].data);
+                StringGridEventList.RowCount := StringGridEventList.RowCount + 1;
+                StringGridEventList.Cells[0, StringGridEventList.RowCount - 1] := Event.Events[i].blockNumber;
+                StringGridEventList.Cells[1, StringGridEventList.RowCount - 1] := Event.Events[i].blockHash;
+                StringGridEventList.Cells[2, StringGridEventList.RowCount - 1] := Event.Events[i].transactionHash;
+                StringGridEventList.Cells[3, StringGridEventList.RowCount - 1] := Event.Events[i].data;
+                if FWatch.ParseCallCode(Event.EventName, Event.Events[i].data, Event.Parameters) then
+                  for j := 0 to Event.Parameters.Count - 1 do
+                    begin
+                      StringGridEventList.Cells[FixedCol + j, StringGridEventList.RowCount - 1] := Event.Parameters[j].Value;
+                    end;
+              end;
+            if Assigned(FWatch.MethodError) then
+              s := s + FWatch.MethodError.message;
+          StringGridEvents.Cells[3, Row] := s;
+        end;
+    end;
 end;
 
 procedure TformMain.TabMethodsClick(Sender: TObject);

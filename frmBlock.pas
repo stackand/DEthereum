@@ -26,8 +26,8 @@ type
     StringColumn4: TStringColumn;
     StringColumn7: TStringColumn;
     procedure SearchButtonClick(Sender: TObject);
-    procedure StringColumn1Gesture(Sender: TObject;
-      const EventInfo: TGestureEventInfo; var Handled: Boolean);
+    procedure StringGridListCellDblClick(const Column: TColumn;
+      const Row: Integer);
   private
     { Private declarations }
     function BlockInfo(Bl: TEth_BlockClass): TArray<String>;
@@ -88,19 +88,13 @@ begin
   end;
 end;
 
-procedure TformBlock.StringColumn1Gesture(Sender: TObject;
-  const EventInfo: TGestureEventInfo; var Handled: Boolean);
-var
-  Tab: TTabItem;
-  formTr: TformTransaction;
+procedure TformBlock.StringGridListCellDblClick(const Column: TColumn;
+  const Row: Integer);
 begin
-  Tab := TabControl1.Add;
-  Tab.Text := TformTransaction.ClassName;
-
-  formTr := TformTransaction.Create(Tab);
-  formTr.Align := TAlignLayout.Client;
-  formTr.Parent := Tab;
-  formTr.EditSearch.Text := StringGridBlock.Selected(StringGridBlock.Selected).
+  if SameText(Column.Header, 'BlockHash') then
+    NewTabBlock(StringGridList.Cells[Column.Index, StringGridList.Row]) else
+  if SameText(Column.Header, 'TransactionHash') then
+    NewTabTransaction(StringGridList.Cells[Column.Index, StringGridList.Row]);
 end;
 
 end.

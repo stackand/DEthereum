@@ -46,6 +46,8 @@ object formBlock: TformBlock
       StyleLookup = ''
       TabOrder = 0
       Text = 'General info'
+      ExplicitSize.cx = 85.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
       object StringGridBlock: TStringGrid
         Align = Client
         CanFocus = True
@@ -77,6 +79,8 @@ object formBlock: TformBlock
       StyleLookup = ''
       TabOrder = 0
       Text = 'Transactions'
+      ExplicitSize.cx = 85.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
       object StringGridList: TStringGrid
         Align = Client
         CanFocus = True
@@ -85,11 +89,11 @@ object formBlock: TformBlock
         Size.Height = 410.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 1
-        Viewport.Width = 1251.000000000000000000
-        Viewport.Height = 385.000000000000000000
+        OnCellDblClick = StringGridListCellDblClick
+        Viewport.Width = 1271.000000000000000000
+        Viewport.Height = 410.000000000000000000
         object StringColumn1: TStringColumn
-          OnGesture = StringColumn1Gesture
-          Header = 'Hash'
+          Header = 'TransactionHash'
           Size.Width = 185.000000000000000000
         end
         object StringColumn2: TStringColumn

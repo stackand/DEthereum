@@ -570,6 +570,7 @@ var
   Change: TEth_FilterChangeClass;
   Changes: TEth_getFilterChangesClass;
 begin
+  Changes := nil;
   ParamObject := TJSONObject.Create;
   try
     ParamObject.AddPair(TJSONPair.Create('fromBlock', FromBlockNumber.ToString(FromBlockNumberCustom)));
@@ -587,9 +588,9 @@ begin
         for Change in Changes.result do
           CallResult.Add(Change);
         Changes.result := [];
-        Changes.Free;
       end;
   finally
+    FreeAndNil(Changes);
     ParamObject.Free;
   end;
 end;
@@ -1293,6 +1294,7 @@ begin
   if EthType = 'uint32' then EthType := 'UInt32' else
   if EthType = 'int64' then EthType := 'Int64' else
   if EthType = 'uint64' then EthType := 'UInt64' else
+  if EthType = 'address' then EthType := 'string' else
   if pos('bytes', EthType) = 1 then EthType := 'TByteDynArray' else
   EthType := 'TUnknown_' + EthType;
 end;
@@ -1918,8 +1920,8 @@ begin
             Inputs := Method.Values['inputs'] as TJSONArray;
             Outputs := Method.Values['outputs'] as TJSONArray;
 
-            MethodType := (Method.Values['type'] as TJSONString).Value;
-            MethodName := (Method.Values['name'] as TJSONString).Value;
+            Method.TryGetValue<string>('type', MethodType);
+            Method.TryGetValue<string>('name', MethodName);
 
             if MethodType = 'constructor' then
               begin
@@ -1931,8 +1933,8 @@ begin
                 ContractMethod := TEthereumContractMethod.Create;
                 ContractMethod.FMethodType := MethodType;
                 ContractMethod.FMethodName := MethodName;
-                ContractMethod.FMethodConstant := (Method.Values['constant'] as TJSONBool).AsBoolean;
-                ContractMethod.FMethodPayable := (Method.Values['payable'] as TJSONBool).AsBoolean;
+                Method.TryGetValue<Boolean>('constant', ContractMethod.FMethodConstant);
+                Method.TryGetValue<Boolean>('payable', ContractMethod.FMethodPayable);
 
                 if Assigned(Inputs) then
                   ParametersFromArray(Inputs, ContractMethod.Inputs, '_', ContractMethod.FMethodName);
@@ -1949,7 +1951,7 @@ begin
                 ContractEvent := TEthereumContractEvent.Create;
                 ContractEvent.FEventType := MethodType;
                 ContractEvent.FEventName := MethodName;
-                ContractEvent.FEventAnonymous := (Method.Values['anonymous'] as TJSONBool).AsBoolean;
+                Method.TryGetValue<Boolean>('anonymous', ContractEvent.FEventAnonymous);
 
                 if Assigned(Inputs) then
                   ParametersFromArray(Inputs, ContractEvent.Parameters, '_', ContractEvent.FEventName);
@@ -2003,7 +2005,10 @@ begin
       or (p.FType = 'int32')
       or (p.FType = 'int64')
       or (p.FType = 'uint64')
-      or (p.FType = 'bytes32') then
+      or (p.FType = 'int256')
+      or (p.FType = 'uint256')
+      or (p.FType = 'bytes32')
+      or (p.FType = 'address') then
         begin
           p.FValue := Parts[Destination.IndexOf(p)];
         end else
